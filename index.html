@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nguyễn Văn A — Portfolio</title>
+<title>Lã Văn Sáng — Portfolio</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -428,6 +428,114 @@
     position: absolute;
     inset: 0;
     background: linear-gradient(135deg, rgba(201,168,76,.05) 0%, transparent 60%);
+  }
+  /* ── FLIP CARD ── */
+  .flip-card-wrapper {
+    width: 100%;
+    height: 100%;
+    perspective: 1000px;
+    cursor: pointer;
+  }
+  .flip-card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    will-change: transform;
+  }
+  .flip-card-wrapper.flipped .flip-card-inner {
+    transform: rotateY(180deg);
+  }
+  .flip-card-front,
+  .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .flip-card-front {
+    background: var(--dark3);
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .flip-card-back {
+    transform: rotateY(180deg);
+    overflow: hidden;
+  }
+  .flip-card-back img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+  .flip-front-letter {
+    font-family: 'Playfair Display', serif;
+    font-size: 6rem;
+    color: rgba(201,168,76,.25);
+    line-height: 1;
+    transition: color 0.3s;
+    user-select: none;
+  }
+  .flip-card-wrapper:hover .flip-front-letter {
+    color: rgba(201,168,76,.5);
+  }
+  .flip-hint {
+    font-size: .65rem;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: all 0.35s ease;
+    user-select: none;
+  }
+  .flip-card-wrapper:hover .flip-hint {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  /* shimmer sweep on hover */
+  .flip-card-front::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 60%; height: 100%;
+    background: linear-gradient(105deg, transparent, rgba(201,168,76,.07), transparent);
+    transition: left 0.6s ease;
+    pointer-events: none;
+  }
+  .flip-card-wrapper:hover .flip-card-front::after {
+    left: 150%;
+  }
+  /* gold border glow on hover */
+  .flip-card-wrapper:hover + .about-corner,
+  .flip-card-wrapper:hover ~ .about-corner {
+    opacity: 1;
+  }
+  /* back overlay gradient */
+  .flip-card-back::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 50%, rgba(8,11,18,.6) 100%);
+    pointer-events: none;
+  }
+  /* particles burst on flip */
+  @keyframes flipBurst {
+    0%   { transform: translate(0,0) scale(1); opacity:1; }
+    100% { transform: translate(var(--bx), var(--by)) scale(0); opacity:0; }
+  }
+  .flip-burst {
+    position: absolute;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: flipBurst 0.7s ease-out forwards;
+    z-index: 10;
   }
   .about-img-placeholder {
     width:100%; height:100%;
@@ -920,6 +1028,89 @@
     .projects-grid { grid-template-columns: 1fr; }
     .about-tag { right:0; }
   }
+
+  /* ── MUSIC SECTION ── */
+  #music {
+    padding: 8rem 4rem;
+    background: var(--dark2);
+  }
+  .music-inner { max-width: 900px; margin: 0 auto; }
+
+  .music-player {
+    margin-top: 3.5rem;
+    background: var(--dark);
+    border: 1px solid rgba(201,168,76,.18);
+    padding: 2.5rem 2.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .music-player::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--accent), var(--gold));
+    background-size: 200% 100%;
+    animation: gradientSlide 3s linear infinite;
+  }
+  @keyframes gradientSlide {
+    0%   { background-position: 0% 0%; }
+    100% { background-position: 200% 0%; }
+  }
+  .music-player-top { display: flex; align-items: center; gap: 2rem; }
+  .vinyl {
+    width: 90px; height: 90px; border-radius: 50%;
+    background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #1a1a2e 18%, #111 20%, #222 22%, #111 30%, #2a2a2a 35%, #111 40%, #222 45%, #111 50%, #2a2a2a 55%, #111 100%);
+    box-shadow: 0 0 0 3px rgba(201,168,76,.25), 0 8px 30px rgba(0,0,0,.6);
+    flex-shrink: 0; position: relative;
+  }
+  .vinyl::after { content: ''; position: absolute; inset: 35%; border-radius: 50%; background: var(--gold); box-shadow: 0 0 8px var(--gold); opacity: .85; }
+  .vinyl.spinning { animation: spin 4s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .music-info { flex: 1; min-width: 0; }
+  .music-now-label { font-size: .65rem; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: .4rem; }
+  .music-track-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: .2rem; }
+  .music-track-file { font-size: .75rem; color: var(--muted); }
+  .music-progress-wrap { margin-top: 1.5rem; cursor: pointer; }
+  .music-time-row { display: flex; justify-content: space-between; font-size: .72rem; color: var(--muted); margin-bottom: .5rem; }
+  .music-progress-bar { height: 4px; background: rgba(255,255,255,.07); border-radius: 2px; position: relative; overflow: hidden; }
+  .music-progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-light)); border-radius: 2px; width: 0%; transition: width .3s linear; pointer-events: none; }
+  .music-controls { display: flex; align-items: center; justify-content: center; gap: 1.5rem; margin-top: 1.5rem; }
+  .music-btn { background: none; border: none; color: var(--muted); cursor: pointer; padding: .5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: color .2s, transform .2s; }
+  .music-btn:hover { color: var(--gold); transform: scale(1.15); }
+  .music-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .music-btn-play { width: 52px; height: 52px; background: var(--gold); border-radius: 50%; color: var(--dark); flex-shrink: 0; box-shadow: 0 0 20px rgba(201,168,76,.35); }
+  .music-btn-play:hover { background: var(--gold-light); color: var(--dark); transform: scale(1.1); }
+  .music-btn-play svg { width: 22px; height: 22px; stroke-width: 2; }
+  .music-volume-row { display: flex; align-items: center; gap: .75rem; margin-top: 1.2rem; }
+  .music-vol-icon svg { width: 16px; height: 16px; fill: none; stroke: var(--muted); stroke-width: 1.8; stroke-linecap: round; }
+  input[type=range].music-vol-slider { flex: 1; -webkit-appearance: none; height: 3px; background: rgba(255,255,255,.1); border-radius: 2px; outline: none; }
+  input[type=range].music-vol-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--gold); cursor: pointer; box-shadow: 0 0 6px rgba(201,168,76,.5); }
+  .music-tracklist { margin-top: 2rem; border-top: 1px solid rgba(201,168,76,.1); padding-top: 1.5rem; display: flex; flex-direction: column; gap: .5rem; max-height: 280px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(201,168,76,.3) transparent; }
+  .music-tracklist::-webkit-scrollbar { width: 4px; }
+  .music-tracklist::-webkit-scrollbar-thumb { background: rgba(201,168,76,.3); border-radius: 2px; }
+  .track-item { display: flex; align-items: center; gap: 1rem; padding: .75rem 1rem; border-radius: 4px; cursor: pointer; transition: background .2s; border: 1px solid transparent; }
+  .track-item:hover { background: rgba(201,168,76,.06); border-color: rgba(201,168,76,.12); }
+  .track-item.active { background: rgba(201,168,76,.1); border-color: rgba(201,168,76,.25); }
+  .track-num { font-size: .7rem; color: var(--muted); width: 1.5rem; text-align: right; flex-shrink: 0; }
+  .track-item.active .track-num { display: none; }
+  .track-wave { display: none; align-items: flex-end; gap: 2px; width: 16px; height: 14px; flex-shrink: 0; }
+  .track-item.active .track-wave { display: flex; }
+  .track-wave span { display: block; width: 3px; background: var(--gold); border-radius: 1px; animation: waveBar .8s ease-in-out infinite alternate; }
+  .track-wave span:nth-child(1) { height: 6px; animation-delay: 0s; }
+  .track-wave span:nth-child(2) { height: 12px; animation-delay: .15s; }
+  .track-wave span:nth-child(3) { height: 8px; animation-delay: .3s; }
+  @keyframes waveBar { to { height: 3px; } }
+  .track-item.active.paused .track-wave span { animation-play-state: paused; }
+  .track-title { flex: 1; font-size: .88rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .track-item.active .track-title { color: var(--gold); }
+  .track-dur { font-size: .72rem; color: var(--muted); flex-shrink: 0; }
+  @media(max-width:768px) {
+    #music { padding: 5rem 1.5rem; }
+    .music-player { padding: 1.5rem; }
+    .music-player-top { flex-direction: column; text-align: center; gap: 1rem; }
+    .vinyl { width: 72px; height: 72px; }
+  }
+
 </style>
 </head>
 <body>
@@ -941,6 +1132,7 @@
     <li><a href="#skills">Kỹ năng</a></li>
     <li><a href="#experience">Kinh nghiệm</a></li>
     <li><a href="#projects">Dự án</a></li>
+    <li><a href="#music">Âm nhạc</a></li>
     <li><a href="#contact">Liên hệ</a></li>
   </ul>
 </nav>
@@ -971,7 +1163,18 @@
   <div class="about-grid">
     <div class="about-img-wrap reveal">
       <div class="about-img-frame">
-        <div class="about-img-placeholder">A</div>
+        <div class="flip-card-wrapper" id="flipCard">
+          <div class="flip-card-inner">
+            <!-- FRONT -->
+            <div class="flip-card-front">
+              <div class="flip-front-letter">S</div>
+              <span class="flip-hint">✦ Click để xem ảnh</span>
+            </div>
+            <div class="flip-card-back">
+              <img src="/image/bcd.png" alt="Lã Văn Sáng" id="flipPhoto" />
+            </div>
+          </div>
+        </div>
       </div>
       <div class="about-corner tl"></div>
       <div class="about-corner br"></div>
@@ -1162,10 +1365,70 @@
   </div>
 </section>
 
+<!-- MUSIC -->
+<section id="music">
+  <div class="music-inner">
+    <div class="reveal">
+      <div class="divider"><span class="divider-text">05 — Âm Nhạc</span></div>
+      <div class="section-title shimmer-text">Những giai điệu <em>tôi yêu thích</em></div>
+      <p class="section-sub">Playlist cá nhân — bật lên và cùng thưởng thức</p>
+    </div>
+    <div class="music-player reveal">
+      <!-- Top: Vinyl + Info -->
+      <div class="music-player-top">
+        <div class="vinyl" id="vinyl"></div>
+        <div class="music-info">
+          <div class="music-now-label">♪ Đang phát</div>
+          <div class="music-track-name" id="mp-name">Chọn một bài để phát</div>
+          <div class="music-track-file" id="mp-file">—</div>
+        </div>
+      </div>
+      <!-- Progress -->
+      <div class="music-progress-wrap" id="mp-progress-wrap">
+        <div class="music-time-row">
+          <span id="mp-cur">0:00</span>
+          <span id="mp-dur">0:00</span>
+        </div>
+        <div class="music-progress-bar">
+          <div class="music-progress-fill" id="mp-fill"></div>
+        </div>
+      </div>
+      <!-- Controls -->
+      <div class="music-controls">
+        <button class="music-btn" id="mp-prev" title="Bài trước">
+          <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
+        </button>
+        <button class="music-btn music-btn-play" id="mp-play" title="Phát / Dừng">
+          <svg id="mp-play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </button>
+        <button class="music-btn" id="mp-next" title="Bài tiếp">
+          <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+        </button>
+        <button class="music-btn" id="mp-shuffle" title="Ngẫu nhiên" style="margin-left:.5rem">
+          <svg viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+        </button>
+        <button class="music-btn" id="mp-loop" title="Lặp lại">
+          <svg viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+        </button>
+      </div>
+      <!-- Volume -->
+      <div class="music-volume-row">
+        <span class="music-vol-icon">
+          <svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path id="mp-vol-wave" d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        </span>
+        <input type="range" class="music-vol-slider" id="mp-vol" min="0" max="1" step="0.02" value="0.8">
+      </div>
+      <!-- Track list -->
+      <div class="music-tracklist" id="mp-tracklist"></div>
+    </div>
+  </div>
+</section>
+
+
 <!-- CONTACT -->
 <section id="contact">
   <div class="reveal">
-    <div class="divider"><span class="divider-text">05 — Liên Hệ</span></div>
+    <div class="divider"><span class="divider-text">06 — Liên Hệ</span></div>
     <div class="section-title shimmer-text">Cùng <em>hợp tác</em> nào!</div>
     <p class="contact-desc">
       Bạn có dự án thú vị trong đầu? Tôi luôn sẵn sàng lắng nghe và khám phá những cơ hội mới. Đừng ngại liên hệ!
@@ -1345,7 +1608,7 @@ window.addEventListener('scroll', () => {
 });
 
 // ── TYPING ──
-const phrases = ['Full-Stack Developer','UI/UX Enthusiast','Problem Solver','Open Source Contributor'];
+const phrases = ['Full-Stack Developer ','UI/UX Enthusiast ','Problem Solver ','Open Source Contributor '];
 let pi = 0, ci = 0, del = false, txt = '';
 const el = document.getElementById('typed-text');
 function type() {
@@ -1402,6 +1665,49 @@ document.querySelectorAll('.project-card').forEach(card => {
   });
 });
 
+// ── FLIP CARD ──
+const flipCard = document.getElementById('flipCard');
+if (flipCard) {
+  const BURST_COLORS = ['#c9a84c','#e8c97a','#4a90d9','#ffffff','#ffd97a'];
+
+  function spawnBurst(card) {
+    const rect = card.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    for (let i = 0; i < 18; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'flip-burst';
+      const angle = (i / 18) * Math.PI * 2;
+      const dist = 50 + Math.random() * 80;
+      dot.style.cssText = `
+        left:${cx}px; top:${cy}px;
+        background:${BURST_COLORS[Math.floor(Math.random()*BURST_COLORS.length)]};
+        --bx:${Math.cos(angle)*dist}px;
+        --by:${Math.sin(angle)*dist}px;
+        animation-delay:${Math.random()*0.15}s;
+        position:fixed;
+      `;
+      document.body.appendChild(dot);
+      setTimeout(() => dot.remove(), 900);
+    }
+  }
+
+  flipCard.addEventListener('click', () => {
+    const wasFlipped = flipCard.classList.contains('flipped');
+    flipCard.classList.toggle('flipped');
+    spawnBurst(flipCard);
+
+    // On first flip: subtle glow pulse on the frame
+    if (!wasFlipped) {
+      const frame = flipCard.closest('.about-img-frame');
+      if (frame) {
+        frame.style.boxShadow = '0 0 40px rgba(201,168,76,.25), 0 0 80px rgba(201,168,76,.1)';
+        setTimeout(() => { frame.style.boxShadow = ''; }, 1000);
+      }
+    }
+  });
+}
+
 // ── GLITCH on hero name hover ──
 const heroName = document.querySelector('.hero-name');
 if (heroName) {
@@ -1415,5 +1721,1094 @@ if (heroName) {
   });
 }
 </script>
+
+<!-- ── PIXEL DOG ── -->
+<style>
+#pixel-dog {
+  position: fixed;
+  z-index: 9998;
+  pointer-events: auto;
+  cursor: pointer;
+  image-rendering: pixelated;
+  transition: transform 0.1s;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+}
+#pixel-dog canvas {
+  display: block;
+}
+#dog-tooltip {
+  position: fixed;
+  z-index: 9999;
+  background: rgba(8,11,18,0.92);
+  border: 1px solid rgba(201,168,76,0.4);
+  color: #c9a84c;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  border-radius: 3px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  white-space: nowrap;
+}
+</style>
+
+<div id="pixel-dog"><canvas id="dog-canvas" width="64" height="64"></canvas></div>
+<div id="dog-tooltip">Click anywhere to call me! 🐾</div>
+
+<script>
+(function() {
+  // ── PIXEL ART DOG SPRITES (64x64, drawn on canvas) ──
+  // Each frame is a function that draws on ctx
+  const C = document.getElementById('dog-canvas');
+  const X = C.getContext('2d');
+  C.width = 64; C.height = 64;
+
+  // Color palette
+  const P = {
+    body:  '#c8a06e', // tan
+    dark:  '#7a5230', // dark brown
+    light: '#f0d4a0', // light tan
+    nose:  '#2a1a0a',
+    eye:   '#1a0a00',
+    tongue:'#e05060',
+    collar:'#c9a84c',
+    paw:   '#c8a06e',
+    shadow:'rgba(0,0,0,0.18)',
+    bg:    'transparent',
+  };
+
+  function clear() { X.clearRect(0,0,64,64); }
+
+  function px(x,y,c,w=4,h=4) {
+    X.fillStyle=c; X.fillRect(x,y,w,h);
+  }
+
+  // ── DRAW FRAMES ──
+
+  // WALK frame 1 (legs forward)
+  function drawWalk1(flip) {
+    clear();
+    X.save();
+    if(flip) { X.translate(64,0); X.scale(-1,1); }
+    // shadow
+    X.fillStyle=P.shadow; X.beginPath(); X.ellipse(32,58,18,5,0,0,Math.PI*2); X.fill();
+    // tail
+    X.fillStyle=P.body;
+    px(50,28,P.body,6,6); px(54,22,P.light,6,6); px(56,16,P.light,4,4);
+    // body
+    px(14,30,P.body,32,16);
+    px(18,26,P.body,24,8);
+    // belly
+    px(18,42,P.light,24,4);
+    // back legs
+    px(14,44,P.dark,8,4); px(12,48,P.dark,8,8);
+    px(22,44,P.body,8,4); px(22,52,P.dark,8,4);
+    // front legs
+    px(34,44,P.body,8,4); px(36,52,P.dark,8,4);
+    px(44,44,P.dark,8,4); px(46,48,P.dark,8,8);
+    // collar
+    px(24,30,P.collar,16,4);
+    // head
+    px(8,18,P.body,24,20);
+    // snout
+    px(4,24,P.light,12,10);
+    // ear
+    px(8,14,P.dark,10,10); px(26,14,P.dark,8,8);
+    // eye
+    px(14,20,P.eye,4,4); px(18,18,P.light,2,2);
+    // nose
+    px(4,22,P.nose,6,4);
+    // mouth
+    px(6,30,P.dark,4,2); px(10,30,P.dark,4,2);
+    X.restore();
+  }
+
+  // WALK frame 2 (legs back)
+  function drawWalk2(flip) {
+    clear();
+    X.save();
+    if(flip) { X.translate(64,0); X.scale(-1,1); }
+    // shadow
+    X.fillStyle=P.shadow; X.beginPath(); X.ellipse(32,58,18,5,0,0,Math.PI*2); X.fill();
+    // tail up
+    px(50,24,P.body,6,6); px(52,18,P.light,6,6); px(54,12,P.light,6,4);
+    // body
+    px(14,30,P.body,32,16);
+    px(18,26,P.body,24,8);
+    px(18,42,P.light,24,4);
+    // back legs swapped
+    px(14,44,P.body,8,4); px(14,52,P.dark,8,4);
+    px(22,44,P.dark,8,4); px(20,48,P.dark,8,8);
+    // front legs swapped
+    px(34,44,P.dark,8,4); px(32,48,P.dark,8,8);
+    px(44,44,P.body,8,4); px(44,52,P.dark,8,4);
+    // collar
+    px(24,30,P.collar,16,4);
+    // head (slight bob up)
+    px(8,16,P.body,24,20);
+    px(4,22,P.light,12,10);
+    px(8,12,P.dark,10,10); px(26,12,P.dark,8,8);
+    px(14,18,P.eye,4,4); px(18,16,P.light,2,2);
+    px(4,20,P.nose,6,4);
+    px(6,28,P.dark,4,2); px(10,28,P.dark,4,2);
+    X.restore();
+  }
+
+  // SIT frame
+  function drawSit() {
+    clear();
+    // shadow
+    X.fillStyle=P.shadow; X.beginPath(); X.ellipse(32,60,16,4,0,0,Math.PI*2); X.fill();
+    // tail curled
+    px(48,36,P.body,6,6); px(50,42,P.light,6,6); px(48,48,P.body,6,4);
+    // haunches
+    px(12,40,P.body,18,16); px(34,40,P.body,14,16);
+    // body upper
+    px(16,26,P.body,28,18);
+    px(18,22,P.body,22,8);
+    // belly
+    px(20,42,P.light,16,4);
+    // front legs sitting straight
+    px(18,44,P.body,8,12); px(18,54,P.dark,8,4);
+    px(30,44,P.body,8,12); px(30,54,P.dark,8,4);
+    // collar
+    px(22,28,P.collar,16,4);
+    // head
+    px(10,10,P.body,24,22);
+    // snout
+    px(6,18,P.light,12,10);
+    // ears up when sitting
+    px(10,6,P.dark,10,10); px(26,6,P.dark,8,8);
+    // eye
+    px(16,14,P.eye,4,4); px(20,12,P.light,2,2);
+    // nose
+    px(6,16,P.nose,6,4);
+    // happy mouth
+    px(8,24,P.dark,4,2); px(12,26,P.dark,4,2); px(16,24,P.dark,4,2);
+    // tongue
+    px(12,26,P.tongue,6,4);
+  }
+
+  // LIE DOWN frame
+  function drawLie() {
+    clear();
+    // shadow
+    X.fillStyle=P.shadow; X.beginPath(); X.ellipse(32,58,24,5,0,0,Math.PI*2); X.fill();
+    // tail flat
+    px(52,44,P.body,8,4); px(58,44,P.light,6,4);
+    // body lying flat
+    px(10,40,P.body,44,14);
+    px(14,36,P.body,36,8);
+    // belly
+    px(16,50,P.light,28,4);
+    // paws flat
+    px(10,52,P.dark,10,4); px(10,48,P.body,10,6);
+    px(24,52,P.dark,10,4); px(24,48,P.body,10,6);
+    px(38,48,P.body,10,6); px(38,52,P.dark,10,4);
+    // collar
+    px(22,38,P.collar,16,4);
+    // head resting (lower)
+    px(4,30,P.body,22,18);
+    // snout
+    px(2,36,P.light,12,10);
+    // ear flopped
+    px(6,26,P.dark,12,8); px(18,26,P.dark,8,6);
+    // sleepy eye
+    px(10,32,P.dark,6,2); // closed eye line
+    // nose
+    px(2,34,P.nose,6,4);
+    // zzz
+    X.fillStyle='rgba(201,168,76,0.7)';
+    X.font='bold 10px monospace';
+    X.fillText('z',38,28);
+    X.fillStyle='rgba(201,168,76,0.5)';
+    X.font='bold 8px monospace';
+    X.fillText('z',44,22);
+    X.fillStyle='rgba(201,168,76,0.3)';
+    X.font='bold 6px monospace';
+    X.fillText('z',49,17);
+  }
+
+  // RUN frame 1 (stretched)
+  function drawRun1(flip) {
+    clear();
+    X.save();
+    if(flip) { X.translate(64,0); X.scale(-1,1); }
+    X.fillStyle=P.shadow; X.beginPath(); X.ellipse(32,60,20,4,0,0,Math.PI*2); X.fill();
+    // tail streaming back
+    px(48,22,P.body,8,4); px(54,20,P.light,8,4); px(60,18,P.light,4,2);
+    // body stretched
+    px(10,28,P.body,40,14);
+    px(14,24,P.body,32,8);
+    px(14,38,P.light,28,4);
+    // legs extended
+    px(10,42,P.dark,8,10); px(10,52,P.dark,10,4);
+    px(22,44,P.body,8,6); px(22,50,P.dark,8,4);
+    px(34,44,P.body,8,6); px(34,50,P.dark,8,4);
+    px(46,42,P.dark,8,10); px(46,52,P.dark,10,4);
+    // collar
+    px(22,28,P.collar,16,4);
+    // head forward, ears back
+    px(6,14,P.body,22,20);
+    px(2,20,P.light,12,10);
+    px(6,10,P.dark,8,8); px(18,12,P.dark,6,6);
+    px(10,16,P.eye,4,4); px(14,14,P.light,2,2);
+    px(2,18,P.nose,6,4);
+    // tongue out while running
+    px(6,28,P.tongue,8,6);
+    X.restore();
+  }
+
+  // RUN frame 2 (gathered)
+  function drawRun2(flip) {
+    clear();
+    X.save();
+    if(flip) { X.translate(64,0); X.scale(-1,1); }
+    X.fillStyle=P.shadow; X.beginPath(); X.ellipse(32,60,14,4,0,0,Math.PI*2); X.fill();
+    // tail up high
+    px(46,18,P.body,6,6); px(48,12,P.light,6,6); px(50,6,P.light,4,4);
+    // body hunched/gathered
+    px(14,30,P.body,32,14);
+    px(18,24,P.body,22,10);
+    px(18,40,P.light,22,4);
+    // legs gathered under
+    px(14,44,P.dark,8,10); px(12,54,P.dark,10,4);
+    px(24,44,P.body,8,8); px(22,52,P.dark,8,4);
+    px(34,44,P.body,8,8); px(34,52,P.dark,8,4);
+    px(44,44,P.dark,8,10); px(44,54,P.dark,10,4);
+    // collar
+    px(22,30,P.collar,14,4);
+    // head
+    px(8,16,P.body,22,18);
+    px(4,22,P.light,12,10);
+    px(8,12,P.dark,8,8); px(22,14,P.dark,6,6);
+    px(12,18,P.eye,4,4); px(16,16,P.light,2,2);
+    px(4,20,P.nose,6,4);
+    px(8,28,P.tongue,8,6);
+    X.restore();
+  }
+
+  // SNIFF frame
+  function drawSniff(flip) {
+    clear();
+    X.save();
+    if(flip) { X.translate(64,0); X.scale(-1,1); }
+    X.fillStyle=P.shadow; X.beginPath(); X.ellipse(30,60,16,4,0,0,Math.PI*2); X.fill();
+    // tail up curious
+    px(48,28,P.body,6,6); px(52,22,P.light,6,8); px(54,14,P.light,4,8);
+    // body
+    px(12,30,P.body,32,16); px(16,26,P.body,24,8); px(16,42,P.light,24,4);
+    // back legs
+    px(12,44,P.body,8,10); px(12,54,P.dark,8,4);
+    px(22,44,P.dark,8,10); px(22,54,P.dark,8,4);
+    // front legs (one raised sniffing pose)
+    px(34,44,P.body,8,10); px(34,54,P.dark,8,4);
+    px(44,38,P.dark,8,8); // raised paw
+    // collar
+    px(22,30,P.collar,16,4);
+    // head down sniffing
+    px(6,26,P.body,22,20);
+    px(2,30,P.light,14,12);
+    px(6,22,P.dark,10,8); px(20,22,P.dark,8,8);
+    px(10,28,P.eye,4,4); px(14,26,P.light,2,2);
+    px(2,30,P.nose,8,6);
+    // sniff dots
+    X.fillStyle='rgba(201,168,76,0.5)';
+    X.font='8px monospace'; X.fillText('· · ·',2,56);
+    X.restore();
+  }
+
+  // ══════════════════════════════════════════
+  //  🐕  REALISTIC DOG SOUND ENGINE
+  // ══════════════════════════════════════════
+  let audioCtx = null;
+  let soundEnabled = false;
+  let masterGain = null;
+
+  function getCtx() {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      masterGain = audioCtx.createGain();
+      masterGain.gain.value = 0.82;
+      masterGain.connect(audioCtx.destination);
+    }
+    return audioCtx;
+  }
+
+  // White-noise buffer helper
+  function makeNoise(ctx, dur) {
+    const len = Math.floor(ctx.sampleRate * dur);
+    const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+    return buf;
+  }
+
+  // Simple gain envelope helper: returns a connected GainNode
+  function envelope(ctx, dest, peak, atk, dec, sus, rel, startTime) {
+    const g = ctx.createGain();
+    g.connect(dest);
+    g.gain.setValueAtTime(0, startTime);
+    g.gain.linearRampToValueAtTime(peak, startTime + atk);
+    g.gain.linearRampToValueAtTime(peak * sus, startTime + atk + dec);
+    g.gain.setValueAtTime(peak * sus, startTime + atk + dec);
+    g.gain.exponentialRampToValueAtTime(0.0001, startTime + atk + dec + rel);
+    return g;
+  }
+
+  // ── SINGLE BARK SYLLABLE ──
+  // type: 'woof' | 'yip' | 'growl-bark'
+  function singleBark(ctx, dest, startTime, type = 'woof') {
+    const sr = ctx.sampleRate;
+    const dur = type === 'yip' ? 0.12 : 0.22;
+
+    // === TONAL BODY (voiced glottal pulse) ===
+    const osc1 = ctx.createOscillator();
+    const osc2 = ctx.createOscillator();
+    osc1.type = 'sawtooth';
+    osc2.type = 'square';
+
+    if (type === 'woof') {
+      osc1.frequency.setValueAtTime(220, startTime);
+      osc1.frequency.exponentialRampToValueAtTime(110, startTime + dur);
+      osc2.frequency.setValueAtTime(180, startTime);
+      osc2.frequency.exponentialRampToValueAtTime(90, startTime + dur);
+    } else if (type === 'yip') {
+      osc1.frequency.setValueAtTime(600, startTime);
+      osc1.frequency.exponentialRampToValueAtTime(350, startTime + dur);
+      osc2.frequency.setValueAtTime(500, startTime);
+      osc2.frequency.exponentialRampToValueAtTime(300, startTime + dur);
+    } else { // growl-bark
+      osc1.frequency.setValueAtTime(140, startTime);
+      osc1.frequency.exponentialRampToValueAtTime(80, startTime + dur);
+      osc2.frequency.setValueAtTime(120, startTime);
+      osc2.frequency.exponentialRampToValueAtTime(60, startTime + dur);
+    }
+
+    // Formant filter 1 (chest resonance ~400 Hz)
+    const f1 = ctx.createBiquadFilter();
+    f1.type = 'bandpass';
+    f1.frequency.value = type === 'yip' ? 800 : 420;
+    f1.Q.value = 2.5;
+
+    // Formant filter 2 (nasal ~1200 Hz)
+    const f2 = ctx.createBiquadFilter();
+    f2.type = 'bandpass';
+    f2.frequency.value = type === 'yip' ? 1800 : 1100;
+    f2.Q.value = 3;
+
+    const gTone = envelope(ctx, dest, type === 'woof' ? 0.38 : (type === 'yip' ? 0.25 : 0.42),
+      0.008, 0.04, 0.6, dur - 0.05, startTime);
+
+    osc1.connect(f1); osc2.connect(f1);
+    osc1.connect(f2); osc2.connect(f2);
+    f1.connect(gTone); f2.connect(gTone);
+    osc1.start(startTime); osc1.stop(startTime + dur + 0.05);
+    osc2.start(startTime); osc2.stop(startTime + dur + 0.05);
+
+    // === NOISE BURST (breath / consonant attack) ===
+    const nBuf = makeNoise(ctx, dur + 0.05);
+    const nSrc = ctx.createBufferSource();
+    nSrc.buffer = nBuf;
+
+    const nBp = ctx.createBiquadFilter();
+    nBp.type = 'bandpass';
+    nBp.frequency.value = type === 'yip' ? 2200 : 900;
+    nBp.Q.value = 1.2;
+
+    const gNoise = envelope(ctx, dest, type === 'woof' ? 0.18 : 0.12,
+      0.003, 0.02, 0.3, dur * 0.6, startTime);
+
+    nSrc.connect(nBp); nBp.connect(gNoise);
+    nSrc.start(startTime); nSrc.stop(startTime + dur + 0.1);
+
+    return startTime + dur + 0.06; // returns end time
+  }
+
+  // ── BARK TYPES ──
+
+  // Excited run-toward bark: 2-3 rapid woofs
+  function playBarkExcited() {
+    if (!soundEnabled) return;
+    const ctx = getCtx();
+    let t = ctx.currentTime + 0.02;
+    const count = 2 + Math.floor(Math.random() * 2);
+    for (let i = 0; i < count; i++) {
+      t = singleBark(ctx, masterGain, t, 'woof') + 0.04;
+    }
+  }
+
+  // Happy petted bark: short yip then wag whimper
+  function playBarkHappy() {
+    if (!soundEnabled) return;
+    const ctx = getCtx();
+    let t = ctx.currentTime + 0.02;
+    t = singleBark(ctx, masterGain, t, 'yip') + 0.05;
+    singleBark(ctx, masterGain, t, 'yip');
+    // Happy whimper after
+    setTimeout(() => playWhimper(), 350);
+  }
+
+  // Single alert bark (random woof/yip)
+  function playBarkAlert() {
+    if (!soundEnabled) return;
+    const ctx = getCtx();
+    singleBark(ctx, masterGain, ctx.currentTime + 0.02,
+      Math.random() > 0.4 ? 'woof' : 'yip');
+  }
+
+  // ── WHIMPER / WHINE ──
+  // Layered sine with vibrato — sounds like a happy dog whining
+  function playWhimper() {
+    if (!soundEnabled) return;
+    const ctx = getCtx();
+    const now = ctx.currentTime;
+
+    // LFO vibrato
+    const lfo = ctx.createOscillator();
+    lfo.frequency.value = 7 + Math.random() * 3;
+    const lfoGain = ctx.createGain();
+    lfoGain.gain.value = 25;
+    lfo.connect(lfoGain);
+
+    const carrier = ctx.createOscillator();
+    carrier.type = 'sine';
+    carrier.frequency.setValueAtTime(900 + Math.random() * 100, now);
+    carrier.frequency.linearRampToValueAtTime(650, now + 0.35);
+    lfoGain.connect(carrier.frequency); // modulate pitch
+
+    const g = envelope(ctx, masterGain, 0.13, 0.02, 0.05, 0.7, 0.25, now);
+    carrier.connect(g);
+
+    lfo.start(now); carrier.start(now);
+    lfo.stop(now + 0.5); carrier.stop(now + 0.5);
+
+    // Optionally chain a second falling whine
+    if (Math.random() > 0.4) {
+      const now2 = now + 0.42;
+      const c2 = ctx.createOscillator();
+      c2.type = 'sine';
+      c2.frequency.setValueAtTime(780, now2);
+      c2.frequency.exponentialRampToValueAtTime(400, now2 + 0.3);
+      const g2 = envelope(ctx, masterGain, 0.09, 0.01, 0.03, 0.6, 0.25, now2);
+      c2.connect(g2); c2.start(now2); c2.stop(now2 + 0.38);
+    }
+  }
+
+  // ── PANTING (breathing when running) ──
+  let pantInterval = null;
+  function startPanting() {
+    if (!soundEnabled || pantInterval) return;
+    pantInterval = setInterval(() => {
+      if (!soundEnabled) { stopPanting(); return; }
+      _onePant();
+    }, 280 + Math.random() * 60);
+  }
+  function stopPanting() {
+    clearInterval(pantInterval);
+    pantInterval = null;
+  }
+  function _onePant() {
+    const ctx = getCtx();
+    const now = ctx.currentTime;
+    // Inhale: rising noise burst, HP filtered
+    const buf = makeNoise(ctx, 0.09);
+    const src = ctx.createBufferSource(); src.buffer = buf;
+    const hp = ctx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 1800;
+    const bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 3000; bp.Q.value = 1;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0, now);
+    g.gain.linearRampToValueAtTime(0.08, now + 0.025);
+    g.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+    src.connect(hp); hp.connect(bp); bp.connect(g); g.connect(masterGain);
+    src.start(now); src.stop(now + 0.1);
+
+    // Exhale (deeper, slightly longer)
+    const buf2 = makeNoise(ctx, 0.12);
+    const src2 = ctx.createBufferSource(); src2.buffer = buf2;
+    const hp2 = ctx.createBiquadFilter(); hp2.type = 'highpass'; hp2.frequency.value = 1000;
+    const g2 = ctx.createGain();
+    g2.gain.setValueAtTime(0, now + 0.10);
+    g2.gain.linearRampToValueAtTime(0.06, now + 0.13);
+    g2.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+    src2.connect(hp2); hp2.connect(g2); g2.connect(masterGain);
+    src2.start(now + 0.10); src2.stop(now + 0.24);
+  }
+
+  // ── SNIFFING ──
+  let sniffCooldown = false;
+  function playSniff() {
+    if (!soundEnabled || sniffCooldown) return;
+    sniffCooldown = true;
+    const ctx = getCtx();
+    const now = ctx.currentTime;
+
+    // 3 rapid nasal inhale puffs
+    for (let i = 0; i < 3; i++) {
+      const t = now + i * 0.11;
+      const buf = makeNoise(ctx, 0.07);
+      const src = ctx.createBufferSource(); src.buffer = buf;
+      const hp = ctx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 2500 + i * 300;
+      const peak = ctx.createBiquadFilter(); peak.type = 'peaking'; peak.frequency.value = 4000; peak.gain.value = 8;
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(0.07 - i * 0.01, t + 0.018);
+      g.gain.exponentialRampToValueAtTime(0.001, t + 0.07);
+      src.connect(hp); hp.connect(peak); peak.connect(g); g.connect(masterGain);
+      src.start(t); src.stop(t + 0.09);
+    }
+    setTimeout(() => { sniffCooldown = false; }, 700 + Math.random() * 500);
+  }
+
+  // ── YAWN (when lying down) ──
+  function playYawn() {
+    if (!soundEnabled) return;
+    const ctx = getCtx();
+    const now = ctx.currentTime;
+
+    // Voiced yawn: pitch rises then falls, with throat noise
+    const osc = ctx.createOscillator();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(180, now);
+    osc.frequency.linearRampToValueAtTime(380, now + 0.6);
+    osc.frequency.exponentialRampToValueAtTime(120, now + 1.4);
+
+    const formant = ctx.createBiquadFilter();
+    formant.type = 'bandpass';
+    formant.frequency.setValueAtTime(400, now);
+    formant.frequency.linearRampToValueAtTime(900, now + 0.6);
+    formant.frequency.exponentialRampToValueAtTime(300, now + 1.4);
+    formant.Q.value = 2;
+
+    const gOsc = envelope(ctx, masterGain, 0.22, 0.15, 0.2, 0.85, 0.5, now);
+    osc.connect(formant); formant.connect(gOsc);
+    osc.start(now); osc.stop(now + 1.6);
+
+    // Breath layer
+    const nBuf = makeNoise(ctx, 1.5);
+    const nSrc = ctx.createBufferSource(); nSrc.buffer = nBuf;
+    const nHp = ctx.createBiquadFilter(); nHp.type = 'highpass'; nHp.frequency.value = 600;
+    const gN = envelope(ctx, masterGain, 0.07, 0.2, 0.3, 0.5, 0.5, now);
+    nSrc.connect(nHp); nHp.connect(gN);
+    nSrc.start(now); nSrc.stop(now + 1.5);
+
+    // Little smack at end
+    setTimeout(() => {
+      if (!soundEnabled) return;
+      const c2 = getCtx();
+      const t2 = c2.currentTime;
+      const o2 = c2.createOscillator(); o2.type='sine';
+      o2.frequency.setValueAtTime(500,t2); o2.frequency.exponentialRampToValueAtTime(200,t2+0.08);
+      const g2 = c2.createGain(); g2.gain.setValueAtTime(0.06,t2); g2.gain.exponentialRampToValueAtTime(0.001,t2+0.1);
+      o2.connect(g2); g2.connect(masterGain); o2.start(t2); o2.stop(t2+0.12);
+    }, 1350);
+  }
+
+  // ── PAW STEPS ──
+  let lastStepTime = 0;
+  function playStep(isRun = false) {
+    if (!soundEnabled) return;
+    const ctx = getCtx();
+    const now = ctx.currentTime;
+    const gap = isRun ? 0.13 : 0.22;
+    if (now - lastStepTime < gap) return;
+    lastStepTime = now;
+
+    // Soft thud: sine click + filtered noise
+    const osc = ctx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(isRun ? 220 : 160, now);
+    osc.frequency.exponentialRampToValueAtTime(isRun ? 80 : 55, now + 0.06);
+    const gO = ctx.createGain();
+    gO.gain.setValueAtTime(isRun ? 0.14 : 0.09, now);
+    gO.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+    osc.connect(gO); gO.connect(masterGain);
+    osc.start(now); osc.stop(now + 0.08);
+
+    // Scuff noise
+    const nBuf = makeNoise(ctx, 0.05);
+    const nSrc = ctx.createBufferSource(); nSrc.buffer = nBuf;
+    const nBp = ctx.createBiquadFilter(); nBp.type='bandpass'; nBp.frequency.value=800; nBp.Q.value=1;
+    const gN = ctx.createGain();
+    gN.gain.setValueAtTime(isRun ? 0.06 : 0.04, now);
+    gN.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+    nSrc.connect(nBp); nBp.connect(gN); gN.connect(masterGain);
+    nSrc.start(now); nSrc.stop(now + 0.06);
+  }
+
+  // ── RANDOM IDLE BARK (occasional spontaneous bark) ──
+  let idleBarkTimer = 0;
+  function tickIdleBark() {
+    idleBarkTimer++;
+    if (idleBarkTimer > 400 + Math.floor(Math.random() * 600)) {
+      idleBarkTimer = 0;
+      if (soundEnabled && (state === 'sit' || state === 'idle')) {
+        // 40% chance of spontaneous bark
+        if (Math.random() < 0.4) playBarkAlert();
+      }
+    }
+  }
+
+  // ── SOUND TOGGLE BUTTON ──
+  const soundBtn = document.createElement('button');
+  soundBtn.id = 'sound-toggle';
+  soundBtn.title = 'Bật/tắt âm thanh chó';
+  soundBtn.innerHTML = '🔊';
+  soundBtn.style.cssText = `
+    position: fixed; bottom: 1.2rem; left: 1.2rem;
+    z-index: 9999; background: rgba(14,19,32,0.88);
+    border: 1px solid rgba(201,168,76,0.38); border-radius: 50%;
+    width: 40px; height: 40px; font-size: 1.05rem; cursor: pointer;
+    color: var(--gold); transition: all .3s; line-height: 1;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 12px rgba(201,168,76,0.18);
+  `;
+  let soundMuted = false;
+  soundBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    soundMuted = !soundMuted;
+    soundEnabled = !soundMuted;
+    soundBtn.innerHTML = soundMuted ? '🔇' : '🔊';
+    soundBtn.style.opacity = soundMuted ? '0.5' : '1';
+    if (!soundMuted) {
+      const ctx = getCtx();
+      if (ctx.state === 'suspended') ctx.resume();
+    } else {
+      stopPanting();
+    }
+  });
+  document.body.appendChild(soundBtn);
+
+  // Unlock audio on first interaction
+  document.addEventListener('click', function unlockAudio() {
+    soundEnabled = true;
+    const ctx = getCtx();
+    if (ctx.state === 'suspended') ctx.resume();
+  }, { once: true });
+
+  // ── STATE MACHINE ──
+  const DOG = document.getElementById('pixel-dog');
+  const TIP = document.getElementById('dog-tooltip');
+
+  let state = 'idle'; // idle, walk, run, sit, lie, sniff
+  let x = window.innerWidth * 0.7;
+  let y = window.innerHeight * 0.8;
+  let targetX = x, targetY = y;
+  let facing = 1; // 1=right, -1=left
+  let frame = 0;
+  let frameTick = 0;
+  // Kích thước chó * SCALE
+  const SCALE = 2;
+  const SIZE = 64 * SCALE;
+
+  // Idle behaviour timers
+  let idleTimer = 0;
+  let idleAction = null;
+  let idleActionTimer = 0;
+  let userClicked = false;
+  let clickTarget = null;
+
+  // Weighted actions: [action, weight] — lie is rare (weight 1) but lasts much longer
+  const IDLE_ACTIONS_WEIGHTED = [
+    ['sit',       3],
+    ['sniff',     3],
+    ['walk_idle', 4],
+    ['lie',       1],  // ngủ: ít xuất hiện nhưng kéo dài lâu
+  ];
+  function pickIdleAction() {
+    const total = IDLE_ACTIONS_WEIGHTED.reduce((s,[,w])=>s+w,0);
+    let r = Math.random()*total;
+    for(const [a,w] of IDLE_ACTIONS_WEIGHTED) { r-=w; if(r<=0) return a; }
+    return 'sit';
+  }
+  let walkIdleDir = 0;
+  let walkIdleFrames = 0;
+
+  function setPos(nx, ny) {
+    // Keep dog fully on screen
+    nx = Math.max(0, Math.min(window.innerWidth - SIZE, nx));
+    ny = Math.max(0, Math.min(window.innerHeight - SIZE, ny));
+    x = nx; y = ny;
+    DOG.style.left = x + 'px';
+    DOG.style.top  = y + 'px';
+  }
+
+  DOG.style.position = 'fixed';
+  DOG.style.width  = SIZE + 'px';
+  DOG.style.height = SIZE + 'px';
+  DOG.style.imageRendering = 'pixelated';
+  C.style.width  = SIZE + 'px';
+  C.style.height = SIZE + 'px';
+  setPos(x, y);
+
+  // Click anywhere → run to that spot
+  document.addEventListener('click', function(e) {
+    // Don't intercept clicks on links/buttons
+    if(e.target.closest('a,button')) return;
+    // Check if clicked on dog itself
+    if(e.target === C || e.target === DOG) {
+      petDog(); return;
+    }
+    const cx = e.clientX - SIZE/2;
+    const cy = e.clientY - SIZE/2;
+    targetX = Math.max(0, Math.min(window.innerWidth - SIZE, cx));
+    targetY = Math.max(0, Math.min(window.innerHeight - SIZE, cy));
+    userClicked = true;
+    idleAction = null;
+    state = 'run';
+    playBarkExcited();
+
+    // Show tooltip
+    TIP.style.left = (e.clientX + 10) + 'px';
+    TIP.style.top  = (e.clientY - 28) + 'px';
+    TIP.style.opacity = '1';
+    TIP.textContent = '🐾 Coming!';
+    setTimeout(()=>{ TIP.style.opacity='0'; }, 1200);
+  });
+
+  // Pet the dog → wag tail!
+  function petDog() {
+    state = 'wag';
+    idleActionTimer = 140 + Math.floor(Math.random()*60);
+    TIP.style.left = (x + SIZE/2 - 40) + 'px';
+    TIP.style.top  = (y - 30) + 'px';
+    TIP.style.opacity = '1';
+    // Happy sounds: excited yips + whimper
+    playBarkHappy();
+    const msgs = ['Woof! 🐾','*wag wag*','Good boy~','Pat pat!','Hehe ❤️', 'Kimochi ~'];
+    TIP.textContent = msgs[Math.floor(Math.random()*msgs.length)];
+    setTimeout(()=>{ TIP.style.opacity='0'; }, 1500);
+    // heart burst
+    for(let i=0;i<6;i++){
+      const h=document.createElement('div');
+      h.style.cssText=`position:fixed;left:${x+SIZE/2}px;top:${y+SIZE/3}px;font-size:${12+Math.random()*12}px;pointer-events:none;z-index:9999;animation:heartFloat 1s ease-out forwards;animation-delay:${i*0.1}s;`;
+      h.textContent='❤️';
+      document.body.appendChild(h);
+      setTimeout(()=>h.remove(),1200);
+    }
+  }
+
+  // Add heart float keyframe
+  const hStyle = document.createElement('style');
+  hStyle.textContent=`@keyframes heartFloat{0%{transform:translate(${-20+Math.random()*40}px,0) scale(0.5);opacity:1}100%{transform:translate(${-30+Math.random()*60}px,-70px) scale(1.2);opacity:0}}`;
+  document.head.appendChild(hStyle);
+
+  // ── ANIMATION LOOP ──
+  let lastTime = 0;
+  function animate(ts) {
+    requestAnimationFrame(animate);
+    const dt = Math.min(ts - lastTime, 50);
+    lastTime = ts;
+
+    frameTick += dt;
+    const WALK_FPS = 150, RUN_FPS = 80;
+
+    if(state === 'run') {
+      const dx = targetX - x, dy = targetY - y;
+      const dist = Math.hypot(dx, dy);
+      facing = dx >= 0 ? 1 : -1;
+      startPanting();
+      if(dist < 6) {
+        setPos(targetX, targetY);
+        stopPanting();
+        state = userClicked ? 'sit' : 'idle';
+        userClicked = false;
+        idleActionTimer = 60;
+        frame = 0;
+      } else {
+        const speed = Math.min(dist, 7);
+        setPos(x + (dx/dist)*speed, y + (dy/dist)*speed);
+        if(frameTick >= RUN_FPS) {
+          frameTick=0; frame=(frame+1)%2;
+          playStep(true);
+        }
+        facing===1 ? (frame===0?drawRun1(true):drawRun2(true))
+                   : (frame===0?drawRun1(false):drawRun2(false));
+      }
+    }
+
+    if(state === 'walk_idle') {
+      const dx = targetX - x, dy = targetY - y;
+      const dist = Math.hypot(dx, dy);
+      facing = dx >= 0 ? 1 : -1;
+      stopPanting();
+      if(dist < 4 || walkIdleFrames <= 0) {
+        state = 'idle'; idleActionTimer = 80 + Math.random()*80;
+      } else {
+        const speed = 1.5;
+        setPos(x + (dx/dist)*speed, y + (dy/dist)*speed);
+        walkIdleFrames--;
+        if(frameTick >= WALK_FPS) {
+          frameTick=0; frame=(frame+1)%2;
+          playStep(false);
+        }
+        facing===1?(frame===0?drawWalk1(true):drawWalk2(true))
+                  :(frame===0?drawWalk1(false):drawWalk2(false));
+      }
+    }
+
+    if(state === 'wag') {
+      // Rapid tail-wag using run frames (same as when running)
+      stopPanting();
+      if(frameTick >= 70) { frameTick=0; frame=(frame+1)%2; }
+      facing===1?(frame===0?drawRun1(true):drawRun2(true))
+                :(frame===0?drawRun1(false):drawRun2(false));
+      if(idleActionTimer-- <= 0) { state='idle'; idleActionTimer=60; }
+    }
+
+    if(state === 'sit') {
+      stopPanting();
+      drawSit();
+      tickIdleBark();
+      if(idleActionTimer-- <= 0) { state='idle'; idleActionTimer=60; }
+    }
+
+    if(state === 'lie') {
+      stopPanting();
+      drawLie();
+      if(idleActionTimer-- <= 0) { state='idle'; idleActionTimer=60; }
+    }
+
+    if(state === 'sniff') {
+      stopPanting();
+      if(frameTick >= 200) { frameTick=0; frame=(frame+1)%2; playSniff(); }
+      facing===1?drawSniff(true):drawSniff(false);
+      if(idleActionTimer-- <= 0) { state='idle'; idleActionTimer=60; }
+    }
+
+    if(state === 'idle') {
+      stopPanting();
+      // Standing still — show walk frame 0
+      facing===1?drawWalk1(true):drawWalk1(false);
+      idleTimer++;
+      if(idleTimer > 80 + Math.random()*120) {
+        idleTimer = 0;
+        const pick = pickIdleAction();
+        if(pick==='sit') { state='sit'; idleActionTimer=100+Math.random()*80; }
+        else if(pick==='lie') { state='lie'; idleActionTimer=350+Math.random()*250; setTimeout(playYawn, 400); } // ngủ lâu hơn + tiếng ngáp
+        else if(pick==='sniff') { state='sniff'; idleActionTimer=80+Math.random()*80; }
+        else if(pick==='walk_idle') {
+          // Wander to a random nearby spot
+          const wx = x + (Math.random()-0.5)*200;
+          const wy = y + (Math.random()-0.5)*150;
+          targetX = Math.max(0,Math.min(window.innerWidth-SIZE,wx));
+          targetY = Math.max(0,Math.min(window.innerHeight-SIZE,wy));
+          walkIdleFrames = 60 + Math.random()*80;
+          state = 'walk_idle';
+        }
+      }
+    }
+  }
+
+  // Start in sit
+  state = 'sit'; idleActionTimer = 80;
+  requestAnimationFrame(animate);
+
+  // Cursor hint on hover
+  DOG.addEventListener('mouseenter', ()=>{
+    TIP.style.left=(x+SIZE/2-30)+'px';
+    TIP.style.top=(y-30)+'px';
+    TIP.style.opacity='1';
+    TIP.textContent='Pet me! 🐾';
+  });
+  DOG.addEventListener('mouseleave',()=>{
+    TIP.style.opacity='0';
+  });
+
+  // Keep on screen on resize
+  window.addEventListener('resize',()=>{
+    setPos(x,y);
+  });
+
+})();
+</script>
+
+<script>
+
+// ── MUSIC PLAYER ──
+(function() {
+  // ============================================================
+  // DANH SÁCH BÀI HÁT — chỉnh sửa tại đây
+  // Thêm file mp3 vào thư mục /music và khai báo bên dưới.
+  // "title": tên hiển thị, "file": đường dẫn file mp3
+  // ============================================================
+  const TRACKS = [
+    { title: 'Giấc Mơ Trưa',  file: 'music/Giấc Mơ Trưa.mp3' },
+    { title: 'Buồn Thì Cứ Khóc Đi',  file: 'music/Buồn Thì Cứ Khóc Đi.mp3' },
+    { title: 'Không Sao Mà, Em Đây Rồi',  file: 'music/Không Sao Mà, Em Đây Rồi.mp3' },
+    { title: 'Nàng Thơ Xứ Huế',  file: 'music/Nàng Thơ Xứ Huế.mp3' },
+    { title: 'Xe Đạp',  file: 'music/Xe Đạp.mp3' },
+  ];
+  // ============================================================
+
+  if (!TRACKS.length) return;
+
+  const audio       = new Audio();
+  audio.volume      = 0.8;
+  let currentIdx    = 0;
+  let isPlaying     = false;
+  let isShuffle     = false;
+  let isLoop        = false;
+
+  const vinyl       = document.getElementById('vinyl');
+  const mpName      = document.getElementById('mp-name');
+  const mpFile      = document.getElementById('mp-file');
+  const mpFill      = document.getElementById('mp-fill');
+  const mpCur       = document.getElementById('mp-cur');
+  const mpDur       = document.getElementById('mp-dur');
+  const mpPlayIcon  = document.getElementById('mp-play-icon');
+  const mpVol       = document.getElementById('mp-vol');
+  const mpTracklist = document.getElementById('mp-tracklist');
+  const btnPlay     = document.getElementById('mp-play');
+  const btnPrev     = document.getElementById('mp-prev');
+  const btnNext     = document.getElementById('mp-next');
+  const btnShuffle  = document.getElementById('mp-shuffle');
+  const btnLoop     = document.getElementById('mp-loop');
+  const progressWrap= document.getElementById('mp-progress-wrap');
+
+  function fmtTime(s) {
+    if (isNaN(s)) return '0:00';
+    const m = Math.floor(s / 60);
+    const sec = Math.floor(s % 60);
+    return m + ':' + (sec < 10 ? '0' : '') + sec;
+  }
+
+  // Build tracklist
+  function buildList() {
+    mpTracklist.innerHTML = '';
+    TRACKS.forEach((t, i) => {
+      const item = document.createElement('div');
+      item.className = 'track-item' + (i === currentIdx ? ' active' : '');
+      item.dataset.idx = i;
+      item.innerHTML =
+        '<span class="track-num">' + (i + 1) + '</span>' +
+        '<span class="track-wave"><span></span><span></span><span></span></span>' +
+        '<span class="track-title">' + t.title + '</span>' +
+        '<span class="track-dur" id="tdur-' + i + '">—</span>';
+      item.addEventListener('click', () => loadTrack(i, true));
+      mpTracklist.appendChild(item);
+    });
+    // Pre-load durations
+    TRACKS.forEach((t, i) => {
+      const tmp = new Audio();
+      tmp.src = t.file;
+      tmp.addEventListener('loadedmetadata', () => {
+        const el = document.getElementById('tdur-' + i);
+        if (el) el.textContent = fmtTime(tmp.duration);
+      });
+    });
+  }
+
+  function updateActiveItem() {
+    document.querySelectorAll('.track-item').forEach((el, i) => {
+      el.classList.toggle('active', i === currentIdx);
+      el.classList.toggle('paused', i === currentIdx && !isPlaying);
+    });
+    // Scroll active into view
+    const active = mpTracklist.querySelector('.track-item.active');
+    if (active) active.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+
+  function setPlayIcon(playing) {
+    if (playing) {
+      mpPlayIcon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+    } else {
+      mpPlayIcon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
+    }
+    vinyl.classList.toggle('spinning', playing);
+  }
+
+  function loadTrack(idx, autoPlay) {
+    currentIdx = idx;
+    const t = TRACKS[idx];
+    audio.src = t.file;
+    mpName.textContent = t.title;
+    mpFile.textContent = t.file.split('/').pop();
+    mpFill.style.width = '0%';
+    mpCur.textContent = '0:00';
+    mpDur.textContent = '0:00';
+    updateActiveItem();
+    if (autoPlay) {
+      audio.play().then(() => { isPlaying = true; setPlayIcon(true); }).catch(() => {});
+    }
+  }
+
+  function togglePlay() {
+    if (!audio.src || audio.src === location.href) { loadTrack(0, true); return; }
+    if (isPlaying) {
+      audio.pause(); isPlaying = false; setPlayIcon(false);
+      document.querySelectorAll('.track-item.active').forEach(el => el.classList.add('paused'));
+    } else {
+      audio.play().then(() => { isPlaying = true; setPlayIcon(true);
+        document.querySelectorAll('.track-item.active').forEach(el => el.classList.remove('paused'));
+      }).catch(() => {});
+    }
+  }
+
+  function playNext() {
+    let idx;
+    if (isShuffle) {
+      do { idx = Math.floor(Math.random() * TRACKS.length); } while (idx === currentIdx && TRACKS.length > 1);
+    } else {
+      idx = (currentIdx + 1) % TRACKS.length;
+    }
+    loadTrack(idx, true);
+  }
+
+  function playPrev() {
+    if (audio.currentTime > 3) { audio.currentTime = 0; return; }
+    const idx = (currentIdx - 1 + TRACKS.length) % TRACKS.length;
+    loadTrack(idx, true);
+  }
+
+  btnPlay.addEventListener('click', togglePlay);
+  btnNext.addEventListener('click', playNext);
+  btnPrev.addEventListener('click', playPrev);
+
+  btnShuffle.addEventListener('click', () => {
+    isShuffle = !isShuffle;
+    btnShuffle.style.color = isShuffle ? 'var(--gold)' : '';
+  });
+  btnLoop.addEventListener('click', () => {
+    isLoop = !isLoop;
+    audio.loop = isLoop;
+    btnLoop.style.color = isLoop ? 'var(--gold)' : '';
+  });
+
+  audio.addEventListener('timeupdate', () => {
+    if (!audio.duration) return;
+    const pct = (audio.currentTime / audio.duration) * 100;
+    mpFill.style.width = pct + '%';
+    mpCur.textContent = fmtTime(audio.currentTime);
+  });
+  audio.addEventListener('loadedmetadata', () => {
+    mpDur.textContent = fmtTime(audio.duration);
+  });
+  audio.addEventListener('ended', () => {
+    if (!isLoop) { isPlaying = false; setPlayIcon(false); playNext(); }
+  });
+
+  // Click on progress bar to seek
+  progressWrap.addEventListener('click', e => {
+    if (!audio.duration) return;
+    const bar = progressWrap.querySelector('.music-progress-bar');
+    const rect = bar.getBoundingClientRect();
+    const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    audio.currentTime = pct * audio.duration;
+  });
+
+  mpVol.addEventListener('input', () => { audio.volume = parseFloat(mpVol.value); });
+
+  buildList();
+  // Load first track without auto-play
+  const t0 = TRACKS[0];
+  mpName.textContent = t0.title;
+  mpFile.textContent = t0.file.split('/').pop();
+})();
+
+</script>
+
 </body>
 </html>
