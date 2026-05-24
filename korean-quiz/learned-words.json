@@ -1,0 +1,5049 @@
+{
+    "words": [
+        {
+            "word": "우리",
+            "romanization": "uri",
+            "tier": 1,
+            "pos": "대명사",
+            "meaning_vi": "chúng tôi, chúng ta",
+            "learnedAt": "2026-03-04T08:44:49.522Z"
+        },
+        {
+            "word": "미안합니다",
+            "romanization": "mianhamnida",
+            "tier": 1,
+            "pos": "감탄사",
+            "meaning_vi": "xin lỗi",
+            "learnedAt": "2026-03-04T08:44:57.399Z"
+        },
+        {
+            "word": "가수",
+            "romanization": "gasu",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "ca sĩ",
+            "learnedAt": "2026-03-04T08:45:24.424Z"
+        },
+        {
+            "word": "가족",
+            "romanization": "gachok",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "gia đình",
+            "learnedAt": "2026-03-04T08:45:29.692Z"
+        },
+        {
+            "word": "감사하다",
+            "romanization": "gamsahada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "cảm ơn",
+            "learnedAt": "2026-03-04T08:48:35.698Z"
+        },
+        {
+            "word": "학교",
+            "romanization": "hakgyo",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "trường học",
+            "learnedAt": "2026-03-04T08:53:31.792Z"
+        },
+        {
+            "word": "선생님",
+            "romanization": "seonsaengnim",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "thầy\/cô giáo",
+            "learnedAt": "2026-03-05T03:31:56.316Z"
+        },
+        {
+            "word": "학생",
+            "romanization": "haksaeng",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "học sinh, sinh viên",
+            "learnedAt": "2026-03-05T03:32:01.767Z"
+        },
+        {
+            "word": "너",
+            "romanization": "neo",
+            "tier": 1,
+            "pos": "대명사",
+            "meaning_vi": "bạn (thân mật)",
+            "learnedAt": "2026-03-05T03:46:11.228Z"
+        },
+        {
+            "word": "그",
+            "romanization": "geu",
+            "tier": 1,
+            "pos": "대명사",
+            "meaning_vi": "anh ấy, ông ấy",
+            "learnedAt": "2026-03-05T03:46:41.087Z"
+        },
+        {
+            "word": "그녀",
+            "romanization": "geunyeo",
+            "tier": 1,
+            "pos": "대명사",
+            "meaning_vi": "cô ấy",
+            "learnedAt": "2026-03-05T03:46:48.795Z"
+        },
+        {
+            "word": "이것",
+            "romanization": "igeot",
+            "tier": 1,
+            "pos": "대명사",
+            "meaning_vi": "cái này",
+            "learnedAt": "2026-03-05T03:47:08.957Z"
+        },
+        {
+            "word": "그것",
+            "romanization": "geugeot",
+            "tier": 1,
+            "pos": "대명사",
+            "meaning_vi": "cái đó",
+            "learnedAt": "2026-03-05T03:47:10.748Z"
+        },
+        {
+            "word": "저것",
+            "romanization": "cheogeot",
+            "tier": 1,
+            "pos": "대명사",
+            "meaning_vi": "cái kia",
+            "learnedAt": "2026-03-05T03:47:12.899Z"
+        },
+        {
+            "word": "무엇",
+            "romanization": "mueot",
+            "tier": 1,
+            "pos": "대명사",
+            "meaning_vi": "cái gì",
+            "learnedAt": "2026-03-05T03:47:41.501Z"
+        },
+        {
+            "word": "여기",
+            "romanization": "yeogi",
+            "tier": 1,
+            "pos": "대명사",
+            "meaning_vi": "ở đây",
+            "learnedAt": "2026-03-06T03:00:31.359Z"
+        },
+        {
+            "word": "거기",
+            "romanization": "geogi",
+            "tier": 1,
+            "pos": "대명사",
+            "meaning_vi": "ở đó",
+            "learnedAt": "2026-03-06T03:00:43.164Z"
+        },
+        {
+            "word": "저기",
+            "romanization": "cheogi",
+            "tier": 1,
+            "pos": "대명사",
+            "meaning_vi": "ở kia",
+            "learnedAt": "2026-03-06T03:25:18.378Z"
+        },
+        {
+            "word": "나라",
+            "romanization": "nara",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "đất nước",
+            "learnedAt": "2026-03-09T03:04:47.195Z"
+        },
+        {
+            "word": "일본",
+            "romanization": "ilbon",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "Nhật Bản",
+            "learnedAt": "2026-03-09T03:06:10.414Z"
+        },
+        {
+            "word": "베트남",
+            "romanization": "bet'eunam",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "Việt Nam",
+            "learnedAt": "2026-03-09T03:06:20.709Z"
+        },
+        {
+            "word": "직업",
+            "romanization": "chigeop",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "nghề nghiệp",
+            "learnedAt": "2026-03-09T03:06:35.093Z"
+        },
+        {
+            "word": "직원",
+            "romanization": "chigwon",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "nhân viên",
+            "learnedAt": "2026-03-09T03:07:13.541Z"
+        },
+        {
+            "word": "의사",
+            "romanization": "uisa",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "bác sĩ",
+            "learnedAt": "2026-03-09T03:07:36.769Z"
+        },
+        {
+            "word": "이름",
+            "romanization": "ireum",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "tên",
+            "learnedAt": "2026-03-09T03:09:23.765Z"
+        },
+        {
+            "word": "명성",
+            "romanization": "myeongseong",
+            "tier": 3,
+            "pos": "명사",
+            "meaning_vi": "danh tiếng",
+            "learnedAt": "2026-03-10T03:46:49.645Z"
+        },
+        {
+            "word": "책상",
+            "romanization": "ch'aeksang",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "bàn học",
+            "learnedAt": "2026-03-13T07:00:22.243Z"
+        },
+        {
+            "word": "의자",
+            "romanization": "uicha",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "ghế",
+            "learnedAt": "2026-03-13T07:00:30.297Z"
+        },
+        {
+            "word": "책",
+            "romanization": "ch'aek",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "sách",
+            "learnedAt": "2026-03-13T07:00:39.894Z"
+        },
+        {
+            "word": "볼펜",
+            "romanization": "bolp'en",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "bút bi",
+            "learnedAt": "2026-03-13T07:01:06.832Z"
+        },
+        {
+            "word": "연필",
+            "romanization": "yeonp'il",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "bút chì",
+            "learnedAt": "2026-03-13T07:01:07.408Z"
+        },
+        {
+            "word": "가방",
+            "romanization": "gabang",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "túi xách, cặp",
+            "learnedAt": "2026-03-13T07:01:16.274Z"
+        },
+        {
+            "word": "시계",
+            "romanization": "sigye",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "đồng hồ",
+            "learnedAt": "2026-03-13T07:02:07.666Z"
+        },
+        {
+            "word": "모자",
+            "romanization": "mocha",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "mũ",
+            "learnedAt": "2026-03-13T07:02:40.124Z"
+        },
+        {
+            "word": "우산",
+            "romanization": "usan",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "ô, dù",
+            "learnedAt": "2026-03-13T07:02:56.013Z"
+        },
+        {
+            "word": "신문",
+            "romanization": "sinmun",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "báo",
+            "learnedAt": "2026-03-13T07:03:06.164Z"
+        },
+        {
+            "word": "안경",
+            "romanization": "angyeong",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "kính mắt",
+            "learnedAt": "2026-03-13T07:03:23.030Z"
+        },
+        {
+            "word": "핸드폰",
+            "romanization": "haendeup'on",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "điện thoại di động",
+            "learnedAt": "2026-03-13T07:04:09.823Z"
+        },
+        {
+            "word": "친구",
+            "romanization": "ch'ingu",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "bạn bè",
+            "learnedAt": "2026-03-13T07:04:31.558Z"
+        },
+        {
+            "word": "남자",
+            "romanization": "namcha",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "đàn ông",
+            "learnedAt": "2026-03-13T07:07:08.092Z"
+        },
+        {
+            "word": "여자",
+            "romanization": "yeocha",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "phụ nữ",
+            "learnedAt": "2026-03-13T07:07:14.921Z"
+        },
+        {
+            "word": "창문",
+            "romanization": "ch'angmun",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "cửa sổ",
+            "learnedAt": "2026-03-13T07:08:38.040Z"
+        },
+        {
+            "word": "방",
+            "romanization": "bang",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "phòng",
+            "learnedAt": "2026-03-14T13:35:52.028Z"
+        },
+        {
+            "word": "대학교",
+            "romanization": "daehakgyo",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "trường đại học",
+            "learnedAt": "2026-03-14T13:36:08.013Z"
+        },
+        {
+            "word": "서울",
+            "romanization": "seoul",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "Seoul",
+            "learnedAt": "2026-03-14T13:36:35.325Z"
+        },
+        {
+            "word": "침대",
+            "romanization": "ch'imdae",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "giường",
+            "learnedAt": "2026-03-14T13:36:48.811Z"
+        },
+        {
+            "word": "텔레비전",
+            "romanization": "t'ellebicheon",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "tivi",
+            "learnedAt": "2026-03-14T13:37:01.840Z"
+        },
+        {
+            "word": "잡지",
+            "romanization": "chapchi",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "tạp chí",
+            "learnedAt": "2026-03-14T13:38:45.984Z"
+        },
+        {
+            "word": "자다",
+            "romanization": "chada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "ngủ",
+            "learnedAt": "2026-03-14T13:39:36.793Z"
+        },
+        {
+            "word": "배우다",
+            "romanization": "baeuda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "học",
+            "learnedAt": "2026-03-14T13:40:02.486Z"
+        },
+        {
+            "word": "일하다",
+            "romanization": "ilhada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "làm việc",
+            "learnedAt": "2026-03-14T13:40:50.282Z"
+        },
+        {
+            "word": "하다",
+            "romanization": "hada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "làm",
+            "learnedAt": "2026-03-14T13:41:30.747Z"
+        },
+        {
+            "word": "사다",
+            "romanization": "sada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "mua",
+            "learnedAt": "2026-03-14T13:41:38.418Z"
+        },
+        {
+            "word": "보다",
+            "romanization": "boda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "xem, nhìn",
+            "learnedAt": "2026-03-14T13:41:46.512Z"
+        },
+        {
+            "word": "만나다",
+            "romanization": "mannada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "gặp",
+            "learnedAt": "2026-03-14T13:41:54.983Z"
+        },
+        {
+            "word": "먹다",
+            "romanization": "meokda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "ăn",
+            "learnedAt": "2026-03-14T13:42:05.152Z"
+        },
+        {
+            "word": "마시다",
+            "romanization": "masida",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "uống",
+            "learnedAt": "2026-03-14T13:42:19.368Z"
+        },
+        {
+            "word": "읽다",
+            "romanization": "ikda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "đọc",
+            "learnedAt": "2026-03-14T13:42:31.055Z"
+        },
+        {
+            "word": "도서관",
+            "romanization": "doseogwan",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "thư viện",
+            "learnedAt": "2026-03-16T07:57:53.537Z"
+        },
+        {
+            "word": "집",
+            "romanization": "chip",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "nhà",
+            "learnedAt": "2026-03-16T07:58:05.207Z"
+        },
+        {
+            "word": "백화점",
+            "romanization": "baekhwacheom",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "trung tâm thương mại",
+            "learnedAt": "2026-03-16T07:58:56.414Z"
+        },
+        {
+            "word": "가게",
+            "romanization": "gage",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "cửa hàng",
+            "learnedAt": "2026-03-16T07:59:04.408Z"
+        },
+        {
+            "word": "편의점",
+            "romanization": "p'yeonuicheom",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "cửa hàng tiện lợi",
+            "learnedAt": "2026-03-16T07:59:05.137Z"
+        },
+        {
+            "word": "시장",
+            "romanization": "sichang",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "chợ",
+            "learnedAt": "2026-03-16T07:59:15.144Z"
+        },
+        {
+            "word": "공원",
+            "romanization": "gongwon",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "công viên",
+            "learnedAt": "2026-03-16T07:59:32.656Z"
+        },
+        {
+            "word": "카페",
+            "romanization": "k'ap'e",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "quán cà phê",
+            "learnedAt": "2026-03-16T07:59:48.444Z"
+        },
+        {
+            "word": "식당",
+            "romanization": "sikdang",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "nhà hàng",
+            "learnedAt": "2026-03-16T08:00:29.805Z"
+        },
+        {
+            "word": "회사",
+            "romanization": "hoesa",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "công ty",
+            "learnedAt": "2026-03-16T08:00:39.221Z"
+        },
+        {
+            "word": "와\/과",
+            "romanization": "wa\/gwa",
+            "tier": 1,
+            "pos": "조사",
+            "meaning_vi": "và, với",
+            "learnedAt": "2026-03-16T08:04:10.573Z"
+        },
+        {
+            "word": "하지만",
+            "romanization": "hachiman",
+            "tier": 1,
+            "pos": "접속사",
+            "meaning_vi": "nhưng",
+            "learnedAt": "2026-03-17T09:50:51.615Z"
+        },
+        {
+            "word": "왜",
+            "romanization": "wae",
+            "tier": 1,
+            "pos": "부사",
+            "meaning_vi": "tại sao",
+            "learnedAt": "2026-03-17T09:50:59.227Z"
+        },
+        {
+            "word": "옷",
+            "romanization": "ot",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "quần áo",
+            "learnedAt": "2026-03-17T15:16:26.802Z"
+        },
+        {
+            "word": "그리고",
+            "romanization": "geurigo",
+            "tier": 1,
+            "pos": "접속사",
+            "meaning_vi": "và",
+            "learnedAt": "2026-03-18T12:00:16.583Z"
+        },
+        {
+            "word": "영화",
+            "romanization": "yeonghwa",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "phim",
+            "learnedAt": "2026-03-18T12:00:53.248Z"
+        },
+        {
+            "word": "벗다",
+            "romanization": "beotda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "cởi (quần áo)",
+            "learnedAt": "2026-03-18T12:02:04.867Z"
+        },
+        {
+            "word": "오다",
+            "romanization": "oda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "đến, tới",
+            "learnedAt": "2026-03-18T12:02:52.677Z"
+        },
+        {
+            "word": "서다",
+            "romanization": "seoda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "đứng",
+            "learnedAt": "2026-03-18T12:03:21.448Z"
+        },
+        {
+            "word": "보내다",
+            "romanization": "bonaeda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "gửi",
+            "learnedAt": "2026-03-18T12:03:38.839Z"
+        },
+        {
+            "word": "주다",
+            "romanization": "chuda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "cho",
+            "learnedAt": "2026-03-18T12:04:31.013Z"
+        },
+        {
+            "word": "뛰다",
+            "romanization": "ttwida",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "chạy, nhảy",
+            "learnedAt": "2026-03-18T12:06:50.610Z"
+        },
+        {
+            "word": "쉬다",
+            "romanization": "swida",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "nghỉ ngơi",
+            "learnedAt": "2026-03-18T12:07:18.998Z"
+        },
+        {
+            "word": "운동",
+            "romanization": "undong",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "thể thao, vận động",
+            "learnedAt": "2026-03-18T12:08:21.277Z"
+        },
+        {
+            "word": "입다",
+            "romanization": "ipda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "mặc (quần áo)",
+            "learnedAt": "2026-03-18T12:09:37.439Z"
+        },
+        {
+            "word": "지금",
+            "romanization": "chigeum",
+            "tier": 1,
+            "pos": "부사",
+            "meaning_vi": "bây giờ",
+            "learnedAt": "2026-03-18T12:10:03.852Z"
+        },
+        {
+            "word": "오늘",
+            "romanization": "oneul",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "hôm nay",
+            "learnedAt": "2026-03-18T12:10:16.463Z"
+        },
+        {
+            "word": "어제",
+            "romanization": "eoche",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "hôm qua",
+            "learnedAt": "2026-03-18T12:10:17.182Z"
+        },
+        {
+            "word": "가르치다",
+            "romanization": "gareuch'ida",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "dạy",
+            "learnedAt": "2026-03-18T12:10:28.699Z"
+        },
+        {
+            "word": "공항",
+            "romanization": "gonghang",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "sân bay",
+            "learnedAt": "2026-03-20T09:16:10.426Z"
+        },
+        {
+            "word": "우체국",
+            "romanization": "uch'eguk",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "bưu điện",
+            "learnedAt": "2026-03-20T09:16:21.946Z"
+        },
+        {
+            "word": "약국",
+            "romanization": "yakguk",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "hiệu thuốc",
+            "learnedAt": "2026-03-20T09:17:18.688Z"
+        },
+        {
+            "word": "병원",
+            "romanization": "byeongwon",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "bệnh viện",
+            "learnedAt": "2026-03-20T09:17:32.333Z"
+        },
+        {
+            "word": "잘",
+            "romanization": "chal",
+            "tier": 1,
+            "pos": "부사",
+            "meaning_vi": "giỏi, tốt",
+            "learnedAt": "2026-03-20T13:59:00.857Z"
+        },
+        {
+            "word": "지내다",
+            "romanization": "chinaeda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "sống, trải qua",
+            "learnedAt": "2026-03-20T13:59:28.868Z"
+        },
+        {
+            "word": "사진",
+            "romanization": "sachin",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "ảnh, hình",
+            "learnedAt": "2026-03-20T14:00:02.613Z"
+        },
+        {
+            "word": "매일",
+            "romanization": "maeil",
+            "tier": 1,
+            "pos": "부사",
+            "meaning_vi": "mỗi ngày",
+            "learnedAt": "2026-03-20T14:00:14.114Z"
+        },
+        {
+            "word": "사랑하다",
+            "romanization": "saranghada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "yêu",
+            "learnedAt": "2026-03-20T14:00:34.823Z"
+        },
+        {
+            "word": "맥주",
+            "romanization": "maekchu",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "bia",
+            "learnedAt": "2026-03-23T01:58:15.408Z"
+        },
+        {
+            "word": "차",
+            "romanization": "ch'a",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "trà, xe",
+            "learnedAt": "2026-03-23T01:58:46.296Z"
+        },
+        {
+            "word": "알다",
+            "romanization": "alda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "biết",
+            "learnedAt": "2026-03-23T01:59:01.882Z"
+        },
+        {
+            "word": "월",
+            "romanization": "wol",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "tháng",
+            "learnedAt": "2026-03-23T08:30:16.844Z"
+        },
+        {
+            "word": "월요일",
+            "romanization": "woryoil",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "thứ Hai",
+            "learnedAt": "2026-03-23T08:30:26.813Z"
+        },
+        {
+            "word": "화요일",
+            "romanization": "hwayoil",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "thứ Ba",
+            "learnedAt": "2026-03-23T08:30:28.012Z"
+        },
+        {
+            "word": "토요일",
+            "romanization": "t'oyoil",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "thứ Bảy",
+            "learnedAt": "2026-03-23T08:30:28.795Z"
+        },
+        {
+            "word": "목요일",
+            "romanization": "mogyoil",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "thứ Năm",
+            "learnedAt": "2026-03-23T08:30:31.874Z"
+        },
+        {
+            "word": "금요일",
+            "romanization": "geumyoil",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "thứ Sáu",
+            "learnedAt": "2026-03-23T08:30:32.770Z"
+        },
+        {
+            "word": "수요일",
+            "romanization": "suyoil",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "thứ Tư",
+            "learnedAt": "2026-03-23T08:30:34.377Z"
+        },
+        {
+            "word": "일요일",
+            "romanization": "iryoil",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "Chủ nhật",
+            "learnedAt": "2026-03-23T08:30:46.649Z"
+        },
+        {
+            "word": "일",
+            "romanization": "il",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "ngày, việc",
+            "learnedAt": "2026-03-23T08:31:43.570Z"
+        },
+        {
+            "word": "언제",
+            "romanization": "eonche",
+            "tier": 1,
+            "pos": "대명사",
+            "meaning_vi": "khi nào",
+            "learnedAt": "2026-03-23T13:41:12.698Z"
+        },
+        {
+            "word": "생일",
+            "romanization": "saengil",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "sinh nhật",
+            "learnedAt": "2026-03-23T13:41:44.805Z"
+        },
+        {
+            "word": "내일",
+            "romanization": "naeil",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "ngày mai",
+            "learnedAt": "2026-03-23T13:42:23.146Z"
+        },
+        {
+            "word": "주말",
+            "romanization": "chumal",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "cuối tuần",
+            "learnedAt": "2026-03-23T13:43:11.906Z"
+        },
+        {
+            "word": "받다",
+            "romanization": "batda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "nhận",
+            "learnedAt": "2026-03-23T13:43:36.036Z"
+        },
+        {
+            "word": "좋다",
+            "romanization": "chota",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "tốt",
+            "learnedAt": "2026-03-23T13:44:09.337Z"
+        },
+        {
+            "word": "살다",
+            "romanization": "salda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "sống",
+            "learnedAt": "2026-03-23T13:44:22.558Z"
+        },
+        {
+            "word": "찾다",
+            "romanization": "ch'atda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "tìm",
+            "learnedAt": "2026-03-23T13:44:44.094Z"
+        },
+        {
+            "word": "있다",
+            "romanization": "itda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "có, ở",
+            "learnedAt": "2026-03-23T13:45:11.916Z"
+        },
+        {
+            "word": "없다",
+            "romanization": "eopda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "không có",
+            "learnedAt": "2026-03-23T13:45:32.417Z"
+        },
+        {
+            "word": "싸다",
+            "romanization": "ssada",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "rẻ",
+            "learnedAt": "2026-03-24T08:22:41.900Z"
+        },
+        {
+            "word": "가져가다",
+            "romanization": "gachyeogada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "mang đi",
+            "learnedAt": "2026-03-24T08:23:26.370Z"
+        },
+        {
+            "word": "가져오다",
+            "romanization": "gachyeooda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "mang đến",
+            "learnedAt": "2026-03-24T08:23:26.963Z"
+        },
+        {
+            "word": "시작하다",
+            "romanization": "sichakhada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "bắt đầu",
+            "learnedAt": "2026-03-24T08:24:48.036Z"
+        },
+        {
+            "word": "깨끗하다",
+            "romanization": "kkaekkeuthada",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "sạch sẽ",
+            "learnedAt": "2026-03-24T08:24:57.875Z"
+        },
+        {
+            "word": "선택하다",
+            "romanization": "seont'aekhada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "lựa chọn",
+            "learnedAt": "2026-03-24T08:25:09.340Z"
+        },
+        {
+            "word": "쓰다",
+            "romanization": "sseuda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "viết, dùng, đắng",
+            "learnedAt": "2026-03-24T08:25:22.671Z"
+        },
+        {
+            "word": "크다",
+            "romanization": "k'euda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "to, lớn",
+            "learnedAt": "2026-03-24T08:25:38.429Z"
+        },
+        {
+            "word": "예쁘다",
+            "romanization": "yeppeuda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "đẹp (xinh)",
+            "learnedAt": "2026-03-24T08:25:48.297Z"
+        },
+        {
+            "word": "되다",
+            "romanization": "doeda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "trở thành, được",
+            "learnedAt": "2026-03-24T08:26:13.110Z"
+        },
+        {
+            "word": "과일",
+            "romanization": "gwail",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "trái cây",
+            "learnedAt": "2026-03-26T07:59:19.090Z"
+        },
+        {
+            "word": "커피",
+            "romanization": "k'eop'i",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "cà phê",
+            "learnedAt": "2026-03-27T02:27:24.226Z"
+        },
+        {
+            "word": "하나",
+            "romanization": "hana",
+            "tier": 1,
+            "pos": "수사",
+            "meaning_vi": "một (thuần Hàn)",
+            "learnedAt": "2026-03-29T12:33:54.677Z"
+        },
+        {
+            "word": "둘",
+            "romanization": "dul",
+            "tier": 1,
+            "pos": "수사",
+            "meaning_vi": "hai (thuần Hàn)",
+            "learnedAt": "2026-03-29T12:33:55.710Z"
+        },
+        {
+            "word": "셋",
+            "romanization": "set",
+            "tier": 1,
+            "pos": "수사",
+            "meaning_vi": "ba (thuần Hàn)",
+            "learnedAt": "2026-03-29T12:33:56.597Z"
+        },
+        {
+            "word": "넷",
+            "romanization": "net",
+            "tier": 1,
+            "pos": "수사",
+            "meaning_vi": "bốn (thuần Hàn)",
+            "learnedAt": "2026-03-29T12:33:58.819Z"
+        },
+        {
+            "word": "다섯",
+            "romanization": "daseot",
+            "tier": 1,
+            "pos": "수사",
+            "meaning_vi": "năm (thuần Hàn)",
+            "learnedAt": "2026-03-29T12:33:59.275Z"
+        },
+        {
+            "word": "여섯",
+            "romanization": "yeoseot",
+            "tier": 1,
+            "pos": "수사",
+            "meaning_vi": "sáu (thuần Hàn)",
+            "learnedAt": "2026-03-29T12:34:01.379Z"
+        },
+        {
+            "word": "일곱",
+            "romanization": "ilgop",
+            "tier": 1,
+            "pos": "수사",
+            "meaning_vi": "bảy (thuần Hàn)",
+            "learnedAt": "2026-03-29T12:34:03.548Z"
+        },
+        {
+            "word": "여덟",
+            "romanization": "yeodeol",
+            "tier": 1,
+            "pos": "수사",
+            "meaning_vi": "tám (thuần Hàn)",
+            "learnedAt": "2026-03-29T12:34:04.793Z"
+        },
+        {
+            "word": "아홉",
+            "romanization": "ahop",
+            "tier": 1,
+            "pos": "수사",
+            "meaning_vi": "chín (thuần Hàn)",
+            "learnedAt": "2026-03-29T12:34:05.681Z"
+        },
+        {
+            "word": "열",
+            "romanization": "yeol",
+            "tier": 1,
+            "pos": "수사",
+            "meaning_vi": "mười (thuần Hàn)",
+            "learnedAt": "2026-03-29T12:34:06.226Z"
+        },
+        {
+            "word": "역",
+            "romanization": "yeok",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "ga (tàu)",
+            "learnedAt": "2026-03-29T12:36:46.898Z"
+        },
+        {
+            "word": "선물",
+            "romanization": "seonmul",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "quà tặng",
+            "learnedAt": "2026-03-29T12:37:17.189Z"
+        },
+        {
+            "word": "시간",
+            "romanization": "sigan",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "thời gian, giờ",
+            "learnedAt": "2026-03-29T12:37:32.531Z"
+        },
+        {
+            "word": "끝나다",
+            "romanization": "kkeunnada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "kết thúc",
+            "learnedAt": "2026-03-29T12:38:07.752Z"
+        },
+        {
+            "word": "음식",
+            "romanization": "eumsik",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "thức ăn",
+            "learnedAt": "2026-03-29T12:38:22.532Z"
+        },
+        {
+            "word": "밥",
+            "romanization": "bap",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "cơm",
+            "learnedAt": "2026-03-29T12:38:39.508Z"
+        },
+        {
+            "word": "비빔밥",
+            "romanization": "bibimbap",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "cơm trộn",
+            "learnedAt": "2026-03-29T12:38:53.907Z"
+        },
+        {
+            "word": "김치",
+            "romanization": "gimch'i",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "kim chi",
+            "learnedAt": "2026-03-29T12:38:59.734Z"
+        },
+        {
+            "word": "라면",
+            "romanization": "ramyeon",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "mì gói",
+            "learnedAt": "2026-03-29T12:39:32.896Z"
+        },
+        {
+            "word": "불고기",
+            "romanization": "bulgogi",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "thịt nướng Hàn",
+            "learnedAt": "2026-03-29T12:39:47.500Z"
+        },
+        {
+            "word": "이",
+            "romanization": "i",
+            "tier": 1,
+            "pos": "수사",
+            "meaning_vi": "hai (Hán)",
+            "learnedAt": "2026-03-29T12:42:05.324Z"
+        },
+        {
+            "word": "삼",
+            "romanization": "sam",
+            "tier": 1,
+            "pos": "수사",
+            "meaning_vi": "ba (Hán)",
+            "learnedAt": "2026-03-29T12:42:06.835Z"
+        },
+        {
+            "word": "사",
+            "romanization": "sa",
+            "tier": 1,
+            "pos": "수사",
+            "meaning_vi": "bốn (Hán)",
+            "learnedAt": "2026-03-29T12:42:10.419Z"
+        },
+        {
+            "word": "오",
+            "romanization": "o",
+            "tier": 1,
+            "pos": "수사",
+            "meaning_vi": "năm (Hán)",
+            "learnedAt": "2026-03-29T12:42:15.033Z"
+        },
+        {
+            "word": "육",
+            "romanization": "yuk",
+            "tier": 1,
+            "pos": "수사",
+            "meaning_vi": "sáu (Hán)",
+            "learnedAt": "2026-03-29T12:42:16.169Z"
+        },
+        {
+            "word": "칠",
+            "romanization": "ch'il",
+            "tier": 1,
+            "pos": "수사",
+            "meaning_vi": "bảy (Hán)",
+            "learnedAt": "2026-03-29T12:42:17.745Z"
+        },
+        {
+            "word": "팔",
+            "romanization": "p'al",
+            "tier": 1,
+            "pos": "수사",
+            "meaning_vi": "tám (Hán)",
+            "learnedAt": "2026-03-29T12:42:18.456Z"
+        },
+        {
+            "word": "구",
+            "romanization": "gu",
+            "tier": 1,
+            "pos": "수사",
+            "meaning_vi": "chín (Hán)",
+            "learnedAt": "2026-03-29T12:42:20.855Z"
+        },
+        {
+            "word": "십",
+            "romanization": "sip",
+            "tier": 1,
+            "pos": "수사",
+            "meaning_vi": "mười (Hán)",
+            "learnedAt": "2026-03-29T12:42:31.380Z"
+        },
+        {
+            "word": "백",
+            "romanization": "baek",
+            "tier": 1,
+            "pos": "수사",
+            "meaning_vi": "trăm (Hán)",
+            "learnedAt": "2026-03-29T12:42:34.524Z"
+        },
+        {
+            "word": "천",
+            "romanization": "ch'eon",
+            "tier": 1,
+            "pos": "수사",
+            "meaning_vi": "nghìn (Hán)",
+            "learnedAt": "2026-03-29T12:42:36.843Z"
+        },
+        {
+            "word": "만",
+            "romanization": "man",
+            "tier": 1,
+            "pos": "수사",
+            "meaning_vi": "vạn, mười nghìn (Hán)",
+            "learnedAt": "2026-03-29T12:42:42.723Z"
+        },
+        {
+            "word": "앉다",
+            "romanization": "anda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "ngồi",
+            "learnedAt": "2026-03-29T12:43:24.266Z"
+        },
+        {
+            "word": "기다리다",
+            "romanization": "gidarida",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "chờ đợi",
+            "learnedAt": "2026-03-29T12:44:53.123Z"
+        },
+        {
+            "word": "복잡하다",
+            "romanization": "bokchaphada",
+            "tier": 2,
+            "pos": "형용사",
+            "meaning_vi": "phức tạp",
+            "learnedAt": "2026-03-29T12:45:31.743Z"
+        },
+        {
+            "word": "맛있다",
+            "romanization": "masitda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "ngon",
+            "learnedAt": "2026-03-29T12:45:43.523Z"
+        },
+        {
+            "word": "날씨",
+            "romanization": "nalssi",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "thời tiết",
+            "learnedAt": "2026-03-29T12:45:57.828Z"
+        },
+        {
+            "word": "재미있다",
+            "romanization": "chaemiitda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "thú vị, vui",
+            "learnedAt": "2026-03-29T12:46:09.715Z"
+        },
+        {
+            "word": "그래서",
+            "romanization": "geuraeseo",
+            "tier": 1,
+            "pos": "부사",
+            "meaning_vi": "vì vậy",
+            "learnedAt": "2026-04-01T02:18:58.851Z"
+        },
+        {
+            "word": "팔다",
+            "romanization": "p'alda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "bán",
+            "learnedAt": "2026-04-01T02:19:41.072Z"
+        },
+        {
+            "word": "아주",
+            "romanization": "achu",
+            "tier": 1,
+            "pos": "부사",
+            "meaning_vi": "rất",
+            "learnedAt": "2026-04-01T02:20:15.738Z"
+        },
+        {
+            "word": "많이",
+            "romanization": "mani",
+            "tier": 1,
+            "pos": "부사",
+            "meaning_vi": "nhiều",
+            "learnedAt": "2026-04-01T02:21:31.390Z"
+        },
+        {
+            "word": "전화하다",
+            "romanization": "cheonhwahada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "gọi điện",
+            "learnedAt": "2026-04-01T02:21:57.809Z"
+        },
+        {
+            "word": "모두",
+            "romanization": "modu",
+            "tier": 1,
+            "pos": "대명사",
+            "meaning_vi": "tất cả, mọi người",
+            "learnedAt": "2026-04-01T02:22:11.366Z"
+        },
+        {
+            "word": "또",
+            "romanization": "tto",
+            "tier": 1,
+            "pos": "부사",
+            "meaning_vi": "lại, nữa",
+            "learnedAt": "2026-04-01T02:22:32.469Z"
+        },
+        {
+            "word": "정말",
+            "romanization": "cheongmal",
+            "tier": 1,
+            "pos": "부사",
+            "meaning_vi": "thật sự",
+            "learnedAt": "2026-04-02T11:30:08.048Z"
+        },
+        {
+            "word": "가을",
+            "romanization": "gaeul",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "mùa thu",
+            "learnedAt": "2026-04-02T11:30:39.721Z"
+        },
+        {
+            "word": "겨울",
+            "romanization": "gyeoul",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "mùa đông",
+            "learnedAt": "2026-04-02T11:30:40.977Z"
+        },
+        {
+            "word": "봄",
+            "romanization": "bom",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "mùa xuân",
+            "learnedAt": "2026-04-02T11:30:41.408Z"
+        },
+        {
+            "word": "여름",
+            "romanization": "yeoreum",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "mùa hè",
+            "learnedAt": "2026-04-02T11:30:41.928Z"
+        },
+        {
+            "word": "덥다",
+            "romanization": "deopda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "nóng (thời tiết)",
+            "learnedAt": "2026-04-02T11:31:24.447Z"
+        },
+        {
+            "word": "춥다",
+            "romanization": "ch'upda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "lạnh (thời tiết)",
+            "learnedAt": "2026-04-02T11:31:30.277Z"
+        },
+        {
+            "word": "쉽다",
+            "romanization": "swipda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "dễ",
+            "learnedAt": "2026-04-02T11:32:33.112Z"
+        },
+        {
+            "word": "어렵다",
+            "romanization": "eoryeopda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "khó",
+            "learnedAt": "2026-04-02T11:32:39.430Z"
+        },
+        {
+            "word": "가볍다",
+            "romanization": "gabyeopda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "nhẹ",
+            "learnedAt": "2026-04-02T11:32:49.514Z"
+        },
+        {
+            "word": "무겁다",
+            "romanization": "mugeopda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "nặng",
+            "learnedAt": "2026-04-02T11:32:56.553Z"
+        },
+        {
+            "word": "어떻게",
+            "romanization": "eotteoke",
+            "tier": 1,
+            "pos": "부사",
+            "meaning_vi": "như thế nào",
+            "learnedAt": "2026-04-02T11:33:39.689Z"
+        },
+        {
+            "word": "비싸다",
+            "romanization": "bissada",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "đắt",
+            "learnedAt": "2026-04-03T12:21:30.453Z"
+        },
+        {
+            "word": "조금",
+            "romanization": "chogeum",
+            "tier": 1,
+            "pos": "부사",
+            "meaning_vi": "một chút",
+            "learnedAt": "2026-04-03T13:33:35.787Z"
+        },
+        {
+            "word": "맵다",
+            "romanization": "maepda",
+            "tier": 2,
+            "pos": "형용사",
+            "meaning_vi": "cay",
+            "learnedAt": "2026-04-04T08:00:00.000Z"
+        },
+        {
+            "word": "비가 오다",
+            "romanization": "biga oda",
+            "tier": 2,
+            "pos": "동사구",
+            "meaning_vi": "trời mưa",
+            "learnedAt": "2026-04-04T08:00:01.000Z"
+        },
+        {
+            "word": "눈이 오다",
+            "romanization": "nuni oda",
+            "tier": 2,
+            "pos": "동사구",
+            "meaning_vi": "trời tuyết rơi",
+            "learnedAt": "2026-04-04T08:00:02.000Z"
+        },
+        {
+            "word": "흐리다",
+            "romanization": "heurida",
+            "tier": 2,
+            "pos": "형용사",
+            "meaning_vi": "trời nhiều mây, âm u",
+            "learnedAt": "2026-04-04T08:00:03.000Z"
+        },
+        {
+            "word": "맑다",
+            "romanization": "makda",
+            "tier": 2,
+            "pos": "형용사",
+            "meaning_vi": "trời trong xanh, quang đãng",
+            "learnedAt": "2026-04-04T08:00:07.000Z"
+        },
+        {
+            "word": "따뜻하다",
+            "romanization": "ttatteutada",
+            "tier": 2,
+            "pos": "형용사",
+            "meaning_vi": "ấm áp",
+            "learnedAt": "2026-04-04T08:00:04.000Z"
+        },
+        {
+            "word": "시원하다",
+            "romanization": "siwonhada",
+            "tier": 2,
+            "pos": "형용사",
+            "meaning_vi": "mát mẻ",
+            "learnedAt": "2026-04-04T08:00:05.000Z"
+        },
+        {
+            "word": "점심을 먹다",
+            "romanization": "jeomsimeul meokda",
+            "tier": 2,
+            "pos": "동사구",
+            "meaning_vi": "ăn trưa",
+            "learnedAt": "2026-04-04T08:00:06.000Z"
+        },
+        {
+            "word": "개",
+            "romanization": "gae",
+            "tier": 2,
+            "pos": "의존 명사",
+            "meaning_vi": "cái, quả (từ đếm vật thể)",
+            "learnedAt": "2026-04-04T08:00:08.000Z"
+        },
+        {
+            "word": "병",
+            "romanization": "byeong",
+            "tier": 2,
+            "pos": "의존 명사",
+            "meaning_vi": "chai",
+            "learnedAt": "2026-04-04T08:00:09.000Z"
+        },
+        {
+            "word": "잔",
+            "romanization": "jan",
+            "tier": 2,
+            "pos": "의존 명사",
+            "meaning_vi": "ly, cốc",
+            "learnedAt": "2026-04-04T08:00:10.000Z"
+        },
+        {
+            "word": "그릇",
+            "romanization": "geureut",
+            "tier": 2,
+            "pos": "의존 명사",
+            "meaning_vi": "tô, bát",
+            "learnedAt": "2026-04-04T08:00:11.000Z"
+        },
+        {
+            "word": "권",
+            "romanization": "gwon",
+            "tier": 2,
+            "pos": "의존 명사",
+            "meaning_vi": "quyển (sách, vở)",
+            "learnedAt": "2026-04-04T08:00:12.000Z"
+        },
+        {
+            "word": "장",
+            "romanization": "jang",
+            "tier": 2,
+            "pos": "의존 명사",
+            "meaning_vi": "tờ (giấy, vé)",
+            "learnedAt": "2026-04-04T08:00:13.000Z"
+        },
+        {
+            "word": "마리",
+            "romanization": "mari",
+            "tier": 2,
+            "pos": "의존 명사",
+            "meaning_vi": "con (động vật)",
+            "learnedAt": "2026-04-04T08:00:14.000Z"
+        },
+        {
+            "word": "명",
+            "romanization": "myeong",
+            "tier": 2,
+            "pos": "의존 명사",
+            "meaning_vi": "người (từ đếm người)",
+            "learnedAt": "2026-04-04T08:00:15.000Z"
+        },
+        {
+            "word": "샌드위치",
+            "romanization": "saendeuwichi",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "bánh sandwich",
+            "learnedAt": "2026-04-04T08:00:16.000Z"
+        },
+        {
+            "word": "파스타",
+            "romanization": "paseuta",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "mỳ Ý",
+            "learnedAt": "2026-04-04T08:00:17.000Z"
+        },
+        {
+            "word": "피자",
+            "romanization": "pija",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "bánh pizza",
+            "learnedAt": "2026-04-04T08:00:18.000Z"
+        },
+        {
+            "word": "햄버거",
+            "romanization": "haembeogeo",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "bánh hamburger",
+            "learnedAt": "2026-04-04T08:00:19.000Z"
+        },
+        {
+            "word": "귤",
+            "romanization": "gyul",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "quýt",
+            "learnedAt": "2026-04-04T08:00:20.000Z"
+        },
+        {
+            "word": "딸기",
+            "romanization": "ttalgi",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "dâu tây",
+            "learnedAt": "2026-04-04T08:00:21.000Z"
+        },
+        {
+            "word": "사과",
+            "romanization": "sagwa",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "táo",
+            "learnedAt": "2026-04-04T08:00:22.000Z"
+        },
+        {
+            "word": "수박",
+            "romanization": "subak",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "dưa hấu",
+            "learnedAt": "2026-04-04T08:00:23.000Z"
+        },
+        {
+            "word": "돈",
+            "romanization": "don",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "tiền",
+            "learnedAt": "2026-04-04T08:00:24.000Z"
+        },
+        {
+            "word": "음식",
+            "romanization": "eumsik",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "món ăn, thức ăn",
+            "learnedAt": "2026-04-04T08:00:25.000Z"
+        },
+        {
+            "word": "약속",
+            "romanization": "yaksok",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "cuộc hẹn, lời hứa",
+            "learnedAt": "2026-04-04T08:00:26.000Z"
+        },
+        {
+            "word": "물건",
+            "romanization": "mulgeon",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "đồ vật, vật dụng",
+            "learnedAt": "2026-04-04T08:00:27.000Z"
+        },
+        {
+            "word": "냉장고",
+            "romanization": "naengjanggo",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "tủ lạnh",
+            "learnedAt": "2026-04-04T08:00:28.000Z"
+        },
+        {
+            "word": "어디",
+            "romanization": "eodi",
+            "tier": 1,
+            "pos": "대명사",
+            "meaning_vi": "ở đâu",
+            "learnedAt": "2026-04-04T02:50:08.934Z"
+        },
+        {
+            "word": "장소",
+            "romanization": "jangso",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "địa điểm",
+            "learnedAt": "2026-04-04T08:00:29.000Z"
+        },
+        {
+            "word": "대사관",
+            "romanization": "daesagwan",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "đại sứ quán",
+            "learnedAt": "2026-04-04T08:00:30.000Z"
+        },
+        {
+            "word": "기숙사",
+            "romanization": "gisuksa",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "ký túc xá",
+            "learnedAt": "2026-04-04T08:00:31.000Z"
+        },
+        {
+            "word": "위치",
+            "romanization": "wichi",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "vị trí",
+            "learnedAt": "2026-04-04T08:00:32.000Z"
+        },
+        {
+            "word": "앞",
+            "romanization": "ap",
+            "tier": 1,
+            "pos": "위치 명사",
+            "meaning_vi": "phía trước",
+            "learnedAt": "2026-04-04T08:00:33.000Z"
+        },
+        {
+            "word": "뒤",
+            "romanization": "dwi",
+            "tier": 1,
+            "pos": "위치 명사",
+            "meaning_vi": "phía sau",
+            "learnedAt": "2026-04-04T08:00:34.000Z"
+        },
+        {
+            "word": "옆",
+            "romanization": "yeop",
+            "tier": 1,
+            "pos": "위치 명사",
+            "meaning_vi": "bên cạnh",
+            "learnedAt": "2026-04-04T08:00:35.000Z"
+        },
+        {
+            "word": "안",
+            "romanization": "an",
+            "tier": 1,
+            "pos": "위치 명사",
+            "meaning_vi": "bên trong",
+            "learnedAt": "2026-04-04T08:00:36.000Z"
+        },
+        {
+            "word": "아래",
+            "romanization": "arae",
+            "tier": 1,
+            "pos": "위치 명사",
+            "meaning_vi": "phía dưới",
+            "learnedAt": "2026-04-04T08:00:37.000Z"
+        },
+        {
+            "word": "위",
+            "romanization": "wi",
+            "tier": 1,
+            "pos": "위치 명사",
+            "meaning_vi": "phía trên",
+            "learnedAt": "2026-04-04T08:00:38.000Z"
+        },
+        {
+            "word": "그럼",
+            "romanization": "geureom",
+            "tier": 2,
+            "pos": "접속 부사",
+            "meaning_vi": "vậy thì, trong trường hợp đó",
+            "learnedAt": "2026-04-04T08:00:39.000Z"
+        },
+        {
+            "word": "공부하다",
+            "romanization": "gongbuhada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "học, tự học",
+            "learnedAt": "2026-04-04T08:00:40.000Z"
+        },
+        {
+            "word": "공책",
+            "romanization": "gongchaek",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "vở, quyển vở",
+            "learnedAt": "2026-04-04T08:00:41.000Z"
+        },
+        {
+            "word": "사전",
+            "romanization": "sajeon",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "từ điển",
+            "learnedAt": "2026-04-04T08:00:42.000Z"
+        },
+        {
+            "word": "요리하다",
+            "romanization": "yorihada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "nấu ăn",
+            "learnedAt": "2026-04-04T13:57:03.856Z"
+        },
+        {
+            "word": "년",
+            "romanization": "nyeon",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "năm",
+            "learnedAt": "2026-04-04T13:58:08.806Z"
+        },
+        {
+            "word": "항상",
+            "romanization": "hangsang",
+            "tier": 1,
+            "pos": "부사",
+            "meaning_vi": "luôn luôn",
+            "learnedAt": "2026-04-04T13:58:42.272Z"
+        },
+        {
+            "word": "하늘",
+            "romanization": "haneul",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "bầu trời",
+            "learnedAt": "2026-04-04T13:59:41.990Z"
+        },
+        {
+            "word": "눈",
+            "romanization": "nun",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "mắt, tuyết",
+            "learnedAt": "2026-04-04T14:18:57.712Z"
+        },
+        {
+            "word": "만들다",
+            "romanization": "mandeulda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "làm, tạo",
+            "learnedAt": "2026-04-04T14:19:29.867Z"
+        },
+        {
+            "word": "사진을 찍다",
+            "romanization": "sajineul jjikda",
+            "tier": 2,
+            "pos": "동사구",
+            "meaning_vi": "chụp ảnh",
+            "learnedAt": "2026-04-04T08:00:43.000Z"
+        },
+        {
+            "word": "작년",
+            "romanization": "jangnyeon",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "năm ngoái",
+            "learnedAt": "2026-04-04T08:00:44.000Z"
+        },
+        {
+            "word": "고향",
+            "romanization": "gohyang",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "quê hương",
+            "learnedAt": "2026-04-04T08:00:45.000Z"
+        },
+        {
+            "word": "처음",
+            "romanization": "cheoeum",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "lần đầu, đầu tiên",
+            "learnedAt": "2026-04-04T08:00:46.000Z"
+        },
+        {
+            "word": "구경하다",
+            "romanization": "gugyeonghada",
+            "tier": 2,
+            "pos": "동사",
+            "meaning_vi": "ngắm, tham quan",
+            "learnedAt": "2026-04-04T08:00:47.000Z"
+        },
+        {
+            "word": "아침",
+            "romanization": "ach'im",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "buổi sáng",
+            "learnedAt": "2026-04-04T14:33:52.182Z"
+        },
+        {
+            "word": "점심",
+            "romanization": "cheomsim",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "buổi trưa",
+            "learnedAt": "2026-04-04T14:33:53.206Z"
+        },
+        {
+            "word": "저녁",
+            "romanization": "cheonyeok",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "buổi tối",
+            "learnedAt": "2026-04-04T14:33:53.661Z"
+        },
+        {
+            "word": "배우",
+            "romanization": "baeu",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "diễn viên",
+            "learnedAt": "2026-04-04T14:34:26.781Z"
+        },
+        {
+            "word": "귀엽다",
+            "romanization": "gwiyeopda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "dễ thương",
+            "learnedAt": "2026-04-04T14:34:42.828Z"
+        },
+        {
+            "word": "좁다",
+            "romanization": "jobda",
+            "tier": 2,
+            "pos": "형용사",
+            "meaning_vi": "chật, hẹp",
+            "learnedAt": "2026-04-04T08:00:48.000Z"
+        },
+        {
+            "word": "공기",
+            "romanization": "gonggi",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "không khí",
+            "learnedAt": "2026-04-04T08:00:49.000Z"
+        },
+        {
+            "word": "바다",
+            "romanization": "bada",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "biển",
+            "learnedAt": "2026-04-05T14:51:17.698Z"
+        },
+        {
+            "word": "생선",
+            "romanization": "saengseon",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "cá",
+            "learnedAt": "2026-04-05T14:51:29.126Z"
+        },
+        {
+            "word": "같이",
+            "romanization": "gachi",
+            "tier": 1,
+            "pos": "부사",
+            "meaning_vi": "cùng nhau",
+            "learnedAt": "2026-04-05T14:51:41.864Z"
+        },
+        {
+            "word": "그래요?",
+            "romanization": "geuraeyo?",
+            "tier": 2,
+            "pos": "감탄사",
+            "meaning_vi": "Vậy hả? Thế à? (ngạc nhiên, lịch sự)",
+            "learnedAt": "2026-04-04T08:00:51.000Z"
+        },
+        {
+            "word": "조심하다",
+            "romanization": "josimhada",
+            "tier": 2,
+            "pos": "동사",
+            "meaning_vi": "cẩn thận, cẩn trọng",
+            "learnedAt": "2026-04-04T08:00:52.000Z"
+        },
+        {
+            "word": "골프를 치다",
+            "romanization": "golpeuреul chida",
+            "tier": 2,
+            "pos": "동사구",
+            "meaning_vi": "chơi golf, đánh golf",
+            "learnedAt": "2026-04-04T08:00:53.000Z"
+        },
+        {
+            "word": "테니스를 치다",
+            "romanization": "teniseureul chida",
+            "tier": 2,
+            "pos": "동사구",
+            "meaning_vi": "chơi tennis, đánh tennis",
+            "learnedAt": "2026-04-04T08:00:54.000Z"
+        },
+        {
+            "word": "기타를 치다",
+            "romanization": "gitareul chida",
+            "tier": 2,
+            "pos": "동사구",
+            "meaning_vi": "chơi ghi-ta, đánh ghi-ta",
+            "learnedAt": "2026-04-04T08:00:55.000Z"
+        },
+        {
+            "word": "피아노를 치다",
+            "romanization": "pianoreul chida",
+            "tier": 2,
+            "pos": "동사구",
+            "meaning_vi": "chơi piano, đánh piano",
+            "learnedAt": "2026-04-04T08:00:56.000Z"
+        },
+        {
+            "word": "당구를 치다",
+            "romanization": "dangureul chida",
+            "tier": 2,
+            "pos": "동사구",
+            "meaning_vi": "chơi bi-a, đánh bi-a",
+            "learnedAt": "2026-04-04T08:00:57.000Z"
+        },
+        {
+            "word": "자전거를 타다",
+            "romanization": "jajeongeoreul tada",
+            "tier": 2,
+            "pos": "동사구",
+            "meaning_vi": "đạp xe đạp",
+            "learnedAt": "2026-04-04T08:00:58.000Z"
+        },
+        {
+            "word": "스키를 타다",
+            "romanization": "seukireul tada",
+            "tier": 2,
+            "pos": "동사구",
+            "meaning_vi": "trượt tuyết (ván trượt + gậy)",
+            "learnedAt": "2026-04-04T08:00:59.000Z"
+        },
+        {
+            "word": "스케이트를 타다",
+            "romanization": "seukeiteureul tada",
+            "tier": 2,
+            "pos": "동사구",
+            "meaning_vi": "trượt tuyết (giày trượt băng)",
+            "learnedAt": "2026-04-04T08:01:00.000Z"
+        },
+        {
+            "word": "게임을 하다",
+            "romanization": "geim-eul hada",
+            "tier": 2,
+            "pos": "동사구",
+            "meaning_vi": "chơi game",
+            "learnedAt": "2026-04-04T08:01:01.000Z"
+        },
+        {
+            "word": "농구를 하다",
+            "romanization": "nonggureul hada",
+            "tier": 2,
+            "pos": "동사구",
+            "meaning_vi": "chơi bóng rổ",
+            "learnedAt": "2026-04-04T08:01:02.000Z"
+        },
+        {
+            "word": "축구를 하다",
+            "romanization": "chukgureul hada",
+            "tier": 2,
+            "pos": "동사구",
+            "meaning_vi": "chơi đá bóng, đá banh",
+            "learnedAt": "2026-04-04T08:01:03.000Z"
+        },
+        {
+            "word": "낮잠을 자다",
+            "romanization": "natjameul jada",
+            "tier": 2,
+            "pos": "동사구",
+            "meaning_vi": "ngủ trưa",
+            "learnedAt": "2026-04-04T08:01:04.000Z"
+        },
+        {
+            "word": "낮잠",
+            "romanization": "natjam",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "giấc ngủ trưa, giấc ngủ ngày",
+            "learnedAt": "2026-04-04T08:01:05.000Z"
+        },
+        {
+            "word": "등산을 하다",
+            "romanization": "deungsaneul hada",
+            "tier": 2,
+            "pos": "동사구",
+            "meaning_vi": "leo núi",
+            "learnedAt": "2026-04-04T08:01:06.000Z"
+        },
+        {
+            "word": "산책을 하다",
+            "romanization": "sanchaekeul hada",
+            "tier": 2,
+            "pos": "동사구",
+            "meaning_vi": "đi dạo, đi bộ",
+            "learnedAt": "2026-04-04T08:01:07.000Z"
+        },
+        {
+            "word": "여행을 하다",
+            "romanization": "yeohaengeul hada",
+            "tier": 2,
+            "pos": "동사구",
+            "meaning_vi": "đi du lịch",
+            "learnedAt": "2026-04-04T08:01:08.000Z"
+        },
+        {
+            "word": "노래방에 가다",
+            "romanization": "noraebange gada",
+            "tier": 2,
+            "pos": "동사구",
+            "meaning_vi": "đi hát karaoke",
+            "learnedAt": "2026-04-04T08:01:09.000Z"
+        },
+        {
+            "word": "찜질방에 가다",
+            "romanization": "jjimjilbange gada",
+            "tier": 2,
+            "pos": "동사구",
+            "meaning_vi": "đi phòng xông hơi",
+            "learnedAt": "2026-04-04T08:01:10.000Z"
+        },
+        {
+            "word": "버스를 타다",
+            "romanization": "beoseureul tada",
+            "tier": 2,
+            "pos": "동사구",
+            "meaning_vi": "đi xe buýt",
+            "learnedAt": "2026-04-04T08:01:11.000Z"
+        },
+        {
+            "word": "자주",
+            "romanization": "chachu",
+            "tier": 2,
+            "pos": "부사",
+            "meaning_vi": "thường xuyên",
+            "learnedAt": "2026-04-06T13:31:05.825Z"
+        },
+        {
+            "word": "심심하다",
+            "romanization": "simsimhada",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "chán, buồn chán",
+            "learnedAt": "2026-04-06T13:33:04.850Z"
+        },
+        {
+            "word": "그런데",
+            "romanization": "geureonde",
+            "tier": 1,
+            "pos": "부사",
+            "meaning_vi": "nhưng mà",
+            "learnedAt": "2026-04-06T13:33:40.691Z"
+        },
+        {
+            "word": "가깝다",
+            "romanization": "gakkapda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "gần",
+            "learnedAt": "2026-04-06T13:34:03.295Z"
+        },
+        {
+            "word": "걷다",
+            "romanization": "geotda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "đi bộ",
+            "learnedAt": "2026-04-06T13:34:47.281Z"
+        },
+        {
+            "word": "누구",
+            "romanization": "nugu",
+            "tier": 1,
+            "pos": "대명사",
+            "meaning_vi": "ai",
+            "learnedAt": "2026-04-06T13:36:01.922Z"
+        },
+        {
+            "word": "듣다",
+            "romanization": "deutda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "nghe",
+            "learnedAt": "2026-04-06T13:36:18.952Z"
+        },
+        {
+            "word": "음악",
+            "romanization": "eumak",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "âm nhạc",
+            "learnedAt": "2026-04-06T13:36:36.619Z"
+        },
+        {
+            "word": "뉴스",
+            "romanization": "nyuseu",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "tin tức",
+            "learnedAt": "2026-04-06T13:37:13.050Z"
+        },
+        {
+            "word": "라디오",
+            "romanization": "radio",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "radio",
+            "learnedAt": "2026-04-04T08:01:12.000Z"
+        },
+        {
+            "word": "요즘",
+            "romanization": "yojeum",
+            "tier": 2,
+            "pos": "부사",
+            "meaning_vi": "dạo này, gần đây",
+            "learnedAt": "2026-04-04T08:01:13.000Z"
+        },
+        {
+            "word": "여러분",
+            "romanization": "yeoreobun",
+            "tier": 2,
+            "pos": "대명사",
+            "meaning_vi": "các bạn, mọi người",
+            "learnedAt": "2026-04-04T08:01:14.000Z"
+        },
+        {
+            "word": "전화번호",
+            "romanization": "jeonhwabeonho",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "số điện thoại",
+            "learnedAt": "2026-04-04T08:01:15.000Z"
+        },
+        {
+            "word": "운동장",
+            "romanization": "undongjang",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "sân vận động, sân thể thao",
+            "learnedAt": "2026-04-04T08:01:16.000Z"
+        },
+        {
+            "word": "고르다",
+            "romanization": "goreuda",
+            "tier": 2,
+            "pos": "동사",
+            "meaning_vi": "chọn, lựa chọn",
+            "learnedAt": "2026-04-04T08:01:17.000Z"
+        },
+        {
+            "word": "생활",
+            "romanization": "saenghwal",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "cuộc sống, sinh hoạt",
+            "learnedAt": "2026-04-04T08:01:18.000Z"
+        },
+        {
+            "word": "한강",
+            "romanization": "hangang",
+            "tier": 2,
+            "pos": "고유 명사",
+            "meaning_vi": "sông Hàn",
+            "learnedAt": "2026-04-04T08:01:19.000Z"
+        },
+        {
+            "word": "다음",
+            "romanization": "daeum",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "lần sau, tiếp theo",
+            "learnedAt": "2026-04-04T08:01:20.000Z"
+        },
+        {
+            "word": "오후",
+            "romanization": "ohu",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "buổi chiều",
+            "learnedAt": "2026-04-04T08:01:22.000Z"
+        },
+        {
+            "word": "이번",
+            "romanization": "ibeon",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "lần này",
+            "learnedAt": "2026-04-04T08:01:23.000Z"
+        },
+        {
+            "word": "노래하다",
+            "romanization": "noraehada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "hát",
+            "learnedAt": "2026-04-07T09:28:57.580Z"
+        },
+        {
+            "word": "물어보다",
+            "romanization": "mureoboda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "hỏi",
+            "learnedAt": "2026-04-07T09:29:35.133Z"
+        },
+        {
+            "word": "주소",
+            "romanization": "chuso",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "địa chỉ",
+            "learnedAt": "2026-04-07T09:30:25.451Z"
+        },
+        {
+            "word": "건물",
+            "romanization": "geonmul",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "tòa nhà",
+            "learnedAt": "2026-04-07T13:53:10.730Z"
+        },
+        {
+            "word": "많다",
+            "romanization": "manta",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "nhiều",
+            "learnedAt": "2026-04-07T13:53:37.289Z"
+        },
+        {
+            "word": "적다",
+            "romanization": "cheokda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "ít",
+            "learnedAt": "2026-04-07T13:53:58.942Z"
+        },
+        {
+            "word": "적어도",
+            "romanization": "cheogeodo",
+            "tier": 2,
+            "pos": "부사",
+            "meaning_vi": "ít nhất",
+            "learnedAt": "2026-04-07T13:54:02.565Z"
+        },
+        {
+            "word": "숙제",
+            "romanization": "sukche",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "bài tập về nhà",
+            "learnedAt": "2026-04-07T13:54:11.952Z"
+        },
+        {
+            "word": "계절",
+            "romanization": "gyejeol",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "mùa",
+            "learnedAt": "2026-04-04T08:01:24.000Z"
+        },
+        {
+            "word": "고기",
+            "romanization": "gogi",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "thịt",
+            "learnedAt": "2026-04-09T08:42:45.695Z"
+        },
+        {
+            "word": "시험",
+            "romanization": "siheom",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "bài thi",
+            "learnedAt": "2026-04-09T09:24:54.929Z"
+        },
+        {
+            "word": "물",
+            "romanization": "mul",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "nước",
+            "learnedAt": "2026-04-09T13:40:26.990Z"
+        },
+        {
+            "word": "소금",
+            "romanization": "sogeum",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "muối",
+            "learnedAt": "2026-04-11T02:00:59.791Z"
+        },
+        {
+            "word": "맛",
+            "romanization": "mat",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "vị",
+            "learnedAt": "2026-04-11T02:01:09.329Z"
+        },
+        {
+            "word": "시다",
+            "romanization": "sida",
+            "tier": 2,
+            "pos": "형용사",
+            "meaning_vi": "chua",
+            "learnedAt": "2026-04-04T08:01:25.000Z"
+        },
+        {
+            "word": "짜다",
+            "romanization": "jjada",
+            "tier": 2,
+            "pos": "형용사",
+            "meaning_vi": "mặn",
+            "learnedAt": "2026-04-04T08:01:26.000Z"
+        },
+        {
+            "word": "달다",
+            "romanization": "dalda",
+            "tier": 2,
+            "pos": "형용사",
+            "meaning_vi": "ngọt",
+            "learnedAt": "2026-04-04T08:01:27.000Z"
+        },
+        {
+            "word": "쓰다",
+            "romanization": "sseuda",
+            "tier": 2,
+            "pos": "형용사",
+            "meaning_vi": "đắng",
+            "learnedAt": "2026-04-04T08:01:28.000Z"
+        },
+        {
+            "word": "교통",
+            "romanization": "gyot'ong",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "giao thông",
+            "learnedAt": "2026-04-11T02:12:23.812Z"
+        },
+        {
+            "word": "휴가",
+            "romanization": "hyuga",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "kỳ nghỉ phép",
+            "learnedAt": "2026-04-11T02:12:50.661Z"
+        },
+        {
+            "word": "기쁘다",
+            "romanization": "gippeuda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "vui mừng",
+            "learnedAt": "2026-04-11T02:19:36.078Z"
+        },
+        {
+            "word": "만족하다",
+            "romanization": "manchokhada",
+            "tier": 2,
+            "pos": "동사",
+            "meaning_vi": "hài lòng",
+            "learnedAt": "2026-04-11T02:20:51.650Z"
+        },
+        {
+            "word": "여행",
+            "romanization": "yeohaeng",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "du lịch",
+            "learnedAt": "2026-04-11T02:21:38.519Z"
+        },
+        {
+            "word": "결혼",
+            "romanization": "gyeolhon",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "kết hôn",
+            "learnedAt": "2026-04-11T02:22:47.441Z"
+        },
+        {
+            "word": "밝다",
+            "romanization": "bakda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "sáng",
+            "learnedAt": "2026-04-11T02:26:55.576Z"
+        },
+        {
+            "word": "높다",
+            "romanization": "nopda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "cao",
+            "learnedAt": "2026-04-11T02:27:08.675Z"
+        },
+        {
+            "word": "넓다",
+            "romanization": "neolda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "rộng",
+            "learnedAt": "2026-04-11T02:27:19.363Z"
+        },
+        {
+            "word": "건강하다",
+            "romanization": "geonganghada",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "khỏe mạnh",
+            "learnedAt": "2026-04-11T02:28:27.287Z"
+        },
+        {
+            "word": "씻다",
+            "romanization": "ssitda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "rửa",
+            "learnedAt": "2026-04-11T02:29:04.484Z"
+        },
+        {
+            "word": "손님",
+            "romanization": "sonnim",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "khách, vị khách",
+            "learnedAt": "2026-04-04T08:01:38.000Z"
+        },
+        {
+            "word": "만",
+            "romanization": "man",
+            "tier": 2,
+            "pos": "조사",
+            "meaning_vi": "chỉ, chỉ có (trợ từ giới hạn)",
+            "learnedAt": "2026-04-04T08:01:39.000Z"
+        },
+        {
+            "word": "도",
+            "romanization": "do",
+            "tier": 1,
+            "pos": "조사",
+            "meaning_vi": "cũng (trợ từ)",
+            "learnedAt": "2026-04-04T08:01:40.000Z"
+        },
+        {
+            "word": "이나",
+            "romanization": "ina",
+            "tier": 2,
+            "pos": "조사",
+            "meaning_vi": "tận, những, tới (trợ từ nhấn mạnh số lượng)",
+            "learnedAt": "2026-04-04T08:01:41.000Z"
+        },
+        {
+            "word": "이",
+            "romanization": "i",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "răng",
+            "learnedAt": "2026-04-04T08:01:42.000Z"
+        },
+        {
+            "word": "닦다",
+            "romanization": "dakda",
+            "tier": 2,
+            "pos": "동사",
+            "meaning_vi": "đánh (răng), lau, chùi",
+            "learnedAt": "2026-04-04T08:01:43.000Z"
+        },
+        {
+            "word": "호텔",
+            "romanization": "hot'el",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "khách sạn",
+            "learnedAt": "2026-04-11T02:38:42.832Z"
+        },
+        {
+            "word": "이상",
+            "romanization": "isang",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "trở lên, từ ... trở lên",
+            "learnedAt": "2026-04-04T08:01:44.000Z"
+        },
+        {
+            "word": "이하",
+            "romanization": "iha",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "trở xuống, từ ... trở xuống",
+            "learnedAt": "2026-04-04T08:01:45.000Z"
+        },
+        {
+            "word": "더",
+            "romanization": "deo",
+            "tier": 1,
+            "pos": "부사",
+            "meaning_vi": "hơn, thêm",
+            "learnedAt": "2026-04-04T08:01:46.000Z"
+        },
+        {
+            "word": "덜",
+            "romanization": "deol",
+            "tier": 2,
+            "pos": "부사",
+            "meaning_vi": "ít hơn, kém hơn",
+            "learnedAt": "2026-04-04T08:01:47.000Z"
+        },
+        {
+            "word": "의",
+            "romanization": "ui",
+            "tier": 1,
+            "pos": "조사",
+            "meaning_vi": "của",
+            "learnedAt": "2026-04-11T02:50:50.353Z"
+        },
+        {
+            "word": "팀",
+            "romanization": "tim",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "đội, nhóm",
+            "learnedAt": "2026-04-04T08:01:48.000Z"
+        },
+        {
+            "word": "팬",
+            "romanization": "paen",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "fan, người hâm mộ",
+            "learnedAt": "2026-04-04T08:01:49.000Z"
+        },
+        {
+            "word": "잊다",
+            "romanization": "itda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "quên",
+            "learnedAt": "2026-04-12T02:46:35.096Z"
+        },
+        {
+            "word": "지난주",
+            "romanization": "jinanju",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "tuần trước",
+            "learnedAt": "2026-04-04T08:01:50.000Z"
+        },
+        {
+            "word": "잃어버리다",
+            "romanization": "ireobeorida",
+            "tier": 2,
+            "pos": "동사",
+            "meaning_vi": "làm mất, đánh mất",
+            "learnedAt": "2026-04-04T08:01:51.000Z"
+        },
+        {
+            "word": "싱겁다",
+            "romanization": "singgeopda",
+            "tier": 2,
+            "pos": "형용사",
+            "meaning_vi": "nhạt",
+            "learnedAt": "2026-04-04T08:01:52.000Z"
+        },
+        {
+            "word": "슬프다",
+            "romanization": "seulp'euda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "buồn",
+            "learnedAt": "2026-04-12T02:51:34.732Z"
+        },
+        {
+            "word": "사용하다",
+            "romanization": "sayonghada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "sử dụng",
+            "learnedAt": "2026-04-12T02:51:56.002Z"
+        },
+        {
+            "word": "친절하다",
+            "romanization": "chinjeolhada",
+            "tier": 2,
+            "pos": "형용사",
+            "meaning_vi": "thân thiện, tử tế",
+            "learnedAt": "2026-04-04T08:01:53.000Z"
+        },
+        {
+            "word": "초대장",
+            "romanization": "chodaejang",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "thiệp mời",
+            "learnedAt": "2026-04-04T08:01:54.000Z"
+        },
+        {
+            "word": "이기다",
+            "romanization": "igida",
+            "tier": 2,
+            "pos": "동사",
+            "meaning_vi": "thắng, chiến thắng",
+            "learnedAt": "2026-04-04T08:01:55.000Z"
+        },
+        {
+            "word": "지다",
+            "romanization": "jida",
+            "tier": 2,
+            "pos": "동사",
+            "meaning_vi": "thua, thất bại",
+            "learnedAt": "2026-04-04T08:01:56.000Z"
+        },
+        {
+            "word": "전통",
+            "romanization": "cheont'ong",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "truyền thống",
+            "learnedAt": "2026-04-12T02:56:09.092Z"
+        },
+        {
+            "word": "외국인",
+            "romanization": "oegugin",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "người nước ngoài",
+            "learnedAt": "2026-04-12T02:58:20.218Z"
+        },
+        {
+            "word": "유명하다",
+            "romanization": "yumyeonghada",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "nổi tiếng",
+            "learnedAt": "2026-04-12T02:59:36.574Z"
+        },
+        {
+            "word": "부모",
+            "romanization": "bumo",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "bố mẹ",
+            "learnedAt": "2026-04-12T03:00:51.485Z"
+        },
+        {
+            "word": "아버지",
+            "romanization": "abeochi",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "bố",
+            "learnedAt": "2026-04-12T03:00:54.853Z"
+        },
+        {
+            "word": "어머니",
+            "romanization": "eomeoni",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "mẹ",
+            "learnedAt": "2026-04-12T03:01:03.572Z"
+        },
+        {
+            "word": "축하하다",
+            "romanization": "ch'ukhahada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "chúc mừng",
+            "learnedAt": "2026-04-12T03:02:26.940Z"
+        },
+        {
+            "word": "예약",
+            "romanization": "yeyak",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "đặt chỗ",
+            "learnedAt": "2026-04-12T03:02:44.139Z"
+        },
+        {
+            "word": "음식점",
+            "romanization": "eumsikjeom",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "quán ăn, nhà hàng",
+            "learnedAt": "2026-04-04T08:01:57.000Z"
+        },
+        {
+            "word": "찻집",
+            "romanization": "chatjip",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "quán trà",
+            "learnedAt": "2026-04-04T08:01:58.000Z"
+        },
+        {
+            "word": "기념",
+            "romanization": "ginyeom",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "kỉ niệm, kỷ niệm",
+            "learnedAt": "2026-04-04T08:01:59.000Z"
+        },
+        {
+            "word": "예매",
+            "romanization": "yemae",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "đặt vé (trước)",
+            "learnedAt": "2026-04-04T08:02:00.000Z"
+        },
+        {
+            "word": "얼굴",
+            "romanization": "eolgul",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "khuôn mặt",
+            "learnedAt": "2026-04-12T07:54:43.274Z"
+        },
+        {
+            "word": "분",
+            "romanization": "bun",
+            "tier": 2,
+            "pos": "의존 명사",
+            "meaning_vi": "người (lịch sự, tôn trọng)",
+            "learnedAt": "2026-04-04T08:02:01.000Z"
+        },
+        {
+            "word": "머리",
+            "romanization": "meori",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "đầu, tóc",
+            "learnedAt": "2026-04-12T07:55:55.518Z"
+        },
+        {
+            "word": "그러나",
+            "romanization": "geureona",
+            "tier": 2,
+            "pos": "접속사",
+            "meaning_vi": "tuy nhiên",
+            "learnedAt": "2026-04-12T07:56:22.215Z"
+        },
+        {
+            "word": "색",
+            "romanization": "saek",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "màu sắc",
+            "learnedAt": "2026-04-12T07:56:46.241Z"
+        },
+        {
+            "word": "초록색",
+            "romanization": "ch'oroksaek",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "màu xanh lá",
+            "learnedAt": "2026-04-12T07:56:48.912Z"
+        },
+        {
+            "word": "파란색",
+            "romanization": "p'aransaek",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "màu xanh dương",
+            "learnedAt": "2026-04-12T07:56:49.672Z"
+        },
+        {
+            "word": "하얀색",
+            "romanization": "hayansaek",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "màu trắng",
+            "learnedAt": "2026-04-12T07:56:50.271Z"
+        },
+        {
+            "word": "빨간색",
+            "romanization": "ppalgansaek",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "màu đỏ",
+            "learnedAt": "2026-04-12T07:56:52.014Z"
+        },
+        {
+            "word": "노란색",
+            "romanization": "noransaek",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "màu vàng",
+            "learnedAt": "2026-04-12T07:56:52.974Z"
+        },
+        {
+            "word": "까만색",
+            "romanization": "kkamansaek",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "màu đen",
+            "learnedAt": "2026-04-12T07:56:53.446Z"
+        },
+        {
+            "word": "가끔",
+            "romanization": "gakkeum",
+            "tier": 1,
+            "pos": "부사",
+            "meaning_vi": "thỉnh thoảng",
+            "learnedAt": "2026-04-13T12:59:34.991Z"
+        },
+        {
+            "word": "매우",
+            "romanization": "maeu",
+            "tier": 1,
+            "pos": "부사",
+            "meaning_vi": "rất, vô cùng",
+            "learnedAt": "2026-04-13T12:59:46.386Z"
+        },
+        {
+            "word": "다시",
+            "romanization": "dasi",
+            "tier": 1,
+            "pos": "부사",
+            "meaning_vi": "lại, lần nữa",
+            "learnedAt": "2026-04-13T13:00:18.698Z"
+        },
+        {
+            "word": "꼭",
+            "romanization": "kkok",
+            "tier": 1,
+            "pos": "부사",
+            "meaning_vi": "nhất định",
+            "learnedAt": "2026-04-13T13:00:26.340Z"
+        },
+        {
+            "word": "곧",
+            "romanization": "got",
+            "tier": 1,
+            "pos": "부사",
+            "meaning_vi": "sắp, ngay",
+            "learnedAt": "2026-04-13T13:00:46.765Z"
+        },
+        {
+            "word": "아직",
+            "romanization": "achik",
+            "tier": 1,
+            "pos": "부사",
+            "meaning_vi": "chưa, vẫn chưa (thường đi với phủ định)",
+            "learnedAt": "2026-04-13T13:01:45.346Z"
+        },
+        {
+            "word": "이따가",
+            "romanization": "ittaga",
+            "tier": 2,
+            "pos": "부사",
+            "meaning_vi": "lát nữa, chút nữa",
+            "learnedAt": "2026-04-04T08:02:02.000Z"
+        },
+        {
+            "word": "아까",
+            "romanization": "akka",
+            "tier": 2,
+            "pos": "부사",
+            "meaning_vi": "lúc nãy, vừa xong, hồi nãy",
+            "learnedAt": "2026-04-04T08:02:03.000Z"
+        },
+        {
+            "word": "거의",
+            "romanization": "geoui",
+            "tier": 2,
+            "pos": "부사",
+            "meaning_vi": "hầu như, gần như",
+            "learnedAt": "2026-04-04T08:02:04.000Z"
+        },
+        {
+            "word": "별로",
+            "romanization": "byeollo",
+            "tier": 2,
+            "pos": "부사",
+            "meaning_vi": "không lắm, không mấy (thường đi với phủ định)",
+            "learnedAt": "2026-04-04T08:02:05.000Z"
+        },
+        {
+            "word": "어둡다",
+            "romanization": "eodupda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "tối",
+            "learnedAt": "2026-04-13T13:21:55.934Z"
+        },
+        {
+            "word": "바꾸다",
+            "romanization": "bakkuda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "đổi, thay",
+            "learnedAt": "2026-04-13T13:22:11.241Z"
+        },
+        {
+            "word": "생각",
+            "romanization": "saenggak",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "suy nghĩ",
+            "learnedAt": "2026-04-13T13:26:21.609Z"
+        },
+        {
+            "word": "생각하다",
+            "romanization": "saenggakhada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "suy nghĩ",
+            "learnedAt": "2026-04-13T13:26:28.699Z"
+        },
+        {
+            "word": "기분",
+            "romanization": "gibun",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "tâm trạng",
+            "learnedAt": "2026-04-13T13:26:50.872Z"
+        },
+        {
+            "word": "미용실",
+            "romanization": "miyongsil",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "tiệm tóc, salon tóc",
+            "learnedAt": "2026-04-04T08:02:06.000Z"
+        },
+        {
+            "word": "어울리다",
+            "romanization": "eoullida",
+            "tier": 2,
+            "pos": "동사",
+            "meaning_vi": "phù hợp, hợp với, trông đẹp",
+            "learnedAt": "2026-04-04T08:02:07.000Z"
+        },
+        {
+            "word": "힘들다",
+            "romanization": "himdeulda",
+            "tier": 2,
+            "pos": "형용사",
+            "meaning_vi": "vất vả, khó khăn, mệt mỏi",
+            "learnedAt": "2026-04-04T08:02:08.000Z"
+        },
+        {
+            "word": "생기다",
+            "romanization": "saengida",
+            "tier": 2,
+            "pos": "동사",
+            "meaning_vi": "nảy ra, phát sinh, xuất hiện",
+            "learnedAt": "2026-04-04T08:02:09.000Z"
+        },
+        {
+            "word": "낚시",
+            "romanization": "naksi",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "câu cá",
+            "learnedAt": "2026-04-04T08:02:10.000Z"
+        },
+        {
+            "word": "멋지다",
+            "romanization": "meotjida",
+            "tier": 2,
+            "pos": "형용사",
+            "meaning_vi": "tuyệt vời, tuyệt đẹp",
+            "learnedAt": "2026-04-04T08:02:11.000Z"
+        },
+        {
+            "word": "좋아지다",
+            "romanization": "joajida",
+            "tier": 2,
+            "pos": "동사",
+            "meaning_vi": "trở nên tốt hơn, được cải thiện",
+            "learnedAt": "2026-04-04T08:02:12.000Z"
+        },
+        {
+            "word": "초대하다",
+            "romanization": "ch'odaehada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "mời",
+            "learnedAt": "2026-04-13T13:36:40.686Z"
+        },
+        {
+            "word": "빵",
+            "romanization": "ppang",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "bánh mì",
+            "learnedAt": "2026-04-13T13:36:47.692Z"
+        },
+        {
+            "word": "취미",
+            "romanization": "ch'wimi",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "sở thích",
+            "learnedAt": "2026-04-13T13:37:31.592Z"
+        },
+        {
+            "word": "방학",
+            "romanization": "banghak",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "kỳ nghỉ (trường)",
+            "learnedAt": "2026-04-13T13:38:14.664Z"
+        },
+        {
+            "word": "가격",
+            "romanization": "gagyeok",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "giá cả",
+            "learnedAt": "2026-04-13T13:38:31.914Z"
+        },
+        {
+            "word": "수업",
+            "romanization": "sueop",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "bài học, tiết học",
+            "learnedAt": "2026-04-13T13:39:20.079Z"
+        },
+        {
+            "word": "지갑",
+            "romanization": "chigap",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "ví",
+            "learnedAt": "2026-04-13T13:40:09.703Z"
+        },
+        {
+            "word": "목",
+            "romanization": "mok",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "cổ",
+            "learnedAt": "2026-04-13T13:41:50.013Z"
+        },
+        {
+            "word": "목마르다",
+            "romanization": "mongmareuda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "khát",
+            "learnedAt": "2026-04-13T13:42:55.166Z"
+        },
+        {
+            "word": "신발",
+            "romanization": "sinbal",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "giày",
+            "learnedAt": "2026-04-13T13:43:28.294Z"
+        },
+        {
+            "word": "오래되다",
+            "romanization": "oraedoeda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "cũ, lâu",
+            "learnedAt": "2026-04-13T13:46:10.779Z"
+        },
+        {
+            "word": "발",
+            "romanization": "bal",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "chân",
+            "learnedAt": "2026-04-13T13:47:25.636Z"
+        },
+        {
+            "word": "다리",
+            "romanization": "dari",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "chân (đùi), cầu",
+            "learnedAt": "2026-04-13T13:47:26.122Z"
+        },
+        {
+            "word": "손",
+            "romanization": "son",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "tay",
+            "learnedAt": "2026-04-13T13:47:29.555Z"
+        },
+        {
+            "word": "바지",
+            "romanization": "bachi",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "quần dài",
+            "learnedAt": "2026-04-13T13:48:01.821Z"
+        },
+        {
+            "word": "짧다",
+            "romanization": "tralda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "ngắn",
+            "learnedAt": "2026-04-13T13:48:15.165Z"
+        },
+        {
+            "word": "길다",
+            "romanization": "gilda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "dài",
+            "learnedAt": "2026-04-13T13:48:28.964Z"
+        },
+        {
+            "word": "아프다",
+            "romanization": "ap'euda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "đau, ốm",
+            "learnedAt": "2026-04-13T13:48:45.316Z"
+        },
+        {
+            "word": "전화",
+            "romanization": "cheonhwa",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "điện thoại",
+            "learnedAt": "2026-04-13T13:49:24.436Z"
+        },
+        {
+            "word": "케이크",
+            "romanization": "keikeu",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "bánh kem, bánh ngọt",
+            "learnedAt": "2026-04-04T08:02:13.000Z"
+        },
+        {
+            "word": "쇼핑",
+            "romanization": "syoping",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "mua sắm, shopping",
+            "learnedAt": "2026-04-04T08:02:14.000Z"
+        },
+        {
+            "word": "구두",
+            "romanization": "gudu",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "giày cao gót, giày da",
+            "learnedAt": "2026-04-04T08:02:15.000Z"
+        },
+        {
+            "word": "주",
+            "romanization": "chu",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "tuần",
+            "learnedAt": "2026-04-15T01:50:23.712Z"
+        },
+        {
+            "word": "이번 주",
+            "romanization": "ibeon ju",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "tuần này",
+            "learnedAt": "2026-04-04T08:02:16.000Z"
+        },
+        {
+            "word": "다음 주",
+            "romanization": "daeum ju",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "tuần sau",
+            "learnedAt": "2026-04-04T08:02:17.000Z"
+        },
+        {
+            "word": "나가다",
+            "romanization": "nagada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "đi ra",
+            "learnedAt": "2026-04-15T01:55:35.724Z"
+        },
+        {
+            "word": "들어가다",
+            "romanization": "deureogada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "đi vào",
+            "learnedAt": "2026-04-15T01:56:07.879Z"
+        },
+        {
+            "word": "들어오다",
+            "romanization": "deureooda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "đi vào (đến)",
+            "learnedAt": "2026-04-15T01:56:08.566Z"
+        },
+        {
+            "word": "내려가다",
+            "romanization": "naeryeogada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "đi xuống",
+            "learnedAt": "2026-04-15T01:56:20.904Z"
+        },
+        {
+            "word": "공연",
+            "romanization": "gongyeon",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "buổi biểu diễn",
+            "learnedAt": "2026-04-15T01:57:50.334Z"
+        },
+        {
+            "word": "같다",
+            "romanization": "gatda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "giống",
+            "learnedAt": "2026-04-15T01:58:09.320Z"
+        },
+        {
+            "word": "다르다",
+            "romanization": "dareuda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "khác",
+            "learnedAt": "2026-04-15T01:58:19.929Z"
+        },
+        {
+            "word": "인터넷",
+            "romanization": "int'eonet",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "internet",
+            "learnedAt": "2026-04-15T01:59:12.611Z"
+        },
+        {
+            "word": "부장",
+            "romanization": "buchang",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "trưởng phòng",
+            "learnedAt": "2026-04-15T01:59:55.760Z"
+        },
+        {
+            "word": "컴퓨터",
+            "romanization": "k'eomp'yut'eo",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "máy tính",
+            "learnedAt": "2026-04-15T02:10:36.691Z"
+        },
+        {
+            "word": "까지",
+            "romanization": "kkachi",
+            "tier": 1,
+            "pos": "조사",
+            "meaning_vi": "đến, tới",
+            "learnedAt": "2026-04-15T02:13:15.102Z"
+        },
+        {
+            "word": "멀다",
+            "romanization": "meolda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "xa",
+            "learnedAt": "2026-04-15T02:14:01.473Z"
+        },
+        {
+            "word": "화장실",
+            "romanization": "hwachangsil",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "nhà vệ sinh",
+            "learnedAt": "2026-04-15T02:16:25.396Z"
+        },
+        {
+            "word": "혼자",
+            "romanization": "honcha",
+            "tier": 1,
+            "pos": "부사",
+            "meaning_vi": "một mình",
+            "learnedAt": "2026-04-15T02:20:13.511Z"
+        },
+        {
+            "word": "출구",
+            "romanization": "chulgu",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "lối ra, cửa ra",
+            "learnedAt": "2026-04-04T08:02:18.000Z"
+        },
+        {
+            "word": "입구",
+            "romanization": "ipgu",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "lối vào, cửa vào",
+            "learnedAt": "2026-04-04T08:02:19.000Z"
+        },
+        {
+            "word": "자리",
+            "romanization": "jari",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "chỗ, chỗ ngồi, vị trí",
+            "learnedAt": "2026-04-04T08:02:20.000Z"
+        },
+        {
+            "word": "노트북",
+            "romanization": "noteubuk",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "laptop, máy tính xách tay",
+            "learnedAt": "2026-04-04T08:02:21.000Z"
+        },
+        {
+            "word": "근처",
+            "romanization": "geuncheo",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "gần, khu vực gần đó",
+            "learnedAt": "2026-04-04T08:02:22.000Z"
+        },
+        {
+            "word": "개인",
+            "romanization": "gaein",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "cá nhân",
+            "learnedAt": "2026-04-04T08:02:23.000Z"
+        },
+        {
+            "word": "하숙집",
+            "romanization": "hasukjip",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "nhà trọ",
+            "learnedAt": "2026-04-04T08:02:24.000Z"
+        },
+        {
+            "word": "아주머니",
+            "romanization": "ajumeoni",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "chủ nhà, chủ trọ (cách gọi người phụ nữ trung tuổi)",
+            "learnedAt": "2026-04-04T08:02:25.000Z"
+        },
+        {
+            "word": "누나",
+            "romanization": "nuna",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "chị gái (nam gọi)",
+            "learnedAt": "2026-04-15T02:23:30.676Z"
+        },
+        {
+            "word": "언니",
+            "romanization": "eonni",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "chị gái (nữ gọi)",
+            "learnedAt": "2026-04-15T02:23:31.259Z"
+        },
+        {
+            "word": "형",
+            "romanization": "hyeong",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "anh trai (nam gọi)",
+            "learnedAt": "2026-04-15T02:23:39.901Z"
+        },
+        {
+            "word": "오빠",
+            "romanization": "oppa",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "anh trai (nữ gọi)",
+            "learnedAt": "2026-04-15T02:23:41.694Z"
+        },
+        {
+            "word": "돌아오다",
+            "romanization": "doraoda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "trở lại",
+            "learnedAt": "2026-04-15T02:23:59.237Z"
+        },
+        {
+            "word": "꽃",
+            "romanization": "kkot",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "hoa",
+            "learnedAt": "2026-04-15T02:24:22.361Z"
+        },
+        {
+            "word": "행복하다",
+            "romanization": "haengbokhada",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "hạnh phúc",
+            "learnedAt": "2026-04-15T02:26:28.474Z"
+        },
+        {
+            "word": "이사하다",
+            "romanization": "isahada",
+            "tier": 2,
+            "pos": "동사",
+            "meaning_vi": "chuyển nhà",
+            "learnedAt": "2026-04-15T02:29:13.222Z"
+        },
+        {
+            "word": "쯤",
+            "romanization": "jjeum",
+            "tier": 2,
+            "pos": "조사",
+            "meaning_vi": "khoảng, tầm (ước chừng)",
+            "learnedAt": "2026-04-04T08:02:26.000Z"
+        },
+        {
+            "word": "주유소",
+            "romanization": "juyuso",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "trạm xăng, cây xăng",
+            "learnedAt": "2026-04-04T08:02:27.000Z"
+        },
+        {
+            "word": "기름",
+            "romanization": "gireum",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "xăng, dầu, dầu mỡ",
+            "learnedAt": "2026-04-04T08:02:28.000Z"
+        },
+        {
+            "word": "드리다",
+            "romanization": "deurida",
+            "tier": 2,
+            "pos": "동사",
+            "meaning_vi": "tặng, cho, biếu (lịch sự)",
+            "learnedAt": "2026-04-04T08:02:29.000Z"
+        },
+        {
+            "word": "할머니",
+            "romanization": "halmeoni",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "bà",
+            "learnedAt": "2026-04-15T02:36:34.502Z"
+        },
+        {
+            "word": "할아버지",
+            "romanization": "harabeochi",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "ông",
+            "learnedAt": "2026-04-15T02:36:40.107Z"
+        },
+        {
+            "word": "아내",
+            "romanization": "anae",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "vợ",
+            "learnedAt": "2026-04-15T02:37:24.198Z"
+        },
+        {
+            "word": "남편",
+            "romanization": "namp'yeon",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "chồng",
+            "learnedAt": "2026-04-15T02:37:31.695Z"
+        },
+        {
+            "word": "딸",
+            "romanization": "ttal",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "con gái",
+            "learnedAt": "2026-04-15T02:37:39.139Z"
+        },
+        {
+            "word": "아들",
+            "romanization": "adeul",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "con trai",
+            "learnedAt": "2026-04-15T02:37:50.847Z"
+        },
+        {
+            "word": "운전하다",
+            "romanization": "uncheonhada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "lái xe",
+            "learnedAt": "2026-04-15T02:39:01.075Z"
+        },
+        {
+            "word": "소개하다",
+            "romanization": "sogaehada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "giới thiệu",
+            "learnedAt": "2026-04-15T02:39:08.602Z"
+        },
+        {
+            "word": "다니다",
+            "romanization": "danida",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "đi lại, đến (thường xuyên)",
+            "learnedAt": "2026-04-15T02:39:20.328Z"
+        },
+        {
+            "word": "웃다",
+            "romanization": "utda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "cười",
+            "learnedAt": "2026-04-15T02:39:36.591Z"
+        },
+        {
+            "word": "인사하다",
+            "romanization": "insahada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "chào hỏi",
+            "learnedAt": "2026-04-15T02:40:32.834Z"
+        },
+        {
+            "word": "이야기",
+            "romanization": "iyagi",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "câu chuyện",
+            "learnedAt": "2026-04-15T02:41:15.290Z"
+        },
+        {
+            "word": "수영하다",
+            "romanization": "suyeonghada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "bơi",
+            "learnedAt": "2026-04-15T02:42:39.372Z"
+        },
+        {
+            "word": "일어나다",
+            "romanization": "ireonada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "thức dậy, xảy ra",
+            "learnedAt": "2026-04-15T02:44:44.155Z"
+        },
+        {
+            "word": "교실",
+            "romanization": "gyosil",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "phòng học",
+            "learnedAt": "2026-04-18T02:09:21.594Z"
+        },
+        {
+            "word": "노래",
+            "romanization": "norae",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "bài hát",
+            "learnedAt": "2026-04-18T02:10:44.152Z"
+        },
+        {
+            "word": "층",
+            "romanization": "cheung",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "tầng (tòa nhà)",
+            "learnedAt": "2026-04-04T08:02:30.000Z"
+        },
+        {
+            "word": "술집",
+            "romanization": "suljip",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "quán rượu, quán nhậu",
+            "learnedAt": "2026-04-04T08:02:31.000Z"
+        },
+        {
+            "word": "노래방",
+            "romanization": "noraebang",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "phòng hát karaoke",
+            "learnedAt": "2026-04-04T08:02:32.000Z"
+        },
+        {
+            "word": "서점",
+            "romanization": "seojeom",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "hiệu sách, nhà sách",
+            "learnedAt": "2026-04-04T08:02:33.000Z"
+        },
+        {
+            "word": "옷 가게",
+            "romanization": "ot gage",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "cửa hàng quần áo",
+            "learnedAt": "2026-04-04T08:02:34.000Z"
+        },
+        {
+            "word": "문구점",
+            "romanization": "mungujeom",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "cửa hàng văn phòng phẩm",
+            "learnedAt": "2026-04-04T08:02:35.000Z"
+        },
+        {
+            "word": "치마",
+            "romanization": "ch'ima",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "váy",
+            "learnedAt": "2026-04-18T08:22:40.060Z"
+        },
+        {
+            "word": "기차",
+            "romanization": "gich'a",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "tàu hỏa",
+            "learnedAt": "2026-04-19T01:25:42.644Z"
+        },
+        {
+            "word": "지하철",
+            "romanization": "chihach'eol",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "tàu điện ngầm",
+            "learnedAt": "2026-04-19T01:25:43.324Z"
+        },
+        {
+            "word": "비행기",
+            "romanization": "bihaenggi",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "máy bay",
+            "learnedAt": "2026-04-19T01:25:52.644Z"
+        },
+        {
+            "word": "소포",
+            "romanization": "sopo",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "bưu phẩm, gói hàng",
+            "learnedAt": "2026-04-04T08:02:36.000Z"
+        },
+        {
+            "word": "나이",
+            "romanization": "nai",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "tuổi",
+            "learnedAt": "2026-04-04T08:02:37.000Z"
+        },
+        {
+            "word": "계획",
+            "romanization": "gyehoek",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "kế hoạch",
+            "learnedAt": "2026-04-04T08:02:38.000Z"
+        },
+        {
+            "word": "작다",
+            "romanization": "chakda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "nhỏ, bé",
+            "learnedAt": "2026-04-19T01:36:22.656Z"
+        },
+        {
+            "word": "낮다",
+            "romanization": "natda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "thấp",
+            "learnedAt": "2026-04-19T01:37:08.647Z"
+        },
+        {
+            "word": "불편하다",
+            "romanization": "bulp'yeonhada",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "bất tiện",
+            "learnedAt": "2026-04-19T01:37:26.749Z"
+        },
+        {
+            "word": "편하다",
+            "romanization": "p'yeonhada",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "thoải mái, tiện",
+            "learnedAt": "2026-04-19T01:37:32.683Z"
+        },
+        {
+            "word": "버스",
+            "romanization": "beoseu",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "xe buýt",
+            "learnedAt": "2026-04-19T01:39:53.111Z"
+        },
+        {
+            "word": "배",
+            "romanization": "bae",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "bụng, thuyền, lê",
+            "learnedAt": "2026-04-19T01:40:16.842Z"
+        },
+        {
+            "word": "택시",
+            "romanization": "t'aeksi",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "taxi",
+            "learnedAt": "2026-04-19T01:40:29.570Z"
+        },
+        {
+            "word": "자전거",
+            "romanization": "chacheongeo",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "xe đạp",
+            "learnedAt": "2026-04-19T01:40:39.001Z"
+        },
+        {
+            "word": "타다",
+            "romanization": "t'ada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "đi (xe), cháy",
+            "learnedAt": "2026-04-19T01:41:56.950Z"
+        },
+        {
+            "word": "내리다",
+            "romanization": "naerida",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "xuống (xe), rơi",
+            "learnedAt": "2026-04-19T01:42:01.516Z"
+        },
+        {
+            "word": "표",
+            "romanization": "p'yo",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "vé",
+            "learnedAt": "2026-04-19T01:42:15.642Z"
+        },
+        {
+            "word": "신다",
+            "romanization": "sinda",
+            "tier": 2,
+            "pos": "동사",
+            "meaning_vi": "mang, xỏ (giày, dép, tất...)",
+            "learnedAt": "2026-04-04T08:02:39.000Z"
+        },
+        {
+            "word": "셔츠",
+            "romanization": "syeocheu",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "áo sơ mi",
+            "learnedAt": "2026-04-04T08:02:40.000Z"
+        },
+        {
+            "word": "두껍다",
+            "romanization": "dukkeopda",
+            "tier": 2,
+            "pos": "형용사",
+            "meaning_vi": "dày",
+            "learnedAt": "2026-04-04T08:02:41.000Z"
+        },
+        {
+            "word": "얇다",
+            "romanization": "yalda",
+            "tier": 2,
+            "pos": "형용사",
+            "meaning_vi": "mỏng",
+            "learnedAt": "2026-04-04T08:02:42.000Z"
+        },
+        {
+            "word": "오토바이",
+            "romanization": "otobai",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "xe máy, xe mô tô",
+            "learnedAt": "2026-04-04T08:02:43.000Z"
+        },
+        {
+            "word": "고맙습니다",
+            "romanization": "gomapseumnida",
+            "tier": 1,
+            "pos": "감탄사",
+            "meaning_vi": "cảm ơn",
+            "learnedAt": "2026-04-19T14:06:13.531Z"
+        },
+        {
+            "word": "죄송합니다",
+            "romanization": "choesonghamnida",
+            "tier": 1,
+            "pos": "감탄사",
+            "meaning_vi": "xin lỗi",
+            "learnedAt": "2026-04-19T14:06:38.152Z"
+        },
+        {
+            "word": "몸",
+            "romanization": "mom",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "cơ thể",
+            "learnedAt": "2026-04-19T14:18:52.667Z"
+        },
+        {
+            "word": "어깨",
+            "romanization": "eokkae",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "vai",
+            "learnedAt": "2026-04-19T14:19:31.658Z"
+        },
+        {
+            "word": "코",
+            "romanization": "k'o",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "mũi",
+            "learnedAt": "2026-04-19T14:20:54.888Z"
+        },
+        {
+            "word": "입",
+            "romanization": "ip",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "miệng",
+            "learnedAt": "2026-04-19T14:21:03.262Z"
+        },
+        {
+            "word": "귀",
+            "romanization": "gwi",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "tai",
+            "learnedAt": "2026-04-19T14:21:10.500Z"
+        },
+        {
+            "word": "편지",
+            "romanization": "p'yeonchi",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "thư",
+            "learnedAt": "2026-04-19T14:26:12.602Z"
+        },
+        {
+            "word": "낮",
+            "romanization": "nat",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "ban ngày",
+            "learnedAt": "2026-04-19T14:26:25.050Z"
+        },
+        {
+            "word": "영수증",
+            "romanization": "yeongsucheung",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "hóa đơn",
+            "learnedAt": "2026-04-19T14:27:44.236Z"
+        },
+        {
+            "word": "좋아하다",
+            "romanization": "choahada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "thích",
+            "learnedAt": "2026-04-19T14:28:39.733Z"
+        },
+        {
+            "word": "배달",
+            "romanization": "baedal",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "giao hàng",
+            "learnedAt": "2026-04-19T14:29:11.064Z"
+        },
+        {
+            "word": "늦다",
+            "romanization": "neutda",
+            "tier": 2,
+            "pos": "형용사",
+            "meaning_vi": "muộn, trễ",
+            "learnedAt": "2026-04-04T08:02:44.000Z"
+        },
+        {
+            "word": "고마워요",
+            "romanization": "gomawoyo",
+            "tier": 1,
+            "pos": "감탄사",
+            "meaning_vi": "cảm ơn (thân mật, lịch sự vừa)",
+            "learnedAt": "2026-04-04T08:02:45.000Z"
+        },
+        {
+            "word": "아니에요",
+            "romanization": "anieyo",
+            "tier": 1,
+            "pos": "감탄사",
+            "meaning_vi": "không sao, không phải vậy",
+            "learnedAt": "2026-04-04T08:02:46.000Z"
+        },
+        {
+            "word": "부탁해요",
+            "romanization": "butakaeyo",
+            "tier": 2,
+            "pos": "감탄사",
+            "meaning_vi": "vui lòng, nhờ vả, nhờ bạn",
+            "learnedAt": "2026-04-04T08:02:47.000Z"
+        },
+        {
+            "word": "맞습니다",
+            "romanization": "matseumnida",
+            "tier": 2,
+            "pos": "감탄사",
+            "meaning_vi": "đúng vậy, chính xác",
+            "learnedAt": "2026-04-04T08:02:48.000Z"
+        },
+        {
+            "word": "괜찮다",
+            "romanization": "gwaenchanta",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "không sao, ổn",
+            "learnedAt": "2026-04-04T08:02:49.000Z"
+        },
+        {
+            "word": "실례합니다",
+            "romanization": "sillyehamnida",
+            "tier": 2,
+            "pos": "감탄사",
+            "meaning_vi": "xin lỗi, thất lễ (khi làm phiền)",
+            "learnedAt": "2026-04-04T08:02:50.000Z"
+        },
+        {
+            "word": "신체",
+            "romanization": "sinche",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "thân thể, cơ thể",
+            "learnedAt": "2026-04-04T08:02:51.000Z"
+        },
+        {
+            "word": "가슴",
+            "romanization": "gaseum",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "ngực",
+            "learnedAt": "2026-04-04T08:02:52.000Z"
+        },
+        {
+            "word": "무릎",
+            "romanization": "mureup",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "đầu gối",
+            "learnedAt": "2026-04-04T08:02:53.000Z"
+        },
+        {
+            "word": "증상",
+            "romanization": "jeungsang",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "triệu chứng",
+            "learnedAt": "2026-04-04T08:02:54.000Z"
+        },
+        {
+            "word": "전자 상가",
+            "romanization": "jeonja sangga",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "trung tâm mua sắm điện tử",
+            "learnedAt": "2026-04-04T08:02:55.000Z"
+        },
+        {
+            "word": "엘리베이터",
+            "romanization": "ellibeiteo",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "thang máy",
+            "learnedAt": "2026-04-04T08:02:56.000Z"
+        },
+        {
+            "word": "정류장",
+            "romanization": "jeongnyujang",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "trạm dừng, bến xe",
+            "learnedAt": "2026-04-04T08:02:57.000Z"
+        },
+        {
+            "word": "달력",
+            "romanization": "dallyeok",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "lịch, tờ lịch",
+            "learnedAt": "2026-04-04T08:02:58.000Z"
+        },
+        {
+            "word": "날짜",
+            "romanization": "naljja",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "ngày, ngày tháng",
+            "learnedAt": "2026-04-04T08:02:59.000Z"
+        },
+        {
+            "word": "휴일",
+            "romanization": "hyuil",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "ngày nghỉ",
+            "learnedAt": "2026-04-04T08:03:00.000Z"
+        },
+        {
+            "word": "자라다",
+            "romanization": "jarada",
+            "tier": 2,
+            "pos": "동사",
+            "meaning_vi": "lớn lên, trưởng thành",
+            "learnedAt": "2026-04-04T08:01:29.000Z"
+        },
+        {
+            "word": "출근하다",
+            "romanization": "chulgeunhada",
+            "tier": 2,
+            "pos": "동사",
+            "meaning_vi": "đi làm, đến chỗ làm",
+            "learnedAt": "2026-04-04T08:01:30.000Z"
+        },
+        {
+            "word": "퇴근하다",
+            "romanization": "toegeunhada",
+            "tier": 2,
+            "pos": "동사",
+            "meaning_vi": "tan làm, rời chỗ làm",
+            "learnedAt": "2026-04-04T08:01:31.000Z"
+        },
+        {
+            "word": "동료",
+            "romanization": "dongnyo",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "đồng nghiệp",
+            "learnedAt": "2026-04-04T08:01:32.000Z"
+        },
+        {
+            "word": "시끄럽다",
+            "romanization": "sikkeureopda",
+            "tier": 2,
+            "pos": "형용사",
+            "meaning_vi": "ồn ào, náo nhiệt",
+            "learnedAt": "2026-04-04T08:01:33.000Z"
+        },
+        {
+            "word": "끄다",
+            "romanization": "kkeuda",
+            "tier": 2,
+            "pos": "동사",
+            "meaning_vi": "tắt (đèn, máy...)",
+            "learnedAt": "2026-04-04T08:01:34.000Z"
+        },
+        {
+            "word": "켜다",
+            "romanization": "kyeoda",
+            "tier": 2,
+            "pos": "동사",
+            "meaning_vi": "bật (đèn, máy...)",
+            "learnedAt": "2026-04-04T08:01:35.000Z"
+        },
+        {
+            "word": "닫다",
+            "romanization": "datda",
+            "tier": 2,
+            "pos": "동사",
+            "meaning_vi": "đóng (cửa, cửa sổ...)",
+            "learnedAt": "2026-04-04T08:01:36.000Z"
+        },
+        {
+            "word": "열다",
+            "romanization": "yeolda",
+            "tier": 2,
+            "pos": "동사",
+            "meaning_vi": "mở (cửa, cửa sổ...)",
+            "learnedAt": "2026-04-04T08:01:37.000Z"
+        },
+        {
+            "word": "아이",
+            "romanization": "ai",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "trẻ em",
+            "learnedAt": "2026-04-20T13:53:56.178Z"
+        },
+        {
+            "word": "회의",
+            "romanization": "hoeui",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "cuộc họp",
+            "learnedAt": "2026-04-20T13:56:16.995Z"
+        },
+        {
+            "word": "안녕히 계세요",
+            "romanization": "annyeonghi gyeseyo",
+            "tier": 1,
+            "pos": "감탄사",
+            "meaning_vi": "tạm biệt (người ở)",
+            "learnedAt": "2026-04-20T13:57:39.616Z"
+        },
+        {
+            "word": "안녕히 가세요",
+            "romanization": "annyeonghi gaseyo",
+            "tier": 1,
+            "pos": "감탄사",
+            "meaning_vi": "tạm biệt (người đi)",
+            "learnedAt": "2026-04-20T13:58:07.852Z"
+        },
+        {
+            "word": "축하합니다",
+            "romanization": "ch'ukhahamnida",
+            "tier": 1,
+            "pos": "감탄사",
+            "meaning_vi": "chúc mừng",
+            "learnedAt": "2026-04-20T14:01:18.404Z"
+        },
+        {
+            "word": "아파트",
+            "romanization": "ap'at'eu",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "chung cư",
+            "learnedAt": "2026-04-20T14:13:48.422Z"
+        },
+        {
+            "word": "약",
+            "romanization": "yak",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "thuốc",
+            "learnedAt": "2026-04-20T14:14:04.974Z"
+        },
+        {
+            "word": "온도",
+            "romanization": "ondo",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "nhiệt độ",
+            "learnedAt": "2026-04-20T14:18:46.321Z"
+        },
+        {
+            "word": "주문",
+            "romanization": "chumun",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "đặt hàng",
+            "learnedAt": "2026-04-20T14:19:15.154Z"
+        },
+        {
+            "word": "콘서트",
+            "romanization": "konseoteu",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "buổi biểu diễn, concert",
+            "learnedAt": "2026-04-04T08:03:01.000Z"
+        },
+        {
+            "word": "어서 오세요",
+            "romanization": "eoseo oseyo",
+            "tier": 2,
+            "pos": "감탄사",
+            "meaning_vi": "chào mừng, mời vào",
+            "learnedAt": "2026-04-04T08:03:02.000Z"
+        },
+        {
+            "word": "알겠습니다",
+            "romanization": "algesseumnida",
+            "tier": 1,
+            "pos": "감탄사",
+            "meaning_vi": "được rồi, biết rồi, hiểu rồi",
+            "learnedAt": "2026-04-04T08:03:03.000Z"
+        },
+        {
+            "word": "부탁합니다",
+            "romanization": "butakamnida",
+            "tier": 2,
+            "pos": "감탄사",
+            "meaning_vi": "vui lòng, nhờ vả (lịch sự hơn 부탁해요)",
+            "learnedAt": "2026-04-04T08:03:04.000Z"
+        },
+        {
+            "word": "수고하셨습니다",
+            "romanization": "sugohasyeosseumnida",
+            "tier": 2,
+            "pos": "감탄사",
+            "meaning_vi": "bạn đã vất vả rồi, cảm ơn vì sự cố gắng",
+            "learnedAt": "2026-04-04T08:03:05.000Z"
+        },
+        {
+            "word": "학원",
+            "romanization": "hagwon",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "trung tâm học thêm, học viện",
+            "learnedAt": "2026-04-04T08:03:06.000Z"
+        },
+        {
+            "word": "슈퍼마켓",
+            "romanization": "syupeomaket",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "siêu thị",
+            "learnedAt": "2026-04-04T08:03:07.000Z"
+        },
+        {
+            "word": "마트",
+            "romanization": "mateu",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "siêu thị (đại siêu thị)",
+            "learnedAt": "2026-04-04T08:03:08.000Z"
+        },
+        {
+            "word": "으로\/로",
+            "romanization": "euro\/ro",
+            "tier": 1,
+            "pos": "조사",
+            "meaning_vi": "bằng, về phía",
+            "learnedAt": "2026-04-22T08:09:54.120Z"
+        },
+        {
+            "word": "고장",
+            "romanization": "gochang",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "hỏng, trục trặc",
+            "learnedAt": "2026-04-22T13:47:11.794Z"
+        },
+        {
+            "word": "값",
+            "romanization": "gap",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "giá",
+            "learnedAt": "2026-04-22T13:48:27.820Z"
+        },
+        {
+            "word": "규칙",
+            "romanization": "gyuch'ik",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "quy tắc",
+            "learnedAt": "2026-04-22T14:14:54.479Z"
+        },
+        {
+            "word": "벌써",
+            "romanization": "beolsseo",
+            "tier": 1,
+            "pos": "부사",
+            "meaning_vi": "đã, rồi",
+            "learnedAt": "2026-04-22T14:15:25.543Z"
+        },
+        {
+            "word": "이미",
+            "romanization": "imi",
+            "tier": 1,
+            "pos": "부사",
+            "meaning_vi": "đã rồi",
+            "learnedAt": "2026-04-22T14:16:06.966Z"
+        },
+        {
+            "word": "빠르다",
+            "romanization": "ppareuda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "nhanh",
+            "learnedAt": "2026-04-22T14:16:49.798Z"
+        },
+        {
+            "word": "빨리",
+            "romanization": "ppalli",
+            "tier": 1,
+            "pos": "부사",
+            "meaning_vi": "nhanh",
+            "learnedAt": "2026-04-22T14:16:50.294Z"
+        },
+        {
+            "word": "느리다",
+            "romanization": "neurida",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "chậm",
+            "learnedAt": "2026-04-22T14:16:56.126Z"
+        },
+        {
+            "word": "둔하다",
+            "romanization": "dunhada",
+            "tier": 2,
+            "pos": "형용사",
+            "meaning_vi": "chậm chạp, cùn",
+            "learnedAt": "2026-04-22T14:16:56.813Z"
+        },
+        {
+            "word": "청소하다",
+            "romanization": "ch'eongsohada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "dọn dẹp",
+            "learnedAt": "2026-04-22T14:17:45.017Z"
+        },
+        {
+            "word": "부르다",
+            "romanization": "bureuda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "gọi, hát",
+            "learnedAt": "2026-04-22T14:17:59.754Z"
+        },
+        {
+            "word": "도와주다",
+            "romanization": "dowachuda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "giúp đỡ",
+            "learnedAt": "2026-04-22T14:19:02.957Z"
+        },
+        {
+            "word": "필요하다",
+            "romanization": "p'iryohada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "cần",
+            "learnedAt": "2026-04-22T14:22:28.394Z"
+        },
+        {
+            "word": "어른",
+            "romanization": "eoreun",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "người lớn",
+            "learnedAt": "2026-04-22T14:23:25.241Z"
+        },
+        {
+            "word": "에어컨",
+            "romanization": "eeokon",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "máy lạnh, điều hòa",
+            "learnedAt": "2026-04-04T08:03:09.000Z"
+        },
+        {
+            "word": "선풍기",
+            "romanization": "seonpunggi",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "quạt điện",
+            "learnedAt": "2026-04-04T08:03:10.000Z"
+        },
+        {
+            "word": "음료",
+            "romanization": "eumnyo",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "đồ uống, thức uống",
+            "learnedAt": "2026-04-04T08:03:11.000Z"
+        },
+        {
+            "word": "세탁소",
+            "romanization": "setakso",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "tiệm giặt ủi",
+            "learnedAt": "2026-04-04T08:03:12.000Z"
+        },
+        {
+            "word": "어휘",
+            "romanization": "eohwi",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "từ vựng (= 단어)",
+            "learnedAt": "2026-04-04T08:03:13.000Z"
+        },
+        {
+            "word": "갈아타다",
+            "romanization": "garatada",
+            "tier": 2,
+            "pos": "동사",
+            "meaning_vi": "đổi tuyến, chuyển tàu\/xe",
+            "learnedAt": "2026-04-04T08:03:14.000Z"
+        },
+        {
+            "word": "급여",
+            "romanization": "geubyeo",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "lương, tiền lương",
+            "learnedAt": "2026-04-04T08:03:15.000Z"
+        },
+        {
+            "word": "면허증",
+            "romanization": "myeonheojeung",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "bằng lái xe",
+            "learnedAt": "2026-04-04T08:03:16.000Z"
+        },
+        {
+            "word": "무료",
+            "romanization": "muryo",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "miễn phí",
+            "learnedAt": "2026-04-04T08:03:17.000Z"
+        },
+        {
+            "word": "수량",
+            "romanization": "suryang",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "số lượng",
+            "learnedAt": "2026-04-04T08:03:18.000Z"
+        },
+        {
+            "word": "오이",
+            "romanization": "oi",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "dưa leo, dưa chuột",
+            "learnedAt": "2026-04-04T08:03:19.000Z"
+        },
+        {
+            "word": "감자",
+            "romanization": "gamja",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "khoai tây",
+            "learnedAt": "2026-04-04T08:03:20.000Z"
+        },
+        {
+            "word": "현금",
+            "romanization": "hyeongeum",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "tiền mặt",
+            "learnedAt": "2026-04-04T08:03:21.000Z"
+        },
+        {
+            "word": "총",
+            "romanization": "chong",
+            "tier": 2,
+            "pos": "부사",
+            "meaning_vi": "tổng cộng, tất cả",
+            "learnedAt": "2026-04-04T08:03:22.000Z"
+        },
+        {
+            "word": "못",
+            "romanization": "mot",
+            "tier": 1,
+            "pos": "부사",
+            "meaning_vi": "không thể",
+            "learnedAt": "2026-04-23T13:47:24.554Z"
+        },
+        {
+            "word": "보통",
+            "romanization": "bot'ong",
+            "tier": 1,
+            "pos": "부사",
+            "meaning_vi": "thường, bình thường",
+            "learnedAt": "2026-04-23T13:55:15.381Z"
+        },
+        {
+            "word": "새롭다",
+            "romanization": "saeropda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "mới",
+            "learnedAt": "2026-04-23T14:30:17.861Z"
+        },
+        {
+            "word": "스트레스",
+            "romanization": "seut'eureseu",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "stress, căng thẳng",
+            "learnedAt": "2026-04-23T15:04:45.707Z"
+        },
+        {
+            "word": "평일",
+            "romanization": "pyeongil",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "ngày thường, ngày trong tuần",
+            "learnedAt": "2026-04-04T08:03:23.000Z"
+        },
+        {
+            "word": "새",
+            "romanization": "sae",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "chim",
+            "learnedAt": "2026-04-04T08:03:24.000Z"
+        },
+        {
+            "word": "풀다",
+            "romanization": "pulda",
+            "tier": 2,
+            "pos": "동사",
+            "meaning_vi": "giải tỏa, tháo gỡ, giải quyết",
+            "learnedAt": "2026-04-04T08:03:25.000Z"
+        },
+        {
+            "word": "극장",
+            "romanization": "geukjang",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "rạp chiếu phim, rạp hát",
+            "learnedAt": "2026-04-04T08:03:26.000Z"
+        },
+        {
+            "word": "동생",
+            "romanization": "dongsaeng",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "em trai\/em gái",
+            "learnedAt": "2026-04-24T07:25:51.005Z"
+        },
+        {
+            "word": "말하다",
+            "romanization": "malhada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "nói",
+            "learnedAt": "2026-04-24T07:31:52.032Z"
+        },
+        {
+            "word": "말",
+            "romanization": "mal",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "lời nói, ngựa",
+            "learnedAt": "2026-04-24T07:32:00.078Z"
+        },
+        {
+            "word": "연습하다",
+            "romanization": "yeonseupada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "luyện tập",
+            "learnedAt": "2026-04-24T13:02:08.680Z"
+        },
+        {
+            "word": "대회",
+            "romanization": "daehoe",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "cuộc thi",
+            "learnedAt": "2026-04-24T13:02:18.127Z"
+        },
+        {
+            "word": "경기",
+            "romanization": "gyeonggi",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "trận đấu",
+            "learnedAt": "2026-04-24T13:03:02.900Z"
+        },
+        {
+            "word": "모르다",
+            "romanization": "moreuda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "không biết",
+            "learnedAt": "2026-04-04T08:03:27.000Z"
+        },
+        {
+            "word": "바쁘다",
+            "romanization": "bappeuda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "bận rộn",
+            "learnedAt": "2026-04-04T08:03:28.000Z"
+        },
+        {
+            "word": "인원",
+            "romanization": "inwon",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "số người, sĩ số",
+            "learnedAt": "2026-04-04T08:03:29.000Z"
+        },
+        {
+            "word": "좌석",
+            "romanization": "jwaseok",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "ghế ngồi, chỗ ngồi",
+            "learnedAt": "2026-04-04T08:03:30.000Z"
+        },
+        {
+            "word": "오전",
+            "romanization": "ojeon",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "buổi sáng (AM)",
+            "learnedAt": "2026-04-04T08:03:31.000Z"
+        },
+        {
+            "word": "멀리",
+            "romanization": "meolli",
+            "tier": 2,
+            "pos": "부사",
+            "meaning_vi": "ở xa, xa xôi",
+            "learnedAt": "2026-04-04T08:03:32.000Z"
+        },
+        {
+            "word": "싫어하다",
+            "romanization": "sireohada",
+            "tier": 2,
+            "pos": "동사",
+            "meaning_vi": "không thích, ghét",
+            "learnedAt": "2026-04-04T08:03:33.000Z"
+        },
+        {
+            "word": "먼저",
+            "romanization": "meoncheo",
+            "tier": 1,
+            "pos": "부사",
+            "meaning_vi": "trước tiên",
+            "learnedAt": "2026-04-24T15:03:58.301Z"
+        },
+        {
+            "word": "피곤하다",
+            "romanization": "p'igonhada",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "mệt mỏi",
+            "learnedAt": "2026-04-24T15:11:34.246Z"
+        },
+        {
+            "word": "어서",
+            "romanization": "eoseo",
+            "tier": 2,
+            "pos": "부사",
+            "meaning_vi": "mau lên, nhanh lên",
+            "learnedAt": "2026-04-04T08:03:34.000Z"
+        },
+        {
+            "word": "줍다",
+            "romanization": "jupda",
+            "tier": 2,
+            "pos": "동사",
+            "meaning_vi": "nhặt, lượm",
+            "learnedAt": "2026-04-04T08:03:35.000Z"
+        },
+        {
+            "word": "주차장",
+            "romanization": "juchajang",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "bãi đỗ xe, bãi giữ xe",
+            "learnedAt": "2026-04-04T08:03:36.000Z"
+        },
+        {
+            "word": "분",
+            "romanization": "bun",
+            "tier": 1,
+            "pos": "의존 명사",
+            "meaning_vi": "phút",
+            "learnedAt": "2026-04-04T08:03:37.000Z"
+        },
+        {
+            "word": "축제",
+            "romanization": "chukje",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "lễ hội",
+            "learnedAt": "2026-04-04T08:03:38.000Z"
+        },
+        {
+            "word": "나중에",
+            "romanization": "najunge",
+            "tier": 2,
+            "pos": "부사",
+            "meaning_vi": "sau này, sau đó",
+            "learnedAt": "2026-04-04T08:03:39.000Z"
+        },
+        {
+            "word": "올해",
+            "romanization": "olhae",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "năm nay",
+            "learnedAt": "2026-04-04T08:03:40.000Z"
+        },
+        {
+            "word": "내년",
+            "romanization": "naenyeon",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "năm sau",
+            "learnedAt": "2026-04-04T08:03:41.000Z"
+        },
+        {
+            "word": "조용하다",
+            "romanization": "joyonghada",
+            "tier": 2,
+            "pos": "형용사",
+            "meaning_vi": "yên lặng, yên tĩnh",
+            "learnedAt": "2026-04-04T08:03:42.000Z"
+        },
+        {
+            "word": "방법",
+            "romanization": "bangbeop",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "phương pháp",
+            "learnedAt": "2026-04-26T08:27:18.799Z"
+        },
+        {
+            "word": "건강",
+            "romanization": "geongang",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "sức khỏe",
+            "learnedAt": "2026-04-28T13:10:09.766Z"
+        },
+        {
+            "word": "나무",
+            "romanization": "namu",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "cây",
+            "learnedAt": "2026-04-28T13:12:45.218Z"
+        },
+        {
+            "word": "제일",
+            "romanization": "jeil",
+            "tier": 2,
+            "pos": "부사",
+            "meaning_vi": "nhất, đầu tiên, số một",
+            "learnedAt": "2026-04-04T08:03:43.000Z"
+        },
+        {
+            "word": "일찍",
+            "romanization": "iljjik",
+            "tier": 2,
+            "pos": "부사",
+            "meaning_vi": "sớm, từ sớm",
+            "learnedAt": "2026-04-04T08:03:44.000Z"
+        },
+        {
+            "word": "계속",
+            "romanization": "gyesok",
+            "tier": 2,
+            "pos": "부사",
+            "meaning_vi": "tiếp tục, liên tục",
+            "learnedAt": "2026-04-04T08:03:45.000Z"
+        },
+        {
+            "word": "그중에서",
+            "romanization": "geujungeseo",
+            "tier": 2,
+            "pos": "부사",
+            "meaning_vi": "trong số đó, trong số những cái đó",
+            "learnedAt": "2026-04-04T08:03:46.000Z"
+        },
+        {
+            "word": "사진관",
+            "romanization": "sajingwan",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "tiệm chụp ảnh, studio ảnh",
+            "learnedAt": "2026-04-04T08:03:47.000Z"
+        },
+        {
+            "word": "가구점",
+            "romanization": "gagujeom",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "cửa hàng nội thất",
+            "learnedAt": "2026-04-04T08:03:48.000Z"
+        },
+        {
+            "word": "박물관",
+            "romanization": "bangmulgwan",
+            "tier": 2,
+            "pos": "명사",
+            "meaning_vi": "viện bảo tàng",
+            "learnedAt": "2026-04-04T08:03:49.000Z"
+        },
+        {
+            "word": "몇",
+            "romanization": "myeot",
+            "tier": 1,
+            "pos": "관형사",
+            "meaning_vi": "mấy, bao nhiêu (hỏi số lượng nhỏ)",
+            "learnedAt": "2026-04-04T08:03:50.000Z"
+        },
+        {
+            "word": "놀다",
+            "romanization": "nolda",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "chơi",
+            "learnedAt": "2026-05-02T08:27:12.461Z"
+        },
+        {
+            "word": "주스",
+            "romanization": "chuseu",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "nước ép",
+            "learnedAt": "2026-05-02T08:37:14.834Z"
+        },
+        {
+            "word": "나쁘다",
+            "romanization": "nappeuda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "xấu, tệ",
+            "learnedAt": "2026-05-02T08:46:59.915Z"
+        },
+        {
+            "word": "재미없다",
+            "romanization": "chaemieopda",
+            "tier": 1,
+            "pos": "형용사",
+            "meaning_vi": "chán, nhạt",
+            "learnedAt": "2026-05-02T08:47:24.674Z"
+        },
+        {
+            "word": "문",
+            "romanization": "mun",
+            "tier": 1,
+            "pos": "명사",
+            "meaning_vi": "cửa",
+            "learnedAt": "2026-05-04T09:06:20.501Z"
+        },
+        {
+            "word": "가다",
+            "romanization": "gada",
+            "tier": 1,
+            "pos": "동사",
+            "meaning_vi": "đi",
+            "learnedAt": "2026-05-04T11:40:14.750Z"
+        }
+    ],
+    "metadata": {
+        "description": "Danh sách từ vựng đã học",
+        "lastUpdated": "2026-05-04T11:40:14+00:00",
+        "total": 630
+    }
+}
