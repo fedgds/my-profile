@@ -1209,6 +1209,34 @@
     <a href="#projects" class="btn-primary">Xem Dự Án</a>
     <a href="#contact" class="btn-outline">Liên Hệ</a>
   </div>
+
+  <!-- VIEW COUNTER -->
+  <div class="hero-views" style="
+    margin-top: 2rem;
+    opacity: 0;
+    animation: fadeUp .8s 1.3s forwards;
+  ">
+    <div style="
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      padding: .45rem 1.1rem;
+      border: 1px solid rgba(201,168,76,.2);
+      background: rgba(201,168,76,.04);
+      font-size: .72rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+    ">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+        <circle cx="12" cy="12" r="3"/>
+      </svg>
+      <span style="color:var(--gold); font-family:'Playfair Display',serif; font-size:.85rem; font-style:italic;" id="view-count">—</span>
+      <span>lượt xem</span>
+    </div>
+  </div>
+
 </section>
 
 <!-- ABOUT -->
@@ -2868,6 +2896,41 @@ if (heroName) {
   mpFile.textContent = t0.file.split('/').pop();
 })();
 
+</script>
+
+<script>
+// ── VIEW COUNTER ──
+(function() {
+  // abacus.jasoncameron.dev — bản clone đang hoạt động của countapi.xyz
+  // Mỗi lần trang load = +1, trả về JSON { value: number }
+  fetch('https://abacus.jasoncameron.dev/hit/fedgds.github.io/my-profile-views')
+    .then(r => r.json())
+    .then(data => {
+      if (data && typeof data.value === 'number') {
+        animateCount(data.value);
+      }
+    })
+    .catch(() => {
+      const el = document.getElementById('view-count');
+      if (el) el.textContent = '—';
+    });
+
+  function animateCount(target) {
+    const el = document.getElementById('view-count');
+    if (!el) return;
+    const duration = 1200;
+    const start = performance.now();
+    function step(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3);
+      const current = Math.floor(ease * target);
+      el.textContent = current.toLocaleString('vi-VN');
+      if (progress < 1) requestAnimationFrame(step);
+      else el.textContent = target.toLocaleString('vi-VN');
+    }
+    requestAnimationFrame(step);
+  }
+})();
 </script>
 
 </body>
