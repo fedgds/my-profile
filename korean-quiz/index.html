@@ -9,7 +9,101 @@
 [data-theme="light"] { --bg: #f0f0f5; --card: #ffffff; --card2: #f5f5fa; --border: #ddd; --text: #1a1a2e; --text2: #666; --text3: #999; }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; transition: background 0.3s, color 0.3s; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; transition: background 0.3s, color 0.3s; position: relative; overflow-x: hidden; }
+
+/* ===== ANIMATED BACKGROUND ===== */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(108,92,231,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 20%, rgba(253,121,168,0.13) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 60% at 60% 90%, rgba(0,184,148,0.10) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 10% 80%, rgba(108,92,231,0.10) 0%, transparent 55%);
+  animation: bg-drift 18s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    radial-gradient(circle 1.5px at 15% 25%, rgba(108,92,231,0.5) 0%, transparent 100%),
+    radial-gradient(circle 1px at 75% 15%, rgba(253,121,168,0.5) 0%, transparent 100%),
+    radial-gradient(circle 1.5px at 85% 60%, rgba(0,206,201,0.4) 0%, transparent 100%),
+    radial-gradient(circle 1px at 35% 75%, rgba(253,203,110,0.4) 0%, transparent 100%),
+    radial-gradient(circle 1px at 55% 40%, rgba(253,121,168,0.35) 0%, transparent 100%),
+    radial-gradient(circle 1.5px at 5% 55%, rgba(108,92,231,0.4) 0%, transparent 100%),
+    radial-gradient(circle 1px at 92% 85%, rgba(0,184,148,0.4) 0%, transparent 100%),
+    radial-gradient(circle 1px at 48% 92%, rgba(108,92,231,0.35) 0%, transparent 100%);
+  animation: stars-twinkle 6s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+[data-theme="light"] body::before {
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(108,92,231,0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 20%, rgba(253,121,168,0.08) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 60% at 60% 90%, rgba(0,184,148,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 10% 80%, rgba(108,92,231,0.07) 0%, transparent 55%);
+}
+[data-theme="light"] body::after { display: none; }
+@keyframes bg-drift {
+  0%   { transform: scale(1) translateX(0) translateY(0); }
+  33%  { transform: scale(1.04) translateX(-1.5%) translateY(1%); }
+  66%  { transform: scale(0.97) translateX(1.5%) translateY(-1%); }
+  100% { transform: scale(1.02) translateX(-0.5%) translateY(0.5%); }
+}
+@keyframes stars-twinkle {
+  0%   { opacity: 0.6; }
+  50%  { opacity: 1; }
+  100% { opacity: 0.4; }
+}
+
+/* Floating Korean chars decoration */
+.bg-float-chars {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.bg-float-chars span {
+  position: absolute;
+  font-size: 1.4rem;
+  font-weight: 700;
+  opacity: 0;
+  color: var(--accent1);
+  animation: float-char linear infinite;
+  user-select: none;
+}
+[data-theme="light"] .bg-float-chars span { color: #6c5ce7; opacity: 0; }
+@keyframes float-char {
+  0%   { transform: translateY(105vh) rotate(-10deg); opacity: 0; }
+  5%   { opacity: 0.12; }
+  90%  { opacity: 0.08; }
+  100% { transform: translateY(-10vh) rotate(10deg); opacity: 0; }
+}
+
+/* Grid overlay texture */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(108,92,231,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(108,92,231,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+}
+[data-theme="light"] .bg-grid {
+  background-image:
+    linear-gradient(rgba(108,92,231,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(108,92,231,0.06) 1px, transparent 1px);
+}
 
 .header { text-align: center; padding: 30px 20px 10px; }
 .header h1 { font-size: 2rem; background: linear-gradient(135deg, var(--accent1), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
@@ -1039,6 +1133,9 @@ body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--
 
 </head>
 <body>
+<!-- Animated background decorations -->
+<div class="bg-grid"></div>
+<div class="bg-float-chars" id="bgFloatChars"></div>
 
 <div class="header">
   <h1>🇰🇷 Korean Quiz</h1>
@@ -1940,14 +2037,32 @@ function exportCustomWords() { if(!customWords.length){showToast('Chưa có!',tr
 function importCustomWords(ev) { const f=ev.target.files[0];if(!f)return; const r=new FileReader(); r.onload=e=>{try{const imp=JSON.parse(e.target.result);if(!Array.isArray(imp))throw 0;let n=0;imp.forEach(w=>{if(w.word&&w.romanization&&w.meaning_vi&&!customWords.some(c=>c.word===w.word)){customWords.push({word:w.word,romanization:w.romanization,meaning_vi:w.meaning_vi,pos:w.pos||'명사',tier:w.tier||1});n++;}});saveCustomWords();renderCustomWordList();showToast(`Nhập ${n} từ`);}catch{showToast('File lỗi!',true);}}; r.readAsText(f);ev.target.value=''; }
 
 // ===== LEARNED WORDS =====
+// API qua index.php của theme: thêm ?korean-api để kích hoạt
+const LEARNED_API = location.hostname === 'localhost' || location.hostname === '127.0.0.1'
+  ? 'api.php'
+  : '/wp-content/themes/abcd/?korean-api';
+let learnedWords = [];
+
 async function loadLearnedWords() {
-  try { learnedWords = JSON.parse(localStorage.getItem('korean-learned-words') || '[]'); }
-  catch { learnedWords = []; }
+  // Load từ API (file JSON) trước, fallback localStorage
+  try {
+    const r = await fetch(LEARNED_API);
+    if (r.ok) {
+      const data = await r.json();
+      learnedWords = data.words || [];
+      // Sync ngược vào localStorage làm backup
+      localStorage.setItem('korean-learned-words', JSON.stringify(learnedWords));
+      return;
+    }
+  } catch(e) {}
+  // Fallback: localStorage
+  try { learnedWords = JSON.parse(localStorage.getItem('korean-learned-words')||'[]'); } catch { learnedWords=[]; }
 }
 
 function saveLearnedWords() {
+  // Lưu localStorage (backup) + gửi API (file chính)
   localStorage.setItem('korean-learned-words', JSON.stringify(learnedWords));
-  // Bỏ syncLearnedToFile() vì không có server
+  syncLearnedToFile();
 }
 
 function isLearned(word) { return learnedWords.some(w=>w.word===word); }
@@ -1989,6 +2104,8 @@ function importLearnedWords(ev) {
 
 // ===== BROWSE ALL VOCAB =====
 let browseTier = 'all';
+let browseDisplayCount = 100;
+let browseCurrentPool = [];
 function showBrowsePanel() {
   hideAllPanels(); showEl('browsePanel'); hideEl('statsBar'); hideEl('progressWrap'); hideEl('shortcutHint');
   document.getElementById('tierFilter').style.display='none'; document.getElementById('modeToggle').innerHTML='';
@@ -2007,14 +2124,16 @@ function filterBrowse() {
   if(browseTier!=='all') pool = pool.filter(w=>String(w.tier)===browseTier);
   if(q) pool = pool.filter(w=>w.word.toLowerCase().includes(q)||w.romanization.toLowerCase().includes(q)||w.meaning_vi.toLowerCase().includes(q));
   pool.sort((a,b)=>a.word.localeCompare(b.word,'ko'));
+  browseCurrentPool = pool;
+  browseDisplayCount = 100;
   document.getElementById('browseCount').textContent=`${pool.length} từ`;
-  renderBrowseList(pool);
+  renderBrowseList(pool, browseDisplayCount);
 }
-function renderBrowseList(words) {
+function renderBrowseList(words, displayCount) {
+  if(displayCount===undefined) displayCount=browseDisplayCount;
   const c=document.getElementById('browseList');
   if(!words.length){c.innerHTML='<div style="text-align:center;color:var(--text3);padding:20px;">Không tìm thấy từ nào</div>';return;}
-  // Virtual scroll for performance — show max 100 at a time
-  const show = words.slice(0,100);
+  const show = words.slice(0, displayCount);
   let h='';
   show.forEach(w=>{
     const learned = isLearned(w.word);
@@ -2035,8 +2154,24 @@ function renderBrowseList(words) {
       </div>
     </div>`;
   });
-  if(words.length>100) h+=`<div style="text-align:center;padding:10px;color:var(--text3);font-size:0.8rem;">Hiển thị 100/${words.length} từ — thu hẹp tìm kiếm để xem thêm</div>`;
+  if(words.length > displayCount) {
+    const remaining = words.length - displayCount;
+    h+=`<div style="text-align:center;padding:16px 10px 8px;">
+      <button onclick="browseLoadMore()" style="padding:10px 28px;border:2px solid var(--accent1);border-radius:20px;background:transparent;color:var(--accent1);cursor:pointer;font-size:0.88rem;font-weight:600;transition:all 0.2s;" onmouseover="this.style.background='rgba(108,92,231,0.12)'" onmouseout="this.style.background='transparent'">
+        ⬇ Xem thêm <span style="opacity:0.7;font-weight:400;">(còn ${remaining} từ)</span>
+      </button>
+    </div>`;
+  } else if(displayCount > 100) {
+    h+=`<div style="text-align:center;padding:10px;color:var(--text3);font-size:0.78rem;">Đã hiển thị tất cả ${words.length} từ</div>`;
+  }
   c.innerHTML=h;
+}
+function browseLoadMore() {
+  browseDisplayCount += 100;
+  renderBrowseList(browseCurrentPool, browseDisplayCount);
+  // Scroll to bottom of list smoothly
+  const list = document.getElementById('browseList');
+  if(list) list.lastElementChild && list.lastElementChild.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 function addToLearnedFromBrowse(word) {
   const all = getAllVocabWords();
@@ -4191,7 +4326,26 @@ function playBossArcaneBurst() {
 
 
 
+// ===== ANIMATED BACKGROUND CHARS =====
+function initBgFloatChars() {
+  const container = document.getElementById('bgFloatChars');
+  if(!container) return;
+  const chars = ['가','나','다','라','마','바','사','아','자','차','카','타','파','하','한','국','어','학','습','단','어','퀴','즈','사','랑','행','복','안','녕','감','사','합','니','다'];
+  const count = 14;
+  for(let i=0;i<count;i++) {
+    const span = document.createElement('span');
+    span.textContent = chars[Math.floor(Math.random()*chars.length)];
+    const left = 3 + Math.random()*94;
+    const dur = 22 + Math.random()*28;
+    const delay = -Math.random()*dur;
+    const size = 1.0 + Math.random()*1.2;
+    const hue = Math.random()<0.5 ? 'var(--accent1)' : 'var(--accent2)';
+    span.style.cssText = `left:${left}%;font-size:${size}rem;color:${hue};animation-duration:${dur}s;animation-delay:${delay}s;`;
+    container.appendChild(span);
+  }
+}
+
 init();
-</script>
+initBgFloatChars();</script>
 </body>
 </html>
