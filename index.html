@@ -92,6 +92,64 @@
     100% { transform: translate(0, 0) scale(1); }
   }
 
+  /* ── KOREAN QUIZ FLOAT ── */
+  .kr-float {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 500;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: var(--dark);
+    font-weight: 600;
+    box-shadow: 0 4px 20px rgba(201,168,76,.35);
+    transition: transform .25s ease, box-shadow .25s ease, background .25s;
+    gap: 2px;
+  }
+  .kr-float:hover {
+    transform: translateY(-4px) scale(1.08);
+    background: var(--gold-light);
+    box-shadow: 0 8px 28px rgba(201,168,76,.5);
+  }
+  .kr-float-hanja {
+    font-size: 18px;
+    line-height: 1;
+  }
+  .kr-float-label {
+    font-size: 9px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  /* Tooltip khi hover */
+  .kr-float::before {
+    content: 'Học tiếng Hàn';
+    position: absolute;
+    right: calc(100% + 10px);
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--dark2);
+    border: 1px solid rgba(201,168,76,.3);
+    color: var(--gold);
+    font-size: 11px;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    padding: 5px 10px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease;
+    font-weight: 400;
+  }
+  .kr-float:hover::before {
+    opacity: 1;
+  }
+
   /* ── GLITCH EFFECT ── */
   .hero-name {
     position: relative;
@@ -1756,6 +1814,11 @@ if (heroName) {
 
 <div id="pixel-dog"><canvas id="dog-canvas" width="64" height="64"></canvas></div>
 <div id="dog-tooltip">Click anywhere to call me! 🐾</div>
+
+<a href="/korean-quiz/index.html" class="kr-float" title="Học tiếng Hàn">
+  <span class="kr-float-hanja">한</span>
+  <span class="kr-float-label">Quiz</span>
+</a>
 
 <script>
 (function() {
