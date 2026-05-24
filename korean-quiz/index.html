@@ -1286,7 +1286,7 @@ body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--
 
 <div class="progress-wrap" id="progressWrap"><div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div><div class="progress-text" id="progressText"></div></div>
 <div class="shortcut-hint" id="shortcutHint">Phím 1-4 chọn · Space/Enter tiếp · S nghe</div>
-<div class="back-link" style="margin-top:15px;font-size:0.8rem;"><a href="https://mrjoejoe.qixtech.com/wp-content/themes/abcd/quiz/" style="color:var(--accent1);text-decoration:none;">← Quay về Quiz Hub</a></div>
+<div class="back-link" style="margin-top:15px;font-size:0.8rem;"><a href="../index.html" style="color:var(--accent1);text-decoration:none;">← Quay về</a></div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -1940,32 +1940,14 @@ function exportCustomWords() { if(!customWords.length){showToast('Chưa có!',tr
 function importCustomWords(ev) { const f=ev.target.files[0];if(!f)return; const r=new FileReader(); r.onload=e=>{try{const imp=JSON.parse(e.target.result);if(!Array.isArray(imp))throw 0;let n=0;imp.forEach(w=>{if(w.word&&w.romanization&&w.meaning_vi&&!customWords.some(c=>c.word===w.word)){customWords.push({word:w.word,romanization:w.romanization,meaning_vi:w.meaning_vi,pos:w.pos||'명사',tier:w.tier||1});n++;}});saveCustomWords();renderCustomWordList();showToast(`Nhập ${n} từ`);}catch{showToast('File lỗi!',true);}}; r.readAsText(f);ev.target.value=''; }
 
 // ===== LEARNED WORDS =====
-// API qua index.php của theme: thêm ?korean-api để kích hoạt
-const LEARNED_API = location.hostname === 'localhost' || location.hostname === '127.0.0.1'
-  ? 'api.php'
-  : '/wp-content/themes/abcd/?korean-api';
-let learnedWords = [];
-
 async function loadLearnedWords() {
-  // Load từ API (file JSON) trước, fallback localStorage
-  try {
-    const r = await fetch(LEARNED_API);
-    if (r.ok) {
-      const data = await r.json();
-      learnedWords = data.words || [];
-      // Sync ngược vào localStorage làm backup
-      localStorage.setItem('korean-learned-words', JSON.stringify(learnedWords));
-      return;
-    }
-  } catch(e) {}
-  // Fallback: localStorage
-  try { learnedWords = JSON.parse(localStorage.getItem('korean-learned-words')||'[]'); } catch { learnedWords=[]; }
+  try { learnedWords = JSON.parse(localStorage.getItem('korean-learned-words') || '[]'); }
+  catch { learnedWords = []; }
 }
 
 function saveLearnedWords() {
-  // Lưu localStorage (backup) + gửi API (file chính)
   localStorage.setItem('korean-learned-words', JSON.stringify(learnedWords));
-  syncLearnedToFile();
+  // Bỏ syncLearnedToFile() vì không có server
 }
 
 function isLearned(word) { return learnedWords.some(w=>w.word===word); }
