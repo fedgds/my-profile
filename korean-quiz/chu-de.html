@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>한국어 퀴즈 • Ôn Tiếng Hàn</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Baskervville+SC&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fdf6f0;
+    --surface: #ffffff;
+    --surface2: #fff9f5;
+    --border: #f0e0d6;
+    --text: #1a1008;
+    --text-muted: #8c6f60;
+    --accent: #d4603a;
+    --accent2: #e8956a;
+    --accent-soft: #fde8dc;
+    --correct: #4a9e6b;
+    --correct-soft: #dcf2e5;
+    --wrong: #c94848;
+    --wrong-soft: #fde0e0;
+    --shadow: 0 4px 24px rgba(212,96,58,0.10);
+    --shadow-hover: 0 8px 32px rgba(212,96,58,0.18);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 80% 0%, rgba(232,149,106,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse at 20% 100%, rgba(212,96,58,0.08) 0%, transparent 50%);
+  }
+
+  header {
+    text-align: center;
+    padding: 48px 20px 32px;
+    position: relative;
+  }
+  header::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 2px;
+    background: var(--accent);
+    margin: 16px auto 0;
+    border-radius: 2px;
+  }
+  .header-label {
+    font-family: 'Baskervville SC', serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  header h1 {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 900;
+    font-size: clamp(28px, 5vw, 44px);
+    color: var(--text);
+    letter-spacing: -1px;
+  }
+  header h1 span { color: var(--accent); }
+  .header-sub {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-top: 8px;
+    font-weight: 300;
+  }
+
+  .tabs-wrapper {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .tabs-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--border);
+    border-radius: 16px;
+    padding: 5px;
+    margin-bottom: 28px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabs-nav::-webkit-scrollbar { display: none; }
+
+  .tab-btn {
+    flex: 1;
+    min-width: 80px;
+    padding: 10px 8px;
+    border: none;
+    background: transparent;
+    border-radius: 12px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+    text-align: center;
+    line-height: 1.3;
+  }
+  .tab-btn:hover { color: var(--accent); background: rgba(212,96,58,0.06); }
+  .tab-btn.active {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 2px 12px rgba(212,96,58,0.35);
+  }
+  .tab-btn .tab-emoji { display: block; font-size: 18px; margin-bottom: 2px; }
+
+  .tab-panel { display: none; animation: fadeSlide 0.35s ease; }
+  .tab-panel.active { display: block; }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .quiz-card {
+    background: var(--surface);
+    border-radius: 24px;
+    padding: 36px 40px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+
+  .score-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    gap: 16px;
+  }
+  .score-info { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+  .score-info strong { color: var(--accent); font-size: 15px; }
+  .progress-track {
+    flex: 1;
+    height: 6px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    border-radius: 99px;
+    transition: width 0.4s ease;
+  }
+  .q-counter { font-size: 12px; color: var(--text-muted); }
+
+  .question-area {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .question-type-badge {
+    display: inline-block;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 99px;
+    margin-bottom: 20px;
+  }
+  .question-text {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: clamp(20px, 4vw, 32px);
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+  .question-hint {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 14px;
+  }
+
+  /* ===== SPEAK BUTTON ===== */
+  .speak-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 18px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border: 1.5px solid rgba(212,96,58,0.25);
+    border-radius: 99px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 4px;
+  }
+  .speak-btn:hover {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    transform: scale(1.04);
+  }
+  .speak-btn.speaking {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    animation: pulse 0.7s ease infinite alternate;
+  }
+  .speak-btn svg {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+  }
+  @keyframes pulse {
+    from { opacity: 1; transform: scale(1); }
+    to   { opacity: 0.8; transform: scale(1.06); }
+  }
+
+  /* no-speech warning */
+  .no-speech-note {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 8px;
+    display: none;
+  }
+  /* ======================== */
+
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  @media (max-width: 500px) {
+    .options-grid { grid-template-columns: 1fr; }
+    .quiz-card { padding: 24px 20px; }
+  }
+
+  .option-btn {
+    padding: 16px 20px;
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    background: var(--surface2);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    line-height: 1.4;
+    position: relative;
+    overflow: hidden;
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--accent2);
+    background: var(--accent-soft);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+  }
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-soft);
+    color: var(--correct);
+    font-weight: 700;
+  }
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-soft);
+    color: var(--wrong);
+  }
+  .option-btn:disabled { cursor: default; }
+  .option-label {
+    display: inline-block;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--border);
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 22px;
+    margin-right: 8px;
+    vertical-align: middle;
+    transition: all 0.2s;
+  }
+  .option-btn.correct .option-label { background: var(--correct); color: #fff; }
+  .option-btn.wrong .option-label { background: var(--wrong); color: #fff; }
+
+  .feedback-box {
+    min-height: 48px;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 12px;
+    padding: 12px 20px;
+    transition: all 0.3s ease;
+    display: none;
+  }
+  .feedback-box.show { display: block; }
+  .feedback-box.correct { background: var(--correct-soft); color: var(--correct); }
+  .feedback-box.wrong { background: var(--wrong-soft); color: var(--wrong); }
+
+  .next-btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    letter-spacing: 0.5px;
+    display: none;
+  }
+  .next-btn:hover { background: #bf5430; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(212,96,58,0.35); }
+  .next-btn.show { display: block; }
+
+  .result-screen {
+    text-align: center;
+    padding: 20px 0;
+    display: none;
+  }
+  .result-screen.show { display: block; animation: fadeSlide 0.4s ease; }
+  .result-emoji { font-size: 64px; margin-bottom: 16px; }
+  .result-title {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 26px;
+    font-weight: 900;
+    margin-bottom: 8px;
+  }
+  .result-score {
+    font-size: 52px;
+    font-weight: 900;
+    color: var(--accent);
+    margin: 16px 0;
+    font-family: 'Baskervville SC', serif;
+  }
+  .result-msg { font-size: 15px; color: var(--text-muted); margin-bottom: 28px; }
+  .restart-btn {
+    padding: 14px 36px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .restart-btn:hover { background: #bf5430; transform: translateY(-2px); }
+
+  .quiz-main { display: block; }
+  .quiz-main.hidden { display: none; }
+
+  /* Auto-speak toggle */
+  .autospeak-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-bottom: 16px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .toggle-switch {
+    position: relative;
+    width: 36px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+  .toggle-switch input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider {
+    position: absolute;
+    inset: 0;
+    background: var(--border);
+    border-radius: 99px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .toggle-slider::before {
+    content: '';
+    position: absolute;
+    width: 14px; height: 14px;
+    left: 3px; top: 3px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  }
+  .toggle-switch input:checked + .toggle-slider { background: var(--accent); }
+  .toggle-switch input:checked + .toggle-slider::before { transform: translateX(16px); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-label">Korean Study</div>
+  <h1>한국어 <span>퀴즈</span></h1>
+  <p class="header-sub">Chọn đáp án đúng để ôn tập tiếng Hàn</p>
+</header>
+
+<div class="tabs-wrapper">
+  <div class="tabs-nav">
+    <button class="tab-btn active" onclick="switchTab(0)">
+      <span class="tab-emoji">🔢</span>Số đếm
+    </button>
+    <button class="tab-btn" onclick="switchTab(1)">
+      <span class="tab-emoji">📅</span>Thứ
+    </button>
+    <button class="tab-btn" onclick="switchTab(2)">
+      <span class="tab-emoji">🌅</span>Buổi
+    </button>
+    <button class="tab-btn" onclick="switchTab(3)">
+      <span class="tab-emoji">🌸</span>Mùa
+    </button>
+    <button class="tab-btn" onclick="switchTab(4)">
+      <span class="tab-emoji">⛅</span>Thời tiết
+    </button>
+    <button class="tab-btn" onclick="switchTab(5)">
+      <span class="tab-emoji">🔢</span>Đơn vị đếm
+    </button>
+    <button class="tab-btn" onclick="switchTab(6)">
+      <span class="tab-emoji">😋</span>Các vị
+    </button>
+    <button class="tab-btn" onclick="switchTab(7)">
+      <span class="tab-emoji">🎨</span>Màu sắc
+    </button>
+    <button class="tab-btn" onclick="switchTab(8)">
+      <span class="tab-emoji">📍</span>Vị trí
+    </button>
+    <button class="tab-btn" onclick="switchTab(9)">
+      <span class="tab-emoji">📝</span>Ngữ pháp
+    </button>
+  </div>
+
+  <div id="tab-0" class="tab-panel active"></div>
+  <div id="tab-1" class="tab-panel"></div>
+  <div id="tab-2" class="tab-panel"></div>
+  <div id="tab-3" class="tab-panel"></div>
+  <div id="tab-4" class="tab-panel"></div>
+  <div id="tab-5" class="tab-panel"></div>
+  <div id="tab-6" class="tab-panel"></div>
+  <div id="tab-7" class="tab-panel"></div>
+  <div id="tab-8" class="tab-panel"></div>
+  <div id="tab-9" class="tab-panel"></div>
+</div>
+
+<script>
+// ===================== SPEECH =====================
+const synth = window.speechSynthesis;
+let koVoice = null;
+let autoSpeak = true;
+
+function loadKoreanVoice() {
+  const voices = synth.getVoices();
+  koVoice = voices.find(v => v.lang === 'ko-KR') ||
+            voices.find(v => v.lang.startsWith('ko')) ||
+            null;
+}
+
+loadKoreanVoice();
+if (synth.onvoiceschanged !== undefined) {
+  synth.onvoiceschanged = loadKoreanVoice;
+}
+
+// Detect if text contains Korean characters
+function hasKorean(text) {
+  return /[\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]/.test(text);
+}
+
+// Extract only Korean portion from a mixed string like "Số 3 (Hán Hàn) là gì?"
+function extractKorean(text) {
+  const matches = text.match(/[\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F\s]+/g);
+  return matches ? matches.join(' ').trim() : null;
+}
+
+function speakText(text, btnEl) {
+  if (!synth) return;
+  synth.cancel();
+
+  // Determine what to speak
+  let toSpeak = null;
+  if (hasKorean(text)) {
+    toSpeak = extractKorean(text) || text;
+  } else {
+    // If no Korean in question text (e.g. Vietnamese question), nothing to speak
+    if (btnEl) {
+      btnEl.classList.remove('speaking');
+      btnEl.title = 'Câu này không có chữ Hàn để đọc';
+    }
+    return;
+  }
+
+  const utter = new SpeechSynthesisUtterance(toSpeak);
+  utter.lang = 'ko-KR';
+  utter.rate = 0.85;
+  utter.pitch = 1.0;
+  if (koVoice) utter.voice = koVoice;
+
+  if (btnEl) {
+    btnEl.classList.add('speaking');
+    utter.onend = () => btnEl.classList.remove('speaking');
+    utter.onerror = () => btnEl.classList.remove('speaking');
+  }
+
+  synth.speak(utter);
+}
+
+// ===================== DATA =====================
+const TABS_DATA = [
+  {
+    title: "Số Hán Hàn & Thuần Hàn",
+    questions: shuffle([
+      { q: "일", hint: "Số Hán Hàn", ans: "1", choices: ["1","2","3","4"] },
+      { q: "이", hint: "Số Hán Hàn", ans: "2", choices: ["1","2","3","5"] },
+      { q: "삼", hint: "Số Hán Hàn", ans: "3", choices: ["3","4","6","8"] },
+      { q: "사", hint: "Số Hán Hàn", ans: "4", choices: ["2","4","5","7"] },
+      { q: "오", hint: "Số Hán Hàn", ans: "5", choices: ["5","6","8","9"] },
+      { q: "육", hint: "Số Hán Hàn", ans: "6", choices: ["4","6","7","10"] },
+      { q: "칠", hint: "Số Hán Hàn", ans: "7", choices: ["1","5","7","9"] },
+      { q: "팔", hint: "Số Hán Hàn", ans: "8", choices: ["6","8","9","10"] },
+      { q: "구", hint: "Số Hán Hàn", ans: "9", choices: ["3","7","9","10"] },
+      { q: "십", hint: "Số Hán Hàn", ans: "10", choices: ["2","8","9","10"] },
+      { q: "하나", hint: "Số thuần Hàn", ans: "1", choices: ["1","2","3","4"] },
+      { q: "둘", hint: "Số thuần Hàn", ans: "2", choices: ["1","2","3","5"] },
+      { q: "셋", hint: "Số thuần Hàn", ans: "3", choices: ["3","4","6","8"] },
+      { q: "넷", hint: "Số thuần Hàn", ans: "4", choices: ["2","4","5","7"] },
+      { q: "다섯", hint: "Số thuần Hàn", ans: "5", choices: ["5","6","8","9"] },
+      { q: "여섯", hint: "Số thuần Hàn", ans: "6", choices: ["4","6","7","10"] },
+      { q: "일곱", hint: "Số thuần Hàn", ans: "7", choices: ["1","5","7","9"] },
+      { q: "여덟", hint: "Số thuần Hàn", ans: "8", choices: ["6","8","9","10"] },
+      { q: "아홉", hint: "Số thuần Hàn", ans: "9", choices: ["3","7","9","10"] },
+      { q: "열", hint: "Số thuần Hàn", ans: "10", choices: ["2","8","9","10"] },
+    ])
+  },
+  {
+    title: "Thứ trong tuần",
+    questions: shuffle([
+      { q: "월요일", hint: "Hôm nay là thứ mấy?", ans: "Thứ Hai", choices: ["Thứ Hai","Thứ Ba","Thứ Tư","Thứ Năm"] },
+      { q: "화요일", hint: "Hôm nay là thứ mấy?", ans: "Thứ Ba", choices: ["Thứ Hai","Thứ Ba","Thứ Sáu","Chủ Nhật"] },
+      { q: "수요일", hint: "Hôm nay là thứ mấy?", ans: "Thứ Tư", choices: ["Thứ Ba","Thứ Tư","Thứ Năm","Thứ Sáu"] },
+      { q: "목요일", hint: "Hôm nay là thứ mấy?", ans: "Thứ Năm", choices: ["Thứ Ba","Thứ Tư","Thứ Năm","Thứ Bảy"] },
+      { q: "금요일", hint: "Hôm nay là thứ mấy?", ans: "Thứ Sáu", choices: ["Thứ Tư","Thứ Năm","Thứ Sáu","Thứ Bảy"] },
+      { q: "토요일", hint: "Hôm nay là thứ mấy?", ans: "Thứ Bảy", choices: ["Thứ Sáu","Thứ Bảy","Chủ Nhật","Thứ Hai"] },
+      { q: "일요일", hint: "Hôm nay là thứ mấy?", ans: "Chủ Nhật", choices: ["Thứ Năm","Thứ Sáu","Thứ Bảy","Chủ Nhật"] },
+    ])
+  },
+  {
+    title: "Buổi trong ngày",
+    questions: shuffle([
+      { q: "아침", hint: "Buổi gì?", ans: "Buổi sáng", choices: ["Buổi sáng","Buổi trưa","Buổi chiều","Buổi tối"] },
+      { q: "점심", hint: "Buổi gì?", ans: "Buổi trưa", choices: ["Buổi sáng","Buổi trưa","Buổi chiều","Ban đêm"] },
+      { q: "저녁", hint: "Buổi gì?", ans: "Buổi tối", choices: ["Buổi sáng","Buổi trưa","Buổi chiều","Buổi tối"] },
+      { q: "오후", hint: "Buổi gì?", ans: "Buổi chiều", choices: ["Buổi sáng","Buổi trưa","Buổi chiều","Buổi tối"] },
+      { q: "밤", hint: "Buổi gì?", ans: "Ban đêm", choices: ["Buổi sáng","Buổi trưa","Buổi tối","Ban đêm"] },
+    ])
+  },
+  {
+    title: "Bốn Mùa (계절)",
+    questions: shuffle([
+      { q: "봄", hint: "Đây là mùa gì?", ans: "Mùa Xuân", choices: ["Mùa Xuân","Mùa Hè","Mùa Thu","Mùa Đông"] },
+      { q: "여름", hint: "Đây là mùa gì?", ans: "Mùa Hè", choices: ["Mùa Xuân","Mùa Hè","Mùa Thu","Mùa Đông"] },
+      { q: "가을", hint: "Đây là mùa gì?", ans: "Mùa Thu", choices: ["Mùa Xuân","Mùa Hè","Mùa Thu","Mùa Đông"] },
+      { q: "겨울", hint: "Đây là mùa gì?", ans: "Mùa Đông", choices: ["Mùa Xuân","Mùa Hè","Mùa Thu","Mùa Đông"] },
+    ])
+  },
+  {
+    title: "Thời tiết (날씨)",
+    questions: shuffle([
+      { q: "맑다", hint: "Nghĩa là gì?", ans: "Trời nắng / quang đãng", choices: ["Trời nắng / quang đãng","Trời âm u","Có tuyết","Có mưa"] },
+      { q: "흐리다", hint: "Nghĩa là gì?", ans: "Trời âm u / nhiều mây", choices: ["Trời nắng","Trời âm u / nhiều mây","Nóng","Lạnh"] },
+      { q: "눈이 오다", hint: "Nghĩa là gì?", ans: "Tuyết rơi", choices: ["Mưa rơi","Tuyết rơi","Trời nắng","Có gió"] },
+      { q: "비가 오다", hint: "Nghĩa là gì?", ans: "Mưa rơi", choices: ["Tuyết rơi","Mưa rơi","Trời nắng","Ấm áp"] },
+      { q: "춥다", hint: "Nghĩa là gì?", ans: "Lạnh", choices: ["Nóng","Ấm áp","Mát mẻ","Lạnh"] },
+      { q: "덥다", hint: "Nghĩa là gì?", ans: "Nóng", choices: ["Nóng","Ấm áp","Mát mẻ","Lạnh"] },
+      { q: "따뜻하다", hint: "Nghĩa là gì?", ans: "Ấm áp", choices: ["Nóng","Ấm áp","Mát mẻ","Lạnh"] },
+      { q: "시원하다", hint: "Nghĩa là gì?", ans: "Mát mẻ", choices: ["Nóng","Ấm áp","Mát mẻ","Lạnh"] },
+    ])
+  },
+  {
+    title: "Đơn vị đếm",
+    questions: shuffle([
+      { q: "개", hint: "Đơn vị đếm này dùng để đếm gì?", ans: "cái / quả", choices: ["cái / quả","chai","ly","quyển"] },
+      { q: "병", hint: "Đơn vị đếm này dùng để đếm gì?", ans: "chai", choices: ["cái / quả","chai","ly","tờ"] },
+      { q: "잔", hint: "Đơn vị đếm này dùng để đếm gì?", ans: "ly", choices: ["chai","ly","tô","con"] },
+      { q: "그릇", hint: "Đơn vị đếm này dùng để đếm gì?", ans: "tô", choices: ["ly","tô","quyển","người"] },
+      { q: "권", hint: "Đơn vị đếm này dùng để đếm gì?", ans: "quyển", choices: ["tờ","quyển","con","người"] },
+      { q: "장", hint: "Đơn vị đếm này dùng để đếm gì?", ans: "tờ", choices: ["cái / quả","tờ","con","người"] },
+      { q: "마리", hint: "Đơn vị đếm này dùng để đếm gì?", ans: "con (động vật)", choices: ["chai","tô","con (động vật)","người"] },
+      { q: "명", hint: "Đơn vị đếm này dùng để đếm gì?", ans: "người", choices: ["quyển","tờ","con (động vật)","người"] },
+    ])
+  },
+  {
+    title: "Các vị (맛)",
+    questions: shuffle([
+      { q: "시다", hint: "Vị này là gì?", ans: "Chua", choices: ["Chua","Cay","Mặn","Ngọt"] },
+      { q: "맵다", hint: "Vị này là gì?", ans: "Cay", choices: ["Chua","Cay","Đắng","Nhạt"] },
+      { q: "짜다", hint: "Vị này là gì?", ans: "Mặn", choices: ["Mặn","Ngọt","Đắng","Nhạt"] },
+      { q: "달다", hint: "Vị này là gì?", ans: "Ngọt", choices: ["Chua","Mặn","Ngọt","Đắng"] },
+      { q: "쓰다", hint: "Vị này là gì?", ans: "Đắng", choices: ["Cay","Ngọt","Đắng","Nhạt"] },
+      { q: "싱겁다", hint: "Vị này là gì?", ans: "Nhạt", choices: ["Chua","Mặn","Đắng","Nhạt"] },
+    ])
+  },
+  {
+    title: "Màu sắc (색깔)",
+    questions: shuffle([
+      { q: "까만색", hint: "Màu gì?", ans: "Màu đen", choices: ["Màu đen","Màu trắng","Màu vàng","Màu đỏ"] },
+      { q: "하얀색", hint: "Màu gì?", ans: "Màu trắng", choices: ["Màu đen","Màu trắng","Màu xanh lá","Màu xanh dương"] },
+      { q: "노란색", hint: "Màu gì?", ans: "Màu vàng", choices: ["Màu đỏ","Màu vàng","Màu xanh lá","Màu xanh dương"] },
+      { q: "빨간색", hint: "Màu gì?", ans: "Màu đỏ", choices: ["Màu đen","Màu đỏ","Màu vàng","Màu xanh lá"] },
+      { q: "초록색", hint: "Màu gì?", ans: "Màu xanh lá", choices: ["Màu vàng","Màu đỏ","Màu xanh lá","Màu xanh dương"] },
+      { q: "파란색", hint: "Màu gì?", ans: "Màu xanh dương", choices: ["Màu đen","Màu xanh lá","Màu xanh dương","Màu trắng"] },
+    ])
+  },
+  {
+    title: "Vị trí (위치)",
+    questions: shuffle([
+      { q: "안", hint: "Từ chỉ vị trí này có nghĩa là gì?", ans: "Trong", choices: ["Trong","Trên","Dưới","Cạnh"] },
+      { q: "위", hint: "Từ chỉ vị trí này có nghĩa là gì?", ans: "Phía trên", choices: ["Phía trên","Phía dưới","Trước","Sau"] },
+      { q: "아래", hint: "Từ chỉ vị trí này có nghĩa là gì?", ans: "Phía dưới", choices: ["Phía trên","Phía dưới","Cạnh","Trong"] },
+      { q: "옆", hint: "Từ chỉ vị trí này có nghĩa là gì?", ans: "Bên cạnh", choices: ["Trong","Trước","Bên cạnh","Sau"] },
+      { q: "앞", hint: "Từ chỉ vị trí này có nghĩa là gì?", ans: "Trước", choices: ["Sau","Trước","Phía trên","Bên cạnh"] },
+      { q: "뒤", hint: "Từ chỉ vị trí này có nghĩa là gì?", ans: "Sau", choices: ["Trước","Sau","Phía dưới","Trong"] },
+    ])
+  },
+  {
+    title: "Ngữ pháp",
+    questions: shuffle([
+      { q: "N + 후에", hint: "Cấu trúc ngữ pháp này có nghĩa là gì?", ans: "Sau khi (N)", choices: ["Sau khi (N)","Vì...nên... (N)","Khi (N)","Nếu...thì (N)"] },
+      { q: "V + 을/ㄹ 수 있다", hint: "Cấu trúc ngữ pháp này có nghĩa là gì?", ans: "Có thể làm gì đó", choices: ["Có thể làm gì đó","Không thể làm gì đó","Phải làm gì đó","Muốn làm gì đó"] },
+      { q: "V + 을/ㄹ 수 없다", hint: "Cấu trúc ngữ pháp này có nghĩa là gì?", ans: "Không thể làm gì đó", choices: ["Có thể làm gì đó","Không thể làm gì đó","Phải làm gì đó","Đừng làm gì đó"] },
+      { q: "V/A + 아/어서", hint: "Cấu trúc ngữ pháp này có nghĩa là gì?", ans: "Vì...nên...", choices: ["Vì...nên...","Nếu...thì...","Khi...","Sau khi..."] },
+      { q: "N + (이)라서", hint: "Cấu trúc ngữ pháp này có nghĩa là gì?", ans: "Vì là (N)...nên...", choices: ["Vì là (N)...nên...","Nếu là (N)...thì...","Khi là (N)...","Sau khi (N)..."] },
+      { q: "V + 을/ㄹ 때", hint: "Cấu trúc ngữ pháp này có nghĩa là gì?", ans: "Khi làm gì đó", choices: ["Sau khi làm gì đó","Vì làm gì đó","Khi làm gì đó","Nếu làm gì đó"] },
+      { q: "V + 으면/면", hint: "Cấu trúc ngữ pháp này có nghĩa là gì?", ans: "Nếu...thì...", choices: ["Vì...nên...","Nếu...thì...","Khi...","Sau khi..."] },
+      { q: "V + 아/어야 하다/되다", hint: "Cấu trúc ngữ pháp này có nghĩa là gì?", ans: "Phải làm gì đó", choices: ["Muốn làm gì đó","Có thể làm gì đó","Phải làm gì đó","Đừng làm gì đó"] },
+      { q: "V + 지 마세요 / 지 마십시오", hint: "Cấu trúc ngữ pháp này có nghĩa là gì?", ans: "Đừng làm gì đó", choices: ["Hãy làm gì đó","Đừng làm gì đó","Phải làm gì đó","Không làm gì đó"] },
+      { q: "V + 지 않다", hint: "Cấu trúc ngữ pháp này có nghĩa là gì?", ans: "Không (phủ định)", choices: ["Không (phủ định)","Chưa làm gì đó","Đừng làm gì đó","Muốn làm gì đó"] },
+      { q: "V + 으시십시오 / 으세요 / 세요", hint: "Cấu trúc ngữ pháp này có nghĩa là gì?", ans: "Hãy làm gì đó (lịch sự)", choices: ["Đừng làm gì đó","Hãy làm gì đó (lịch sự)","Phải làm gì đó","Không làm gì đó"] },
+      { q: "V + 으려고 / 려고", hint: "Cấu trúc ngữ pháp này có nghĩa là gì?", ans: "Làm gì đó để / có ý định làm", choices: ["Sau khi làm gì đó","Khi làm gì đó","Làm gì đó để / có ý định làm","Vừa...vừa..."] },
+      { q: "V + 으면/면 좋겠다", hint: "Cấu trúc ngữ pháp này có nghĩa là gì?", ans: "Mong là... / ước gì...", choices: ["Sẽ làm gì đó","Muốn làm gì đó","Mong là... / ước gì...","Có thể làm gì đó"] },
+      { q: "V + 았/었으면 좋겠다", hint: "Cấu trúc ngữ pháp này có nghĩa là gì?", ans: "Ước gì... (điều chưa xảy ra)", choices: ["Ước gì... (điều chưa xảy ra)","Sẽ làm gì đó","Đã làm gì đó rồi","Mong là..."] },
+      { q: "V + 을/ㄹ 거예요 / 겁니다 / 것입니다", hint: "Cấu trúc ngữ pháp này có nghĩa là gì?", ans: "Sẽ làm gì đó (tương lai)", choices: ["Đã làm gì đó","Đang làm gì đó","Sẽ làm gì đó (tương lai)","Muốn làm gì đó"] },
+      { q: "V + 고 싶다", hint: "Cấu trúc ngữ pháp này có nghĩa là gì?", ans: "Muốn làm gì đó", choices: ["Muốn làm gì đó","Phải làm gì đó","Sẽ làm gì đó","Có thể làm gì đó"] },
+      { q: "N + 으로/로 바꾸다", hint: "Cấu trúc ngữ pháp này có nghĩa là gì?", ans: "Đổi sang cái gì đó", choices: ["Đổi sang cái gì đó","Đi đến đâu đó","Từ đâu đến đâu","Giỏi làm gì đó"] },
+      { q: "V + 으러/러 가다/오다", hint: "Cấu trúc ngữ pháp này có nghĩa là gì?", ans: "Đi/đến để làm gì đó", choices: ["Đi/đến để làm gì đó","Vừa...vừa...","Làm gì đó để","Sau khi làm gì đó"] },
+      { q: "V + 으면서/면서", hint: "Cấu trúc ngữ pháp này có nghĩa là gì?", ans: "Vừa...vừa...", choices: ["Vì...nên...","Nếu...thì...","Vừa...vừa...","Khi..."] },
+      { q: "N + 을/를 잘하다", hint: "Cấu trúc ngữ pháp này có nghĩa là gì?", ans: "Giỏi làm gì đó", choices: ["Muốn làm gì đó","Giỏi làm gì đó","Có thể làm gì đó","Thích làm gì đó"] },
+      { q: "N(Thời gian) + 부터 N(Thời gian) + 까지", hint: "Cấu trúc ngữ pháp này có nghĩa là gì?", ans: "Từ (thời gian)...đến (thời gian)...", choices: ["Từ (thời gian)...đến (thời gian)...","Từ (địa điểm)...đến (địa điểm)...","Khi...","Sau khi..."] },
+      { q: "N(Địa điểm) + 에서 N(Địa điểm) + 까지", hint: "Cấu trúc ngữ pháp này có nghĩa là gì?", ans: "Từ (địa điểm)...đến (địa điểm)...", choices: ["Từ (thời gian)...đến (thời gian)...","Từ (địa điểm)...đến (địa điểm)...","Đi đến...","Vừa...vừa..."] },
+      { q: "V + 기로 했습니다", hint: "Cấu trúc ngữ pháp này có nghĩa là gì?", ans: "Quyết định làm gì đó", choices: ["Quyết định làm gì đó","Muốn làm gì đó","Đã làm gì đó rồi","Sẽ làm gì đó"] },
+      { q: "N 을/를 못합니다", hint: "Cấu trúc ngữ pháp này có nghĩa là gì?", ans: "Không biết / không làm được N", choices: ["Không biết / không làm được N","Không muốn làm N","Không cần làm N","Không thích N"] },
+      { q: "N + 처럼", hint: "Cấu trúc ngữ pháp này có nghĩa là gì?", ans: "Giống như N", choices: ["Giống như N","Vì N","Từ N","Cho N"] },
+      { q: "N 에게/한테", hint: "Cấu trúc ngữ pháp này có nghĩa là gì?", ans: "Cho N (đối tượng nhận)", choices: ["Cho N (đối tượng nhận)","Từ N","Giống như N","Ở N"] },
+      { q: "N 에게서/한테서", hint: "Cấu trúc ngữ pháp này có nghĩa là gì?", ans: "Từ N (đối tượng cho đi)", choices: ["Từ N (đối tượng cho đi)","Cho N","Giống như N","Đến N"] },
+    ])
+  }
+];
+
+// ===================== UTILS =====================
+function shuffle(arr) {
+  return [...arr].sort(() => Math.random() - 0.5);
+}
+
+// ===================== QUIZ STATE =====================
+const states = TABS_DATA.map(() => ({
+  questions: [],
+  current: 0,
+  score: 0,
+  answered: false,
+  autoTimer: null
+}));
+
+let currentTab = 0;
+
+function initTab(tabIdx) {
+  const data = TABS_DATA[tabIdx];
+  const st = states[tabIdx];
+  if (st.autoTimer) { clearInterval(st.autoTimer); st.autoTimer = null; }
+  st.questions = shuffle(data.questions);
+  st.current = 0;
+  st.score = 0;
+  st.answered = false;
+  renderQuiz(tabIdx);
+}
+
+function renderQuiz(tabIdx) {
+  const st = states[tabIdx];
+  const panel = document.getElementById(`tab-${tabIdx}`);
+
+  panel.innerHTML = `
+    <div class="quiz-card">
+      <div class="autospeak-row">
+        <span>Tự động phát âm</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="autospeak-${tabIdx}" checked onchange="toggleAutoSpeak(${tabIdx}, this.checked)">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div class="quiz-main" id="quiz-main-${tabIdx}">
+        <div class="score-bar">
+          <div class="score-info">Điểm: <strong id="score-${tabIdx}">0</strong></div>
+          <div class="progress-track">
+            <div class="progress-fill" id="progress-${tabIdx}" style="width:0%"></div>
+          </div>
+          <div class="q-counter" id="qcount-${tabIdx}">0 / ${st.questions.length}</div>
+        </div>
+        <div class="question-area" id="question-area-${tabIdx}"></div>
+        <div class="options-grid" id="options-${tabIdx}"></div>
+        <div class="feedback-box" id="feedback-${tabIdx}"></div>
+      </div>
+      <div class="result-screen" id="result-${tabIdx}">
+        <div class="result-emoji" id="result-emoji-${tabIdx}">🎉</div>
+        <div class="result-title">Hoàn thành!</div>
+        <div class="result-score" id="result-score-${tabIdx}"></div>
+        <div class="result-msg" id="result-msg-${tabIdx}"></div>
+        <button class="restart-btn" onclick="initTab(${tabIdx})">🔄 Ôn lại từ đầu</button>
+      </div>
+    </div>
+  `;
+
+  loadQuestion(tabIdx);
+}
+
+// Track auto-speak per tab
+const autoSpeakState = TABS_DATA.map(() => true);
+
+function toggleAutoSpeak(tabIdx, val) {
+  autoSpeakState[tabIdx] = val;
+}
+
+function loadQuestion(tabIdx) {
+  const st = states[tabIdx];
+  const q = st.questions[st.current];
+  st.answered = false;
+
+  const prog = (st.current / st.questions.length) * 100;
+  document.getElementById(`progress-${tabIdx}`).style.width = prog + '%';
+  document.getElementById(`qcount-${tabIdx}`).textContent = `${st.current} / ${st.questions.length}`;
+  document.getElementById(`score-${tabIdx}`).textContent = st.score;
+
+  // Determine speak target
+  const speakTarget = hasKorean(q.q) ? q.q : null;
+  const canSpeak = speakTarget !== null && !!synth;
+
+  const qArea = document.getElementById(`question-area-${tabIdx}`);
+  qArea.innerHTML = `
+    <div class="question-type-badge">${TABS_DATA[tabIdx].title}</div>
+    <div class="question-text">${q.q}</div>
+    ${q.hint ? `<div class="question-hint">${q.hint}</div>` : ''}
+    ${canSpeak ? `
+    <button class="speak-btn" id="speak-btn-${tabIdx}" onclick="onSpeakClick(${tabIdx})">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+      </svg>
+      Nghe phát âm
+    </button>` : `<div class="no-speech-note" style="display:block">⚠ Câu này không có chữ Hàn để phát âm</div>`}
+  `;
+
+  // Auto-speak if enabled and there's Korean
+  if (canSpeak && autoSpeakState[tabIdx]) {
+    // Small delay for smooth UX
+    setTimeout(() => {
+      const btnEl = document.getElementById(`speak-btn-${tabIdx}`);
+      speakText(q.q, btnEl);
+    }, 350);
+  }
+
+  // Options
+  const opts = shuffle(q.choices.map(c => ({ text: c, isAns: c === q.ans })));
+  const labels = ['A','B','C','D'];
+  const optContainer = document.getElementById(`options-${tabIdx}`);
+  optContainer.innerHTML = opts.map((opt, i) => `
+    <button class="option-btn" data-ans="${opt.isAns}" onclick="selectOption(${tabIdx}, this, ${opt.isAns})">
+      <span class="option-label">${labels[i]}</span>${opt.text}
+    </button>
+  `).join('');
+
+  const fb = document.getElementById(`feedback-${tabIdx}`);
+  fb.className = 'feedback-box';
+  fb.textContent = '';
+}
+
+function onSpeakClick(tabIdx) {
+  const st = states[tabIdx];
+  const q = st.questions[st.current];
+  const btnEl = document.getElementById(`speak-btn-${tabIdx}`);
+  // If currently speaking, cancel
+  if (synth.speaking) { synth.cancel(); btnEl && btnEl.classList.remove('speaking'); return; }
+  speakText(q.q, btnEl);
+}
+
+function selectOption(tabIdx, btn, isCorrect) {
+  const st = states[tabIdx];
+  if (st.answered) return;
+  st.answered = true;
+
+  const q = st.questions[st.current];
+  const allBtns = document.querySelectorAll(`#options-${tabIdx} .option-btn`);
+  allBtns.forEach(b => { b.disabled = true; });
+
+  // Phát âm lại từ đang hỏi khi chọn đáp án
+  if (hasKorean(q.q) && synth) {
+    const btnEl = document.getElementById(`speak-btn-${tabIdx}`);
+    synth.cancel();
+    speakText(q.q, btnEl);
+  }
+
+  const fb = document.getElementById(`feedback-${tabIdx}`);
+  if (isCorrect) {
+    btn.classList.add('correct');
+    st.score++;
+    document.getElementById(`score-${tabIdx}`).textContent = st.score;
+    fb.className = 'feedback-box correct show';
+  } else {
+    btn.classList.add('wrong');
+    // Highlight correct answer by matching data-ans attribute
+    allBtns.forEach(b => {
+      if (b.dataset.ans === 'true') b.classList.add('correct');
+    });
+    fb.className = 'feedback-box wrong show';
+  }
+
+  // Countdown feedback + auto-advance
+  let secs = 2;
+  const updateFb = () => {
+    if (isCorrect) {
+      fb.textContent = `✓ Chính xác! 잘했어요! — Câu tiếp theo sau ${secs}s`;
+    } else {
+      fb.textContent = `✗ Sai rồi! 화이팅! — Câu tiếp theo sau ${secs}s`;
+    }
+  };
+  updateFb();
+
+  const tick = setInterval(() => {
+    secs--;
+    if (secs <= 0) {
+      clearInterval(tick);
+      nextQuestion(tabIdx);
+    } else {
+      updateFb();
+    }
+  }, 1000);
+
+  // Store timer so switching tab can clear it
+  st.autoTimer = tick;
+}
+
+function nextQuestion(tabIdx) {
+  const st = states[tabIdx];
+  st.current++;
+  if (st.current >= st.questions.length) {
+    showResult(tabIdx);
+  } else {
+    loadQuestion(tabIdx);
+  }
+}
+
+function showResult(tabIdx) {
+  synth && synth.cancel();
+  const st = states[tabIdx];
+  const total = st.questions.length;
+  const pct = Math.round((st.score / total) * 100);
+
+  document.getElementById(`quiz-main-${tabIdx}`).classList.add('hidden');
+  const res = document.getElementById(`result-${tabIdx}`);
+  res.classList.add('show');
+
+  let emoji = '😢', msg = 'Hãy ôn thêm nữa nhé!';
+  if (pct >= 90) { emoji = '🏆'; msg = '완벽해요! Xuất sắc lắm!'; }
+  else if (pct >= 70) { emoji = '🎉'; msg = '잘했어요! Rất tốt rồi!'; }
+  else if (pct >= 50) { emoji = '💪'; msg = '화이팅! Cố lên nào!'; }
+
+  document.getElementById(`result-emoji-${tabIdx}`).textContent = emoji;
+  document.getElementById(`result-score-${tabIdx}`).textContent = `${st.score} / ${total}`;
+  document.getElementById(`result-msg-${tabIdx}`).textContent = `${pct}% — ${msg}`;
+}
+
+function switchTab(idx) {
+  synth && synth.cancel();
+  // Clear any pending auto-advance timer
+  states.forEach(st => { if (st.autoTimer) { clearInterval(st.autoTimer); st.autoTimer = null; } });
+  currentTab = idx;
+  document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', i === idx);
+  });
+  document.querySelectorAll('.tab-panel').forEach((panel, i) => {
+    panel.classList.toggle('active', i === idx);
+  });
+}
+
+// ===================== INIT =====================
+TABS_DATA.forEach((_, i) => initTab(i));
+</script>
+</body>
+</html>

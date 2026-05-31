@@ -3405,6 +3405,484 @@
 
 <body>
 
+  <!-- ══════════════════════════════════════════
+       GATE INTRO OVERLAY
+  ══════════════════════════════════════════ -->
+  <div id="gateOverlay">
+    <canvas id="gateParticles"></canvas>
+
+    <!-- Decorative filigree top/bottom -->
+    <div class="gate-filigree gate-filigree-top">
+      <svg viewBox="0 0 400 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <path d="M0,20 Q50,2 100,20 Q150,38 200,20 Q250,2 300,20 Q350,38 400,20" fill="none" stroke="#c9a84c" stroke-width="1" opacity="0.6"/>
+        <path d="M0,20 Q50,5 100,20 Q150,35 200,20 Q250,5 300,20 Q350,35 400,20" fill="none" stroke="#e8c97a" stroke-width="0.5" opacity="0.4"/>
+        <circle cx="200" cy="20" r="4" fill="#c9a84c" opacity="0.8"/>
+        <circle cx="100" cy="20" r="2.5" fill="#c9a84c" opacity="0.6"/>
+        <circle cx="300" cy="20" r="2.5" fill="#c9a84c" opacity="0.6"/>
+        <line x1="0" y1="20" x2="400" y2="20" stroke="#c9a84c" stroke-width="0.4" opacity="0.3"/>
+      </svg>
+    </div>
+    <div class="gate-filigree gate-filigree-bottom">
+      <svg viewBox="0 0 400 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <path d="M0,20 Q50,38 100,20 Q150,2 200,20 Q250,38 300,20 Q350,2 400,20" fill="none" stroke="#c9a84c" stroke-width="1" opacity="0.6"/>
+        <circle cx="200" cy="20" r="4" fill="#c9a84c" opacity="0.8"/>
+        <circle cx="100" cy="20" r="2.5" fill="#c9a84c" opacity="0.6"/>
+        <circle cx="300" cy="20" r="2.5" fill="#c9a84c" opacity="0.6"/>
+      </svg>
+    </div>
+
+    <!-- Center logo / monogram -->
+    <div class="gate-center-logo">
+      <div class="gate-logo-ring gate-logo-ring-outer"></div>
+      <div class="gate-logo-ring gate-logo-ring-inner"></div>
+      <div class="gate-logo-monogram">LVS</div>
+      <div class="gate-logo-subtitle">Portfolio</div>
+    </div>
+
+    <!-- Left panel -->
+    <div class="gate-panel gate-panel-left">
+      <!-- Vertical decorative lines -->
+      <div class="gate-stripe g-s1"></div>
+      <div class="gate-stripe g-s2"></div>
+      <div class="gate-stripe g-s3"></div>
+      <!-- Ornament bars -->
+      <div class="gate-bar gate-bar-top"></div>
+      <div class="gate-bar gate-bar-bottom"></div>
+      <!-- Corner diamond -->
+      <div class="gate-diamond gate-diamond-tl"></div>
+      <div class="gate-diamond gate-diamond-bl"></div>
+      <!-- Center vertical ornament -->
+      <div class="gate-panel-ornamentation">
+        <svg viewBox="0 0 60 200" xmlns="http://www.w3.org/2000/svg">
+          <line x1="30" y1="0" x2="30" y2="200" stroke="#c9a84c" stroke-width="0.8" opacity="0.5"/>
+          <circle cx="30" cy="40" r="5" fill="none" stroke="#c9a84c" stroke-width="1.2" opacity="0.7"/>
+          <circle cx="30" cy="40" r="2" fill="#c9a84c" opacity="0.9"/>
+          <circle cx="30" cy="100" r="7" fill="none" stroke="#c9a84c" stroke-width="1.5" opacity="0.8"/>
+          <circle cx="30" cy="100" r="3" fill="#c9a84c" opacity="1"/>
+          <path d="M22,90 Q30,75 38,90 Q30,105 22,90Z" fill="none" stroke="#c9a84c" stroke-width="0.8" opacity="0.6"/>
+          <circle cx="30" cy="160" r="5" fill="none" stroke="#c9a84c" stroke-width="1.2" opacity="0.7"/>
+          <circle cx="30" cy="160" r="2" fill="#c9a84c" opacity="0.9"/>
+        </svg>
+      </div>
+      <!-- Edge glow line (right edge of left panel) -->
+      <div class="gate-edge-line gate-edge-right"></div>
+    </div>
+
+    <!-- Right panel -->
+    <div class="gate-panel gate-panel-right">
+      <div class="gate-stripe g-s1"></div>
+      <div class="gate-stripe g-s2"></div>
+      <div class="gate-stripe g-s3"></div>
+      <div class="gate-bar gate-bar-top"></div>
+      <div class="gate-bar gate-bar-bottom"></div>
+      <div class="gate-diamond gate-diamond-tr"></div>
+      <div class="gate-diamond gate-diamond-br"></div>
+      <div class="gate-panel-ornamentation">
+        <svg viewBox="0 0 60 200" xmlns="http://www.w3.org/2000/svg">
+          <line x1="30" y1="0" x2="30" y2="200" stroke="#c9a84c" stroke-width="0.8" opacity="0.5"/>
+          <circle cx="30" cy="40" r="5" fill="none" stroke="#c9a84c" stroke-width="1.2" opacity="0.7"/>
+          <circle cx="30" cy="40" r="2" fill="#c9a84c" opacity="0.9"/>
+          <circle cx="30" cy="100" r="7" fill="none" stroke="#c9a84c" stroke-width="1.5" opacity="0.8"/>
+          <circle cx="30" cy="100" r="3" fill="#c9a84c" opacity="1"/>
+          <path d="M22,90 Q30,75 38,90 Q30,105 22,90Z" fill="none" stroke="#c9a84c" stroke-width="0.8" opacity="0.6"/>
+          <circle cx="30" cy="160" r="5" fill="none" stroke="#c9a84c" stroke-width="1.2" opacity="0.7"/>
+          <circle cx="30" cy="160" r="2" fill="#c9a84c" opacity="0.9"/>
+        </svg>
+      </div>
+      <div class="gate-edge-line gate-edge-left"></div>
+    </div>
+
+    <!-- Center light burst on open -->
+    <div class="gate-light-burst"></div>
+
+    <!-- Skip hint -->
+    <div class="gate-skip" id="gateSkip">nhấn bất kỳ để bước vào</div>
+  </div>
+
+  <style>
+    /* ════════════════════════════════════════
+       GATE OVERLAY STYLES
+    ════════════════════════════════════════ */
+    #gateOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      overflow: hidden;
+      pointer-events: all;
+      cursor: pointer;
+      background: #04060c;
+    }
+
+    #gateOverlay.gate-opening .gate-panel-left  { animation: gatePanelLeft  1.4s cubic-bezier(.76,0,.24,1) 0.1s forwards; }
+    #gateOverlay.gate-opening .gate-panel-right { animation: gatePanelRight 1.4s cubic-bezier(.76,0,.24,1) 0.1s forwards; }
+    #gateOverlay.gate-opening .gate-light-burst { animation: gateLightBurst 1.6s ease-out 0.3s forwards; }
+    #gateOverlay.gate-opening .gate-center-logo { animation: gateCenterFade 0.6s ease-out 0.1s forwards; }
+    #gateOverlay.gate-opening .gate-filigree    { animation: gateFiligree   0.5s ease-out 0.1s forwards; }
+    #gateOverlay.gate-opening .gate-skip        { opacity: 0 !important; }
+    #gateOverlay.gate-done { display: none; }
+
+    /* ── Panels ── */
+    .gate-panel {
+      position: absolute;
+      top: 0;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(180deg, #0a0d16 0%, #070a12 50%, #0a0d16 100%);
+      overflow: hidden;
+    }
+    .gate-panel-left  { left: 0; transform-origin: left center; }
+    .gate-panel-right { right: 0; transform-origin: right center; }
+
+    /* ── Gold texture / grain overlay on panels ── */
+    .gate-panel::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          transparent 0px,
+          transparent 3px,
+          rgba(201,168,76,0.025) 3px,
+          rgba(201,168,76,0.025) 4px
+        ),
+        repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 8px,
+          rgba(201,168,76,0.015) 8px,
+          rgba(201,168,76,0.015) 9px
+        );
+      pointer-events: none;
+    }
+
+    /* ── Horizontal decorative bars ── */
+    .gate-bar {
+      position: absolute;
+      left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #c9a84c, #e8c97a, #c9a84c, transparent);
+      opacity: 0.7;
+    }
+    .gate-panel-right .gate-bar {
+      background: linear-gradient(90deg, transparent, #c9a84c, #e8c97a, #c9a84c, transparent);
+    }
+    .gate-bar-top    { top: 14%; }
+    .gate-bar-bottom { bottom: 14%; }
+
+    /* ── Vertical gold stripes ── */
+    .gate-stripe {
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(180deg, transparent, #c9a84c 20%, #e8c97a 50%, #c9a84c 80%, transparent);
+      opacity: 0.25;
+    }
+    .gate-panel-left  .g-s1 { right: 18%; }
+    .gate-panel-left  .g-s2 { right: 10%; }
+    .gate-panel-left  .g-s3 { right: 5%;  opacity: 0.4; }
+    .gate-panel-right .g-s1 { left: 18%; }
+    .gate-panel-right .g-s2 { left: 10%; }
+    .gate-panel-right .g-s3 { left: 5%;  opacity: 0.4; }
+
+    /* ── Diamonds in corners ── */
+    .gate-diamond {
+      position: absolute;
+      width: 10px; height: 10px;
+      background: #c9a84c;
+      transform: rotate(45deg);
+      opacity: 0.8;
+    }
+    .gate-diamond-tl { top: 14%; left:  12px; }
+    .gate-diamond-bl { bottom: 14%; left: 12px; }
+    .gate-diamond-tr { top: 14%; right: 12px; }
+    .gate-diamond-br { bottom: 14%; right: 12px; }
+
+    /* ── Panel SVG ornamentation ── */
+    .gate-panel-ornamentation {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 200px;
+      width: 60px;
+      opacity: 0.6;
+    }
+    .gate-panel-left  .gate-panel-ornamentation { right: 22%; }
+    .gate-panel-right .gate-panel-ornamentation { left: 22%; }
+
+    /* ── Edge glow lines (where panels meet in center) ── */
+    .gate-edge-line {
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg,
+        transparent 0%,
+        rgba(201,168,76,0.1) 10%,
+        rgba(232,201,122,0.9) 40%,
+        rgba(255,230,150,1.0) 50%,
+        rgba(232,201,122,0.9) 60%,
+        rgba(201,168,76,0.1) 90%,
+        transparent 100%
+      );
+      box-shadow: 0 0 12px 4px rgba(201,168,76,0.6), 0 0 30px 8px rgba(201,168,76,0.2);
+    }
+    .gate-edge-right { right: 0; }
+    .gate-edge-left  { left: 0; }
+
+    /* ── Filigree top/bottom ── */
+    .gate-filigree {
+      position: absolute;
+      left: 0; right: 0;
+      height: 40px;
+      z-index: 2;
+    }
+    .gate-filigree svg { width: 100%; height: 100%; }
+    .gate-filigree-top    { top: 0; }
+    .gate-filigree-bottom { bottom: 0; }
+
+    /* ── Center logo ── */
+    .gate-center-logo {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      animation: gateCenterIntro 1.2s cubic-bezier(.22,1,.36,1) forwards;
+    }
+    @keyframes gateCenterIntro {
+      from { opacity: 0; transform: translate(-50%,-50%) scale(0.7); }
+      to   { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+    }
+
+    .gate-logo-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(201,168,76,0.5);
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      animation: gateRingPulse 3s ease-in-out infinite;
+    }
+    .gate-logo-ring-outer {
+      width: 140px; height: 140px;
+      border-color: rgba(201,168,76,0.25);
+      animation-delay: 0s;
+    }
+    .gate-logo-ring-inner {
+      width: 100px; height: 100px;
+      border-color: rgba(201,168,76,0.5);
+      animation-delay: -1.5s;
+    }
+    @keyframes gateRingPulse {
+      0%,100% { transform: translate(-50%,-50%) scale(1);   opacity: 0.6; }
+      50%      { transform: translate(-50%,-50%) scale(1.05); opacity: 1; }
+    }
+
+    .gate-logo-monogram {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.6rem;
+      font-weight: 700;
+      color: #c9a84c;
+      letter-spacing: 8px;
+      text-shadow: 0 0 30px rgba(201,168,76,0.8), 0 0 60px rgba(201,168,76,0.4);
+      position: relative;
+      z-index: 1;
+    }
+    .gate-logo-subtitle {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: rgba(201,168,76,0.6);
+      margin-top: 6px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Light burst in center when opening ── */
+    .gate-light-burst {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%) scale(0);
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,240,180,1) 0%, rgba(232,201,122,0.8) 20%, rgba(201,168,76,0.3) 50%, transparent 70%);
+      pointer-events: none;
+      z-index: 10;
+      opacity: 0;
+    }
+
+    /* ── Skip text ── */
+    .gate-skip {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(201,168,76,0.45);
+      z-index: 10;
+      animation: gateSkipPulse 2.5s ease-in-out infinite;
+    }
+    @keyframes gateSkipPulse {
+      0%,100% { opacity: 0.4; }
+      50%      { opacity: 0.9; }
+    }
+
+    /* ── Particle canvas ── */
+    #gateParticles {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ═══════════════════════
+       OPEN ANIMATIONS
+    ═══════════════════════ */
+    @keyframes gatePanelLeft {
+      0%   { transform: translateX(0) perspective(1200px) rotateY(0deg); }
+      30%  { transform: translateX(-2%) perspective(1200px) rotateY(-3deg); }
+      100% { transform: translateX(-105%) perspective(1200px) rotateY(-12deg); }
+    }
+    @keyframes gatePanelRight {
+      0%   { transform: translateX(0) perspective(1200px) rotateY(0deg); }
+      30%  { transform: translateX(2%) perspective(1200px) rotateY(3deg); }
+      100% { transform: translateX(105%) perspective(1200px) rotateY(12deg); }
+    }
+    @keyframes gateLightBurst {
+      0%   { opacity: 0;   transform: translate(-50%,-50%) scale(0); }
+      20%  { opacity: 1;   transform: translate(-50%,-50%) scale(3); }
+      60%  { opacity: 0.8; transform: translate(-50%,-50%) scale(8); }
+      100% { opacity: 0;   transform: translate(-50%,-50%) scale(14); }
+    }
+    @keyframes gateCenterFade {
+      to { opacity: 0; transform: translate(-50%,-50%) scale(1.15); }
+    }
+    @keyframes gateFiligree {
+      to { opacity: 0; transform: scaleY(0); }
+    }
+  </style>
+
+  <script>
+    /* ════════════════════════════════════════
+       GATE INTRO — PARTICLE + TRIGGER LOGIC
+    ════════════════════════════════════════ */
+    (function () {
+      const overlay  = document.getElementById('gateOverlay');
+      const canvas   = document.getElementById('gateParticles');
+      const ctx      = canvas.getContext('2d');
+      let   raf, particles = [], opening = false, done = false;
+
+      /* Resize canvas */
+      function resize() {
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      /* ── Particle factory ── */
+      const GOLD_COLORS = ['#c9a84c','#e8c97a','#f5df98','#a07828','#ffeaa0'];
+      function spawnParticle(fromCenter) {
+        const cx = canvas.width / 2, cy = canvas.height / 2;
+        const angle = Math.random() * Math.PI * 2;
+        const speed = fromCenter ? (0.3 + Math.random() * 1.2) : (0.1 + Math.random() * 0.5);
+        const side  = Math.random() < 0.5 ? -1 : 1;
+        return {
+          x:    fromCenter ? cx : (Math.random() * canvas.width),
+          y:    fromCenter ? cy : (Math.random() * canvas.height),
+          vx:   fromCenter ? Math.cos(angle) * speed : (side * (0.1 + Math.random() * 0.3)),
+          vy:   fromCenter ? Math.sin(angle) * speed - 0.8 : (-0.2 - Math.random() * 0.6),
+          r:    0.5 + Math.random() * 2,
+          life: 1,
+          decay: 0.004 + Math.random() * 0.008,
+          color: GOLD_COLORS[Math.floor(Math.random() * GOLD_COLORS.length)],
+          twinkle: Math.random() < 0.3
+        };
+      }
+
+      /* Seed ambient particles */
+      for (let i = 0; i < 60; i++) particles.push(spawnParticle(false));
+
+      /* ── Render loop ── */
+      function render() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        /* Spawn new ambient particles */
+        if (!opening) {
+          if (Math.random() < 0.4) particles.push(spawnParticle(false));
+        } else {
+          /* Burst particles from center during opening */
+          for (let i = 0; i < 4; i++) particles.push(spawnParticle(true));
+        }
+
+        /* Update & draw */
+        particles = particles.filter(p => p.life > 0);
+        for (const p of particles) {
+          p.x    += p.vx;
+          p.y    += p.vy;
+          p.life -= p.decay;
+          const alpha = p.twinkle
+            ? p.life * (0.5 + 0.5 * Math.sin(Date.now() * 0.008 + p.x))
+            : p.life;
+          ctx.globalAlpha = Math.max(0, alpha);
+          ctx.fillStyle   = p.color;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+          /* Tiny cross for some */
+          if (p.r > 1.5 && p.twinkle) {
+            ctx.strokeStyle = p.color;
+            ctx.lineWidth   = 0.5;
+            ctx.beginPath();
+            ctx.moveTo(p.x - p.r * 2, p.y);
+            ctx.lineTo(p.x + p.r * 2, p.y);
+            ctx.moveTo(p.x, p.y - p.r * 2);
+            ctx.lineTo(p.x, p.y + p.r * 2);
+            ctx.stroke();
+          }
+        }
+        ctx.globalAlpha = 1;
+        if (!done) raf = requestAnimationFrame(render);
+      }
+      render();
+
+      /* ── Trigger open ── */
+      function openGate() {
+        if (opening) return;
+        opening = true;
+        overlay.classList.add('gate-opening');
+
+        /* After animation ends, remove overlay entirely */
+        setTimeout(() => {
+          done = true;
+          cancelAnimationFrame(raf);
+          overlay.classList.add('gate-done');
+          document.body.style.overflow = '';
+        }, 1800);
+      }
+
+      /* Prevent scroll while gate is visible */
+      document.body.style.overflow = 'hidden';
+
+      /* Trigger on: click, keydown, touch */
+      overlay.addEventListener('click',     openGate, { once: true });
+      document.addEventListener('keydown',  openGate, { once: true });
+      document.addEventListener('touchend', openGate, { once: true });
+
+      /* Auto-open after 4 s if user does nothing */
+      const autoTimer = setTimeout(openGate, 4000);
+      overlay.addEventListener('click', () => clearTimeout(autoTimer), { once: true });
+    })();
+  </script>
+
   <div class="cursor" id="cursor"></div>
   <div class="aurora">
     <div class="aurora-blob"></div>
