@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luyện phỏng vấn tiếng Hàn</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; background: #f5f5f5; color: #222; padding: 20px; }
+  h1 { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+  .subtitle { font-size: 13px; color: #666; margin-bottom: 20px; }
+  .controls { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 16px; }
+  .btn { padding: 8px 18px; border-radius: 8px; border: 1px solid #ccc; background: #fff; color: #222; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: background 0.15s; }
+  .btn:hover { background: #f0f0f0; }
+  .btn.stop { border-color: #e24b4a; color: #a32d2d; }
+  .speed-row { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #555; }
+  .toggle-row { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+  .toggle-btn { padding: 5px 14px; border-radius: 20px; border: 1px solid #ccc; background: #eee; color: #555; font-size: 12px; cursor: pointer; transition: background 0.15s; }
+  .toggle-btn.on { background: #EEEDFE; border-color: #7F77DD; color: #3C3489; }
+  .progress-bar { height: 4px; background: #ddd; border-radius: 2px; margin-bottom: 20px; }
+  .progress-fill { height: 100%; background: #7F77DD; border-radius: 2px; transition: width 0.3s; }
+  .sentence-list { display: flex; flex-direction: column; gap: 10px; }
+  .sentence-card { border: 1px solid #ddd; border-radius: 12px; padding: 14px 16px; background: #fff; cursor: pointer; transition: border-color 0.15s, background 0.15s; }
+  .sentence-card:hover { border-color: #aaa; background: #fafafa; }
+  .sentence-card.playing { border-color: #7F77DD; background: #EEEDFE; }
+  .sentence-num { font-size: 11px; color: #999; margin-bottom: 4px; }
+  .korean { font-size: 15px; color: #111; font-weight: 600; margin-bottom: 5px; line-height: 1.6; }
+  .romanization { font-size: 13px; color: #534AB7; font-family: monospace; line-height: 1.6; margin-bottom: 4px; }
+  .vietnamese { font-size: 12px; color: #666; line-height: 1.5; }
+  .autoplay-info { font-size: 12px; color: #999; margin-top: 12px; text-align: center; }
+  input[type=range] { accent-color: #7F77DD; }
+</style>
+</head>
+<body>
+
+<h1>🎧 Luyện phỏng vấn tiếng Hàn</h1>
+<p class="subtitle">Nhấn vào từng câu để nghe, hoặc phát toàn bộ bài</p>
+
+<div class="toggle-row">
+  <button class="toggle-btn on" id="tog-korean" onclick="toggleView('korean')">Chữ Hàn</button>
+  <button class="toggle-btn on" id="tog-roman" onclick="toggleView('roman')">Phiên âm</button>
+  <button class="toggle-btn on" id="tog-viet" onclick="toggleView('viet')">Nghĩa tiếng Việt</button>
+</div>
+
+<div class="controls">
+  <button class="btn" id="btn-play-all" onclick="playAll()">▶ Phát toàn bộ</button>
+  <button class="btn stop" id="btn-stop" onclick="stopAll()" style="display:none">⏹ Dừng</button>
+  <button class="btn" onclick="resetAll()">↺ Làm lại</button>
+  <div class="speed-row">
+    <span>Tốc độ:</span>
+    <input type="range" min="0.5" max="1.2" step="0.1" value="0.8" id="speed-slider" style="width:90px" oninput="updateSpeed(this.value)">
+    <span id="speed-val">0.8x</span>
+  </div>
+</div>
+
+<div class="progress-bar"><div class="progress-fill" id="progress" style="width:0%"></div></div>
+<div class="sentence-list" id="sentence-list"></div>
+<div class="autoplay-info" id="autoplay-info"></div>
+
+<script>
+const sentences = [
+  { korean: "안녕하세요.", roman: "an-nyeong-ha-se-yo", viet: "Xin chào." },
+  { korean: "저는 베트남에서 온 라반상이라고 합니다.", roman: "jeo-neun be-teu-nam-e-seo on ra-ban-sang-i-ra-go ham-ni-da", viet: "Tôi tên là La Văn Sang, đến từ Việt Nam." },
+  { korean: "올해 22살입니다.", roman: "ol-hae i-sip-i sal-im-ni-da", viet: "Năm nay tôi 22 tuổi." },
+  { korean: "저는 2022년에 고등학교를 졸업했고, 2025년에 전문대학교를 졸업했습니다.", roman: "jeo-neun i-cheon-i-sip-i-nyeon-e go-deung-hak-kyo-reul jol-leo-paet-go, i-cheon-i-sip-o-nyeon-e jeon-mun-dae-hak-kyo-reul jol-leo-paet-seum-ni-da", viet: "Tôi tốt nghiệp trung học năm 2022 và tốt nghiệp cao đẳng năm 2025." },
+  { korean: "가족은 부모님과 저, 총 3명입니다.", roman: "ga-jok-eun bu-mo-nim-gwa jeo, chong sam-myeong-im-ni-da", viet: "Gia đình gồm bố mẹ và tôi, tổng cộng 3 người." },
+  { korean: "아버지는 1969년생이시고, 어머니는 1977년생이십니다.", roman: "a-beo-ji-neun cheon-gu-baek-yuk-sip-gu-nyeon-saeng-i-si-go, eo-meo-ni-neun cheon-gu-baek-chil-sip-chil-nyeon-saeng-i-sim-ni-da", viet: "Bố sinh năm 1969, mẹ sinh năm 1977." },
+  { korean: "저는 어렸을 때부터 한국 드라마와 한국 만화를 자주 접했습니다.", roman: "jeo-neun eo-ryeo-sseul ttae-bu-teo han-guk deu-ra-ma-wa han-guk man-hwa-reul ja-ju jeop-aet-seum-ni-da", viet: "Từ nhỏ, tôi thường xuyên tiếp xúc với phim và truyện tranh Hàn Quốc." },
+  { korean: "다양한 한국 콘텐츠를 보면서 자연스럽게 한국 문화에 관심을 가지게 되었고,", roman: "da-yang-han han-guk kon-ten-cheu-reul bo-myeon-seo ja-yeon-seu-reop-ge han-guk mun-hwa-e gwan-sim-eul ga-ji-ge doe-eot-go", viet: "Qua việc xem nhiều nội dung Hàn Quốc, tôi tự nhiên trở nên quan tâm đến văn hóa Hàn," },
+  { korean: "한국에 대해 더 알아보고 싶다는 생각을 하게 되었습니다.", roman: "han-gu-ge dae-hae deo a-ra-bo-go sip-da-neun saeng-gak-eul ha-ge doe-eot-seum-ni-da", viet: "và nảy sinh mong muốn tìm hiểu thêm về Hàn Quốc." },
+  { korean: "또한 한국의 교육 환경과 발전된 산업 분야에 관심이 많아", roman: "tto-han han-gu-ge gyo-yuk hwan-gyeong-gwa bal-jeon-doen san-eop bun-ya-e gwan-sim-i ma-na", viet: "Ngoài ra, do quan tâm đến môi trường giáo dục và các lĩnh vực công nghiệp phát triển của Hàn Quốc," },
+  { korean: "한국어를 배우고 한국 문화를 직접 경험하기 위해 한국 유학을 결심하게 되었습니다.", roman: "han-gu-geo-reul bae-u-go han-guk mun-hwa-reul jik-jeop gyeong-heom-ha-gi wi-hae han-guk yu-hak-eul gyeol-sim-ha-ge doe-eot-seum-ni-da", viet: "tôi quyết tâm du học Hàn Quốc để học tiếng Hàn và trực tiếp trải nghiệm văn hóa Hàn." },
+  { korean: "한국에서 한국어를 열심히 공부한 후 대학교에 진학하여 전공 지식을 더 깊이 배우고 싶습니다.", roman: "han-gu-ge-seo han-gu-geo-reul yeol-sim-hi gong-bu-han hu dae-hak-kyo-e jin-hak-ha-yeo jeon-gong ji-sig-eul deo gip-i bae-u-go sip-seum-ni-da", viet: "Sau khi học tiếng Hàn chăm chỉ tại Hàn Quốc, tôi muốn vào đại học để học sâu hơn về chuyên ngành." },
+  { korean: "또한 다양한 경험을 쌓아 국제적인 역량을 갖춘 인재로 성장하고 싶습니다.", roman: "tto-han da-yang-han gyeong-heom-eul ssa-a guk-je-jeok-in yeok-nyang-eul gat-chun in-jae-ro seong-jang-ha-go sip-seum-ni-da", viet: "Tôi cũng muốn tích lũy nhiều kinh nghiệm để trưởng thành thành người tài có năng lực quốc tế." },
+  { korean: "감사합니다.", roman: "gam-sa-ham-ni-da", viet: "Xin cảm ơn." }
+];
+
+let currentIdx = -1, isPlaying = false, autoplayTimeout = null, speed = 0.8;
+let showRoman = true, showViet = true, showKorean = true;
+const synth = window.speechSynthesis;
+
+function toggleView(type) {
+  if (type === 'roman') { showRoman = !showRoman; document.getElementById('tog-roman').classList.toggle('on', showRoman); }
+  if (type === 'viet') { showViet = !showViet; document.getElementById('tog-viet').classList.toggle('on', showViet); }
+  if (type === 'korean') { showKorean = !showKorean; document.getElementById('tog-korean').classList.toggle('on', showKorean); }
+  renderList();
+}
+
+function updateSpeed(v) {
+  speed = parseFloat(v);
+  document.getElementById('speed-val').textContent = speed.toFixed(1) + 'x';
+}
+
+function speakKorean(text, onEnd) {
+  synth.cancel();
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = 'ko-KR'; utt.rate = speed;
+  utt.onend = onEnd || null;
+  synth.speak(utt);
+}
+
+function renderList() {
+  const list = document.getElementById('sentence-list');
+  list.innerHTML = sentences.map((s, i) => `
+    <div class="sentence-card ${i === currentIdx ? 'playing' : ''}" id="card-${i}" onclick="playSingle(${i})">
+      <div class="sentence-num">Câu ${i+1} / ${sentences.length}</div>
+      ${showKorean ? `<div class="korean">${s.korean}</div>` : ''}
+      ${showRoman ? `<div class="romanization">${s.roman}</div>` : ''}
+      ${showViet ? `<div class="vietnamese">${s.viet}</div>` : ''}
+    </div>`).join('');
+}
+
+function setActive(idx) {
+  document.querySelectorAll('.sentence-card').forEach((c, i) => c.classList.toggle('playing', i === idx));
+  if (idx >= 0) document.getElementById('card-' + idx)?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  document.getElementById('progress').style.width = idx >= 0 ? Math.round(((idx+1)/sentences.length)*100)+'%' : '0%';
+}
+
+function playSingle(idx) {
+  stopAll(); currentIdx = idx; setActive(idx); speakKorean(sentences[idx].korean);
+}
+
+function playAll() {
+  stopAll(); isPlaying = true;
+  document.getElementById('btn-play-all').style.display = 'none';
+  document.getElementById('btn-stop').style.display = '';
+  playNext(0);
+}
+
+function playNext(idx) {
+  if (!isPlaying || idx >= sentences.length) {
+    if (idx >= sentences.length) {
+      document.getElementById('autoplay-info').textContent = '✓ Đã phát xong toàn bộ bài!';
+      document.getElementById('btn-play-all').style.display = '';
+      document.getElementById('btn-stop').style.display = 'none';
+      isPlaying = false; setActive(-1);
+    }
+    return;
+  }
+  currentIdx = idx; setActive(idx);
+  document.getElementById('autoplay-info').textContent = `Đang phát câu ${idx+1}/${sentences.length}...`;
+  speakKorean(sentences[idx].korean, () => {
+    if (!isPlaying) return;
+    autoplayTimeout = setTimeout(() => playNext(idx + 1), 600);
+  });
+}
+
+function stopAll() {
+  isPlaying = false; synth.cancel(); clearTimeout(autoplayTimeout);
+  document.getElementById('btn-play-all').style.display = '';
+  document.getElementById('btn-stop').style.display = 'none';
+  document.getElementById('autoplay-info').textContent = '';
+  setActive(-1); currentIdx = -1;
+}
+
+function resetAll() {
+  stopAll();
+  document.getElementById('progress').style.width = '0%';
+}
+
+renderList();
+</script>
+</body>
+</html>

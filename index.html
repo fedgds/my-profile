@@ -5368,12 +5368,31 @@
         return audioCtx;
       }
 
-      // White-noise buffer helper
+      // Khởi tạo AudioContext sớm khi trang load xong (tránh lag lần đầu click)
+      window.addEventListener('load', function () {
+        setTimeout(function () {
+          try {
+            if (!audioCtx) {
+              audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+              masterGain = audioCtx.createGain();
+              masterGain.gain.value = 0.82;
+              masterGain.connect(audioCtx.destination);
+              // Giữ suspended — chỉ cần khởi tạo để tránh lag lần đầu
+            }
+          } catch (e) { /* bỏ qua nếu browser chưa hỗ trợ */ }
+        }, 500);
+      });
+
+      // White-noise buffer helper — có cache để tránh tính lại mỗi lần
+      const _noiseCache = {};
       function makeNoise(ctx, dur) {
+        const key = Math.round(dur * 1000);
+        if (_noiseCache[key]) return _noiseCache[key];
         const len = Math.floor(ctx.sampleRate * dur);
         const buf = ctx.createBuffer(1, len, ctx.sampleRate);
         const d = buf.getChannelData(0);
         for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+        _noiseCache[key] = buf;
         return buf;
       }
 
@@ -5712,11 +5731,15 @@
       });
       document.body.appendChild(soundBtn);
 
-      // Unlock audio on first interaction
+      // Unlock audio on first interaction (context đã được tạo sẵn khi load)
       document.addEventListener('click', function unlockAudio() {
         soundEnabled = true;
-        const ctx = getCtx();
-        if (ctx.state === 'suspended') ctx.resume();
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        } else if (!audioCtx) {
+          // Fallback nếu load-time init chưa chạy kịp
+          getCtx();
+        }
       }, { once: true });
 
       // ── STATE MACHINE ──
