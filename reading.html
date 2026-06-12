@@ -4,37 +4,46 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Luyện phỏng vấn tiếng Hàn</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: Arial, sans-serif; background: #f5f5f5; color: #222; padding: 20px; }
   h1 { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
-  .subtitle { font-size: 13px; color: #666; margin-bottom: 20px; }
-  .controls { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 16px; }
-  .btn { padding: 8px 18px; border-radius: 8px; border: 1px solid #ccc; background: #fff; color: #222; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: background 0.15s; }
+  .subtitle { font-size: 13px; color: #666; margin-bottom: 16px; }
+  .controls { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+  .btn { padding: 7px 14px; border-radius: 8px; border: 1px solid #ccc; background: #fff; color: #222; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: background 0.15s; }
   .btn:hover { background: #f0f0f0; }
-  .btn.stop { border-color: #e24b4a; color: #a32d2d; }
+  .btn.danger { border-color: #A32D2D; color: #A32D2D; }
   .speed-row { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #555; }
-  .toggle-row { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
-  .toggle-btn { padding: 5px 14px; border-radius: 20px; border: 1px solid #ccc; background: #eee; color: #555; font-size: 12px; cursor: pointer; transition: background 0.15s; }
+  .toggle-row { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+  .toggle-btn { padding: 4px 12px; border-radius: 20px; border: 1px solid #ccc; background: #eee; color: #555; font-size: 12px; cursor: pointer; }
   .toggle-btn.on { background: #EEEDFE; border-color: #7F77DD; color: #3C3489; }
-  .progress-bar { height: 4px; background: #ddd; border-radius: 2px; margin-bottom: 20px; }
+  .progress-bar { height: 3px; background: #ddd; border-radius: 2px; margin-bottom: 16px; }
   .progress-fill { height: 100%; background: #7F77DD; border-radius: 2px; transition: width 0.3s; }
-  .sentence-list { display: flex; flex-direction: column; gap: 10px; }
-  .sentence-card { border: 1px solid #ddd; border-radius: 12px; padding: 14px 16px; background: #fff; cursor: pointer; transition: border-color 0.15s, background 0.15s; }
+  .sentence-list { display: flex; flex-direction: column; gap: 8px; }
+  .sentence-card { border: 1px solid #ddd; border-radius: 12px; padding: 12px 14px; background: #fff; cursor: pointer; transition: border-color 0.15s; display: flex; gap: 10px; align-items: flex-start; }
   .sentence-card:hover { border-color: #aaa; background: #fafafa; }
   .sentence-card.playing { border-color: #7F77DD; background: #EEEDFE; }
-  .sentence-num { font-size: 11px; color: #999; margin-bottom: 4px; }
-  .korean { font-size: 15px; color: #111; font-weight: 600; margin-bottom: 5px; line-height: 1.6; }
-  .romanization { font-size: 13px; color: #534AB7; font-family: monospace; line-height: 1.6; margin-bottom: 4px; }
+  .card-content { flex: 1; min-width: 0; }
+  .sentence-num { font-size: 11px; color: #999; margin-bottom: 3px; }
+  .korean { font-size: 15px; color: #111; font-weight: 600; margin-bottom: 4px; line-height: 1.6; }
+  .romanization { font-size: 12px; color: #534AB7; font-family: monospace; line-height: 1.5; margin-bottom: 3px; }
   .vietnamese { font-size: 12px; color: #666; line-height: 1.5; }
-  .autoplay-info { font-size: 12px; color: #999; margin-top: 12px; text-align: center; }
+  .card-actions { display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
+  .mini-btn { width: 30px; height: 30px; border-radius: 8px; border: 1px solid #ccc; background: #fff; color: #555; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
+  .mini-btn:hover { background: #f0f0f0; }
+  .mini-btn.loop-on { background: #EEEDFE; border-color: #7F77DD; color: #3C3489; }
+  .loop-counter { font-size: 10px; text-align: center; color: #999; min-width: 30px; }
+  .loop-controls { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #555; }
+  .autoplay-info { font-size: 12px; color: #999; margin-top: 10px; text-align: center; }
   input[type=range] { accent-color: #7F77DD; }
+  select { font-size: 13px; padding: 4px 8px; border-radius: 8px; border: 1px solid #ccc; background: #fff; color: #222; cursor: pointer; }
 </style>
 </head>
 <body>
 
 <h1>🎧 Luyện phỏng vấn tiếng Hàn</h1>
-<p class="subtitle">Nhấn vào từng câu để nghe, hoặc phát toàn bộ bài</p>
+<p class="subtitle">Nhấn vào từng câu để nghe, hoặc phát toàn bộ bài. Nhấn 🔁 để lặp 1 câu.</p>
 
 <div class="toggle-row">
   <button class="toggle-btn on" id="tog-korean" onclick="toggleView('korean')">Chữ Hàn</button>
@@ -44,12 +53,21 @@
 
 <div class="controls">
   <button class="btn" id="btn-play-all" onclick="playAll()">▶ Phát toàn bộ</button>
-  <button class="btn stop" id="btn-stop" onclick="stopAll()" style="display:none">⏹ Dừng</button>
+  <button class="btn danger" id="btn-stop" onclick="stopAll()" style="display:none">⏹ Dừng</button>
   <button class="btn" onclick="resetAll()">↺ Làm lại</button>
   <div class="speed-row">
     <span>Tốc độ:</span>
-    <input type="range" min="0.5" max="1.2" step="0.1" value="0.8" id="speed-slider" style="width:90px" oninput="updateSpeed(this.value)">
+    <input type="range" min="0.5" max="1.2" step="0.1" value="0.8" id="speed-slider" style="width:80px" oninput="updateSpeed(this.value)">
     <span id="speed-val">0.8x</span>
+  </div>
+  <div class="loop-controls">
+    🔁 <span>Lặp:</span>
+    <select id="loop-count-select" onchange="updateLoopDefault(this.value)">
+      <option value="3">3 lần</option>
+      <option value="5">5 lần</option>
+      <option value="10">10 lần</option>
+      <option value="99">Vô hạn</option>
+    </select>
   </div>
 </div>
 
@@ -77,6 +95,8 @@ const sentences = [
 
 let currentIdx = -1, isPlaying = false, autoplayTimeout = null, speed = 0.8;
 let showRoman = true, showViet = true, showKorean = true;
+let loopIdx = -1, loopCount = 0, loopMax = 3, loopTimeout = null, isLooping = false;
+let loopDefaultMax = 3;
 const synth = window.speechSynthesis;
 
 function toggleView(type) {
@@ -91,6 +111,10 @@ function updateSpeed(v) {
   document.getElementById('speed-val').textContent = speed.toFixed(1) + 'x';
 }
 
+function updateLoopDefault(v) {
+  loopDefaultMax = parseInt(v);
+}
+
 function speakKorean(text, onEnd) {
   synth.cancel();
   const utt = new SpeechSynthesisUtterance(text);
@@ -99,14 +123,90 @@ function speakKorean(text, onEnd) {
   synth.speak(utt);
 }
 
+function startLoop(idx) {
+  stopAll();
+  loopIdx = idx;
+  loopMax = loopDefaultMax;
+  loopCount = 0;
+  isLooping = true;
+  currentIdx = idx;
+  setActive(idx);
+  updateLoopCounter(idx);
+  playLoopStep();
+}
+
+function playLoopStep() {
+  if (!isLooping || loopIdx < 0) return;
+  const infinite = loopMax === 99;
+  if (!infinite && loopCount >= loopMax) {
+    stopLoop();
+    return;
+  }
+  loopCount++;
+  updateLoopCounter(loopIdx);
+  document.getElementById('autoplay-info').textContent = infinite
+    ? `Đang lặp câu ${loopIdx+1} — lần ${loopCount}...`
+    : `Đang lặp câu ${loopIdx+1} — lần ${loopCount}/${loopMax}`;
+  speakKorean(sentences[loopIdx].korean, () => {
+    if (!isLooping) return;
+    loopTimeout = setTimeout(() => playLoopStep(), 500);
+  });
+}
+
+function stopLoop() {
+  isLooping = false;
+  synth.cancel();
+  clearTimeout(loopTimeout);
+  const old = loopIdx;
+  loopIdx = -1;
+  loopCount = 0;
+  currentIdx = -1;
+  setActive(-1);
+  document.getElementById('autoplay-info').textContent = '';
+  if (old >= 0) updateLoopCounter(old);
+}
+
+function toggleLoop(idx, e) {
+  e.stopPropagation();
+  if (isLooping && loopIdx === idx) {
+    stopLoop();
+  } else {
+    startLoop(idx);
+  }
+}
+
+function updateLoopCounter(idx) {
+  const el = document.getElementById('loop-cnt-' + idx);
+  if (!el) return;
+  const btn = document.getElementById('loop-btn-' + idx);
+  if (isLooping && loopIdx === idx) {
+    const infinite = loopMax === 99;
+    el.textContent = infinite ? '∞' : loopCount + '/' + loopMax;
+    btn.classList.add('loop-on');
+    btn.textContent = '⏹';
+    btn.title = 'Dừng lặp';
+  } else {
+    el.textContent = '';
+    btn.classList.remove('loop-on');
+    btn.textContent = '🔁';
+    btn.title = 'Lặp câu này';
+  }
+}
+
 function renderList() {
   const list = document.getElementById('sentence-list');
   list.innerHTML = sentences.map((s, i) => `
     <div class="sentence-card ${i === currentIdx ? 'playing' : ''}" id="card-${i}" onclick="playSingle(${i})">
-      <div class="sentence-num">Câu ${i+1} / ${sentences.length}</div>
-      ${showKorean ? `<div class="korean">${s.korean}</div>` : ''}
-      ${showRoman ? `<div class="romanization">${s.roman}</div>` : ''}
-      ${showViet ? `<div class="vietnamese">${s.viet}</div>` : ''}
+      <div class="card-content">
+        <div class="sentence-num">Câu ${i+1} / ${sentences.length}</div>
+        ${showKorean ? `<div class="korean">${s.korean}</div>` : ''}
+        ${showRoman ? `<div class="romanization">${s.roman}</div>` : ''}
+        ${showViet ? `<div class="vietnamese">${s.viet}</div>` : ''}
+      </div>
+      <div class="card-actions" onclick="event.stopPropagation()">
+        <button class="mini-btn" id="loop-btn-${i}" onclick="toggleLoop(${i}, event)" title="Lặp câu này">🔁</button>
+        <div class="loop-counter" id="loop-cnt-${i}"></div>
+      </div>
     </div>`).join('');
 }
 
@@ -117,10 +217,13 @@ function setActive(idx) {
 }
 
 function playSingle(idx) {
-  stopAll(); currentIdx = idx; setActive(idx); speakKorean(sentences[idx].korean);
+  if (isLooping) stopLoop();
+  stopAll();
+  currentIdx = idx; setActive(idx); speakKorean(sentences[idx].korean);
 }
 
 function playAll() {
+  if (isLooping) stopLoop();
   stopAll(); isPlaying = true;
   document.getElementById('btn-play-all').style.display = 'none';
   document.getElementById('btn-stop').style.display = '';
@@ -154,6 +257,7 @@ function stopAll() {
 }
 
 function resetAll() {
+  if (isLooping) stopLoop();
   stopAll();
   document.getElementById('progress').style.width = '0%';
 }
