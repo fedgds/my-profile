@@ -59,20 +59,20 @@
 
 <script>
 const sentences = [
-  { korean: "안녕하세요.", roman: "an-nyeong-ha-se-yo", viet: "Xin chào." },
-  { korean: "저는 베트남에서 온 라반상이라고 합니다.", roman: "jeo-neun be-teu-nam-e-seo on ra-ban-sang-i-ra-go ham-ni-da", viet: "Tôi tên là La Văn Sang, đến từ Việt Nam." },
-  { korean: "올해 22살입니다.", roman: "ol-hae i-sip-i sal-im-ni-da", viet: "Năm nay tôi 22 tuổi." },
-  { korean: "저는 2022년에 고등학교를 졸업했고, 2025년에 전문대학교를 졸업했습니다.", roman: "jeo-neun i-cheon-i-sip-i-nyeon-e go-deung-hak-kyo-reul jol-leo-paet-go, i-cheon-i-sip-o-nyeon-e jeon-mun-dae-hak-kyo-reul jol-leo-paet-seum-ni-da", viet: "Tôi tốt nghiệp trung học năm 2022 và tốt nghiệp cao đẳng năm 2025." },
-  { korean: "가족은 부모님과 저, 총 3명입니다.", roman: "ga-jok-eun bu-mo-nim-gwa jeo, chong sam-myeong-im-ni-da", viet: "Gia đình gồm bố mẹ và tôi, tổng cộng 3 người." },
-  { korean: "아버지는 1969년생이시고, 어머니는 1977년생이십니다.", roman: "a-beo-ji-neun cheon-gu-baek-yuk-sip-gu-nyeon-saeng-i-si-go, eo-meo-ni-neun cheon-gu-baek-chil-sip-chil-nyeon-saeng-i-sim-ni-da", viet: "Bố sinh năm 1969, mẹ sinh năm 1977." },
-  { korean: "저는 어렸을 때부터 한국 드라마와 한국 만화를 자주 접했습니다.", roman: "jeo-neun eo-ryeo-sseul ttae-bu-teo han-guk deu-ra-ma-wa han-guk man-hwa-reul ja-ju jeop-aet-seum-ni-da", viet: "Từ nhỏ, tôi thường xuyên tiếp xúc với phim và truyện tranh Hàn Quốc." },
-  { korean: "다양한 한국 콘텐츠를 보면서 자연스럽게 한국 문화에 관심을 가지게 되었고,", roman: "da-yang-han han-guk kon-ten-cheu-reul bo-myeon-seo ja-yeon-seu-reop-ge han-guk mun-hwa-e gwan-sim-eul ga-ji-ge doe-eot-go", viet: "Qua việc xem nhiều nội dung Hàn Quốc, tôi tự nhiên trở nên quan tâm đến văn hóa Hàn," },
-  { korean: "한국에 대해 더 알아보고 싶다는 생각을 하게 되었습니다.", roman: "han-gu-ge dae-hae deo a-ra-bo-go sip-da-neun saeng-gak-eul ha-ge doe-eot-seum-ni-da", viet: "và nảy sinh mong muốn tìm hiểu thêm về Hàn Quốc." },
-  { korean: "또한 한국의 교육 환경과 발전된 산업 분야에 관심이 많아", roman: "tto-han han-gu-ge gyo-yuk hwan-gyeong-gwa bal-jeon-doen san-eop bun-ya-e gwan-sim-i ma-na", viet: "Ngoài ra, do quan tâm đến môi trường giáo dục và các lĩnh vực công nghiệp phát triển của Hàn Quốc," },
-  { korean: "한국어를 배우고 한국 문화를 직접 경험하기 위해 한국 유학을 결심하게 되었습니다.", roman: "han-gu-geo-reul bae-u-go han-guk mun-hwa-reul jik-jeop gyeong-heom-ha-gi wi-hae han-guk yu-hak-eul gyeol-sim-ha-ge doe-eot-seum-ni-da", viet: "tôi quyết tâm du học Hàn Quốc để học tiếng Hàn và trực tiếp trải nghiệm văn hóa Hàn." },
-  { korean: "한국에서 한국어를 열심히 공부한 후 대학교에 진학하여 전공 지식을 더 깊이 배우고 싶습니다.", roman: "han-gu-ge-seo han-gu-geo-reul yeol-sim-hi gong-bu-han hu dae-hak-kyo-e jin-hak-ha-yeo jeon-gong ji-sig-eul deo gip-i bae-u-go sip-seum-ni-da", viet: "Sau khi học tiếng Hàn chăm chỉ tại Hàn Quốc, tôi muốn vào đại học để học sâu hơn về chuyên ngành." },
-  { korean: "또한 다양한 경험을 쌓아 국제적인 역량을 갖춘 인재로 성장하고 싶습니다.", roman: "tto-han da-yang-han gyeong-heom-eul ssa-a guk-je-jeok-in yeok-nyang-eul gat-chun in-jae-ro seong-jang-ha-go sip-seum-ni-da", viet: "Tôi cũng muốn tích lũy nhiều kinh nghiệm để trưởng thành thành người tài có năng lực quốc tế." },
-  { korean: "감사합니다.", roman: "gam-sa-ham-ni-da", viet: "Xin cảm ơn." }
+  { korean: "안녕하세요.", roman: "an-nhông-ha-sê-yô", viet: "Xin chào." },
+  { korean: "저는 베트남에서 온 라반상이라고 합니다.", roman: "chơ-nưn bê-thư-nam-ê-sơ on la-ban-sang-i-ra-gô ham-ni-da", viet: "Tôi tên là La Văn Sang, đến từ Việt Nam." },
+  { korean: "올해 스물두 살입니다.", roman: "ôl-he sư-mul-tu sal im-ni-da", viet: "Năm nay tôi 22 tuổi." },
+  { korean: "저는 2022년에 고등학교를 졸업했고, 2025년에 전문대학교를 졸업했습니다.", roman: "chơ-nưn i-chon-i-sip-i-nhơ-nê cô-đưng-hắc-kyo-rưl cho-rốp-hét-cô, i-chon-i-sip-o-nhơ-nê chon-mun-de-hắc-kyo-rưl cho-rốp-hét-sưm-ni-da", viet: "Tôi tốt nghiệp trung học năm 2022 và tốt nghiệp cao đẳng năm 2025." },
+  { korean: "가족은 부모님과 저, 총 3명입니다.", roman: "ca-chô-gưn bu-mo-nim-gwa chơ, chông sam-myông-im-ni-da", viet: "Gia đình gồm bố mẹ và tôi, tổng cộng 3 người." },
+  { korean: "아버지는 1969년생이시고, 어머니는 1977년생이십니다.", roman: "a-bơ-chi-nưn chon-gu-bek-yuk-sip-gu-nhơn-seng-i-si-gô, o-mo-ni-nưn chon-gu-bek-chil-sip-chil-nhơn-seng-i-sim-ni-da", viet: "Bố sinh năm 1969, mẹ sinh năm 1977." },
+  { korean: "저는 어렸을 때부터 한국 드라마와 한국 만화를 자주 접했습니다.", roman: "chơ-nưn o-ryo-sưl tte-bu-thơ han-guk tư-ra-ma-wa han-guk man-hwa-rưl cha-chu chơ-pết-sưm-ni-da", viet: "Từ nhỏ, tôi thường xuyên tiếp xúc với phim và truyện tranh Hàn Quốc." },
+  { korean: "다양한 한국 콘텐츠를 보면서 자연스럽게 한국 문화에 관심을 가지게 되었고,", roman: "ta-yang-han han-guk khon-then-chư-rưl bô-myơn-sơ cha-yơn-sư-rốp-kê han-guk mun-hwa-ê kwan-si-mưl ka-chi-kê tway-ot-cô", viet: "Qua việc xem nhiều nội dung Hàn Quốc, tôi tự nhiên trở nên quan tâm đến văn hóa Hàn." },
+  { korean: "한국에 대해 더 알아보고 싶다는 생각을 하게 되었습니다.", roman: "han-gu-kê te-he tơ a-ra-bô-gô sip-ta-nưn seng-ga-gưl ha-kê tway-ot-sưm-ni-da", viet: "và nảy sinh mong muốn tìm hiểu thêm về Hàn Quốc." },
+  { korean: "또한 한국의 교육 환경과 발전된 산업 분야에 관심이 많아", roman: "tto-han han-gu-kê kyo-yuk hwan-gyong-gwa bal-chon-doen san-op bun-ya-ê kwan-si-mi ma-na", viet: "Ngoài ra, do quan tâm đến môi trường giáo dục và các lĩnh vực công nghiệp phát triển của Hàn Quốc." },
+  { korean: "한국어를 배우고 한국 문화를 직접 경험하기 위해 한국 유학을 결심하게 되었습니다.", roman: "han-gu-gơ-rưl be-u-gô han-guk mun-hwa-rưl chik-chốp kyong-hơm-ha-gi wi-he han-guk yu-ha-gưl kyol-si-ma-kê tway-ot-sưm-ni-da", viet: "tôi quyết tâm du học Hàn Quốc để học tiếng Hàn và trực tiếp trải nghiệm văn hóa Hàn." },
+  { korean: "한국에서 한국어를 열심히 공부한 후 대학교에 진학하여 전공 지식을 더 깊이 배우고 싶습니다.", roman: "han-gu-kê-sơ han-gu-gơ-rưl yol-sim-hi kong-bu-han hu de-hắc-kyo-ê chin-ha-ka-yơ chon-gong chi-si-gưl tơ ki-pi be-u-gô sip-sưm-ni-da", viet: "Sau khi học tiếng Hàn chăm chỉ tại Hàn Quốc, tôi muốn vào đại học để học sâu hơn về chuyên ngành." },
+  { korean: "또한 다양한 경험을 쌓아 국제적인 역량을 갖춘 인재로 성장하고 싶습니다.", roman: "tto-han ta-yang-han kyong-hơ-mưl ssa-a kuk-che-chơ-gin yong-nyang-ưl kat-chun in-che-rô song-chang-ha-gô sip-sưm-ni-da", viet: "Tôi cũng muốn tích lũy nhiều kinh nghiệm để trưởng thành thành người tài có năng lực quốc tế." },
+  { korean: "감사합니다.", roman: "kam-sa-ham-ni-da", viet: "Xin cảm ơn." }
 ];
 
 let currentIdx = -1, isPlaying = false, autoplayTimeout = null, speed = 0.8;
