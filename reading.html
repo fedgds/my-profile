@@ -1,204 +1,403 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Luyện phỏng vấn tiếng Hàn</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: Arial, sans-serif; background: #f5f5f5; color: #222; padding: 20px; }
-  h1 { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
-  .subtitle { font-size: 13px; color: #666; margin-bottom: 16px; }
-  .controls { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
-  .btn { padding: 7px 14px; border-radius: 8px; border: 1px solid #ccc; background: #fff; color: #222; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: background 0.15s; }
-  .btn:hover { background: #f0f0f0; }
-  .btn.danger { border-color: #A32D2D; color: #A32D2D; }
-  .speed-row { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #555; }
-  .toggle-row { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
-  .toggle-btn { padding: 4px 12px; border-radius: 20px; border: 1px solid #ccc; background: #eee; color: #555; font-size: 12px; cursor: pointer; }
-  .toggle-btn.on { background: #EEEDFE; border-color: #7F77DD; color: #3C3489; }
-  .progress-bar { height: 3px; background: #ddd; border-radius: 2px; margin-bottom: 16px; }
-  .progress-fill { height: 100%; background: #7F77DD; border-radius: 2px; transition: width 0.3s; }
-  .sentence-list { display: flex; flex-direction: column; gap: 8px; }
-  .sentence-card { border: 1px solid #ddd; border-radius: 12px; padding: 12px 14px; background: #fff; cursor: pointer; transition: border-color 0.15s; display: flex; gap: 10px; align-items: flex-start; }
-  .sentence-card:hover { border-color: #aaa; background: #fafafa; }
-  .sentence-card.playing { border-color: #7F77DD; background: #EEEDFE; }
-  .card-content { flex: 1; min-width: 0; }
-  .sentence-num { font-size: 11px; color: #999; margin-bottom: 3px; }
-  .korean { font-size: 15px; color: #111; font-weight: 600; margin-bottom: 4px; line-height: 1.6; }
-  .romanization { font-size: 12px; color: #534AB7; font-family: monospace; line-height: 1.5; margin-bottom: 3px; }
-  .vietnamese { font-size: 12px; color: #666; line-height: 1.5; }
-  .card-actions { display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
-  .mini-btn { width: 30px; height: 30px; border-radius: 8px; border: 1px solid #ccc; background: #fff; color: #555; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
-  .mini-btn:hover { background: #f0f0f0; }
-  .mini-btn.loop-on { background: #EEEDFE; border-color: #7F77DD; color: #3C3489; }
-  .loop-counter { font-size: 10px; text-align: center; color: #999; min-width: 30px; }
-  .loop-controls { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #555; }
-  .autoplay-info { font-size: 12px; color: #999; margin-top: 10px; text-align: center; }
-  input[type=range] { accent-color: #7F77DD; }
-  select { font-size: 13px; padding: 4px 8px; border-radius: 8px; border: 1px solid #ccc; background: #fff; color: #222; cursor: pointer; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luyện phỏng vấn tiếng Hàn</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      color: #222;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 16px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .btn {
+      padding: 7px 14px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: #fff;
+      color: #222;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: background 0.15s;
+    }
+
+    .btn:hover {
+      background: #f0f0f0;
+    }
+
+    .btn.danger {
+      border-color: #A32D2D;
+      color: #A32D2D;
+    }
+
+    .speed-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #555;
+    }
+
+    .toggle-row {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .toggle-btn {
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+      background: #eee;
+      color: #555;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .toggle-btn.on {
+      background: #EEEDFE;
+      border-color: #7F77DD;
+      color: #3C3489;
+    }
+
+    .progress-bar {
+      height: 3px;
+      background: #ddd;
+      border-radius: 2px;
+      margin-bottom: 16px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: #7F77DD;
+      border-radius: 2px;
+      transition: width 0.3s;
+    }
+
+    .sentence-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sentence-card {
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 12px 14px;
+      background: #fff;
+      cursor: pointer;
+      transition: border-color 0.15s;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .sentence-card:hover {
+      border-color: #aaa;
+      background: #fafafa;
+    }
+
+    .sentence-card.playing {
+      border-color: #7F77DD;
+      background: #EEEDFE;
+    }
+
+    .card-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .sentence-num {
+      font-size: 11px;
+      color: #999;
+      margin-bottom: 3px;
+    }
+
+    .korean {
+      font-size: 15px;
+      color: #111;
+      font-weight: 600;
+      margin-bottom: 4px;
+      line-height: 1.6;
+    }
+
+    .romanization {
+      font-size: 12px;
+      color: #534AB7;
+      font-family: monospace;
+      line-height: 1.5;
+      margin-bottom: 3px;
+    }
+
+    .vietnamese {
+      font-size: 12px;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    .card-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .mini-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: #fff;
+      color: #555;
+      font-size: 15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+
+    .mini-btn:hover {
+      background: #f0f0f0;
+    }
+
+    .mini-btn.loop-on {
+      background: #EEEDFE;
+      border-color: #7F77DD;
+      color: #3C3489;
+    }
+
+    .loop-counter {
+      font-size: 10px;
+      text-align: center;
+      color: #999;
+      min-width: 30px;
+    }
+
+    .loop-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: #555;
+    }
+
+    .autoplay-info {
+      font-size: 12px;
+      color: #999;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    input[type=range] {
+      accent-color: #7F77DD;
+    }
+
+    select {
+      font-size: 13px;
+      padding: 4px 8px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: #fff;
+      color: #222;
+      cursor: pointer;
+    }
+  </style>
 </head>
+
 <body>
 
-<h1>🎧 Luyện phỏng vấn tiếng Hàn</h1>
-<p class="subtitle">Nhấn vào từng câu để nghe, hoặc phát toàn bộ bài. Nhấn 🔁 để lặp 1 câu.</p>
+  <h1>🎧 Luyện phỏng vấn tiếng Hàn</h1>
+  <p class="subtitle">Nhấn vào từng câu để nghe, hoặc phát toàn bộ bài. Nhấn 🔁 để lặp 1 câu.</p>
 
-<div class="toggle-row">
-  <button class="toggle-btn on" id="tog-korean" onclick="toggleView('korean')">Chữ Hàn</button>
-  <button class="toggle-btn on" id="tog-roman" onclick="toggleView('roman')">Phiên âm</button>
-  <button class="toggle-btn on" id="tog-viet" onclick="toggleView('viet')">Nghĩa tiếng Việt</button>
-</div>
-
-<div class="controls">
-  <button class="btn" id="btn-play-all" onclick="playAll()">▶ Phát toàn bộ</button>
-  <button class="btn danger" id="btn-stop" onclick="stopAll()" style="display:none">⏹ Dừng</button>
-  <button class="btn" onclick="resetAll()">↺ Làm lại</button>
-  <div class="speed-row">
-    <span>Tốc độ:</span>
-    <input type="range" min="0.5" max="1.2" step="0.1" value="0.8" id="speed-slider" style="width:80px" oninput="updateSpeed(this.value)">
-    <span id="speed-val">0.8x</span>
+  <div class="toggle-row">
+    <button class="toggle-btn on" id="tog-korean" onclick="toggleView('korean')">Chữ Hàn</button>
+    <button class="toggle-btn on" id="tog-roman" onclick="toggleView('roman')">Phiên âm</button>
+    <button class="toggle-btn on" id="tog-viet" onclick="toggleView('viet')">Nghĩa tiếng Việt</button>
   </div>
-  <div class="loop-controls">
-    🔁 <span>Lặp:</span>
-    <select id="loop-count-select" onchange="updateLoopDefault(this.value)">
-      <option value="3">3 lần</option>
-      <option value="5">5 lần</option>
-      <option value="10">10 lần</option>
-      <option value="99">Vô hạn</option>
-    </select>
+
+  <div class="controls">
+    <button class="btn" id="btn-play-all" onclick="playAll()">▶ Phát toàn bộ</button>
+    <button class="btn danger" id="btn-stop" onclick="stopAll()" style="display:none">⏹ Dừng</button>
+    <button class="btn" onclick="resetAll()">↺ Làm lại</button>
+    <div class="speed-row">
+      <span>Tốc độ:</span>
+      <input type="range" min="0.5" max="1.2" step="0.1" value="0.8" id="speed-slider" style="width:80px"
+        oninput="updateSpeed(this.value)">
+      <span id="speed-val">0.8x</span>
+    </div>
+    <div class="loop-controls">
+      🔁 <span>Lặp:</span>
+      <select id="loop-count-select" onchange="updateLoopDefault(this.value)">
+        <option value="3">3 lần</option>
+        <option value="5">5 lần</option>
+        <option value="10">10 lần</option>
+        <option value="99">Vô hạn</option>
+      </select>
+    </div>
   </div>
-</div>
 
-<div class="progress-bar"><div class="progress-fill" id="progress" style="width:0%"></div></div>
-<div class="sentence-list" id="sentence-list"></div>
-<div class="autoplay-info" id="autoplay-info"></div>
+  <div class="progress-bar">
+    <div class="progress-fill" id="progress" style="width:0%"></div>
+  </div>
+  <div class="sentence-list" id="sentence-list"></div>
+  <div class="autoplay-info" id="autoplay-info"></div>
 
-<script>
-const sentences = [
-  { korean: "안녕하세요.", roman: "an-nhông-ha-sê-yô", viet: "Xin chào." },
-  { korean: "저는 베트남에서 온 라반상이라고 합니다.", roman: "chơ-nưn bê-thư-nam-ê-sơ on la-ban-sang-i-ra-gô ham-ni-da", viet: "Tôi tên là La Văn Sang, đến từ Việt Nam." },
-  { korean: "올해 스물두 살입니다.", roman: "ôl-he sư-mul-tu sal im-ni-da", viet: "Năm nay tôi 22 tuổi." },
-  { korean: "저는 2022년에 고등학교를 졸업했고, 2025년에 전문대학교를 졸업했습니다.", roman: "chơ-nưn i-chon-i-sip-i-nhơ-nê cô-đưng-hắc-kyo-rưl cho-rốp-hét-cô, i-chon-i-sip-o-nhơ-nê chon-mun-de-hắc-kyo-rưl cho-rốp-hét-sưm-ni-da", viet: "Tôi tốt nghiệp trung học năm 2022 và tốt nghiệp cao đẳng năm 2025." },
-  { korean: "가족은 부모님과 저, 총 3명입니다.", roman: "ca-chô-gưn bu-mo-nim-gwa chơ, chông sam-myông-im-ni-da", viet: "Gia đình gồm bố mẹ và tôi, tổng cộng 3 người." },
-  { korean: "아버지는 1969년생이시고, 어머니는 1977년생이십니다.", roman: "a-bơ-chi-nưn chon-gu-bek-yuk-sip-gu-nhơn-seng-i-si-gô, o-mo-ni-nưn chon-gu-bek-chil-sip-chil-nhơn-seng-i-sim-ni-da", viet: "Bố sinh năm 1969, mẹ sinh năm 1977." },
-  { korean: "저는 어렸을 때부터 한국 드라마와 한국 만화를 자주 접했습니다.", roman: "chơ-nưn o-ryo-sưl tte-bu-thơ han-guk tư-ra-ma-wa han-guk man-hwa-rưl cha-chu chơ-pết-sưm-ni-da", viet: "Từ nhỏ, tôi thường xuyên tiếp xúc với phim và truyện tranh Hàn Quốc." },
-  { korean: "다양한 한국 콘텐츠를 보면서 자연스럽게 한국 문화에 관심을 가지게 되었고,", roman: "ta-yang-han han-guk khon-then-chư-rưl bô-myơn-sơ cha-yơn-sư-rốp-kê han-guk mun-hwa-ê kwan-si-mưl ka-chi-kê tway-ot-cô", viet: "Qua việc xem nhiều nội dung Hàn Quốc, tôi tự nhiên trở nên quan tâm đến văn hóa Hàn." },
-  { korean: "한국에 대해 더 알아보고 싶다는 생각을 하게 되었습니다.", roman: "han-gu-kê te-he tơ a-ra-bô-gô sip-ta-nưn seng-ga-gưl ha-kê tway-ot-sưm-ni-da", viet: "và nảy sinh mong muốn tìm hiểu thêm về Hàn Quốc." },
-  { korean: "또한 한국의 교육 환경과 발전된 산업 분야에 관심이 많아", roman: "tto-han han-gu-kê kyo-yuk hwan-gyong-gwa bal-chon-doen san-op bun-ya-ê kwan-si-mi ma-na", viet: "Ngoài ra, do quan tâm đến môi trường giáo dục và các lĩnh vực công nghiệp phát triển của Hàn Quốc." },
-  { korean: "한국어를 배우고 한국 문화를 직접 경험하기 위해 한국 유학을 결심하게 되었습니다.", roman: "han-gu-gơ-rưl be-u-gô han-guk mun-hwa-rưl chik-chốp kyong-hơm-ha-gi wi-he han-guk yu-ha-gưl kyol-si-ma-kê tway-ot-sưm-ni-da", viet: "tôi quyết tâm du học Hàn Quốc để học tiếng Hàn và trực tiếp trải nghiệm văn hóa Hàn." },
-  { korean: "한국에서 한국어를 열심히 공부한 후 대학교에 진학하여 전공 지식을 더 깊이 배우고 싶습니다.", roman: "han-gu-kê-sơ han-gu-gơ-rưl yol-sim-hi kong-bu-han hu de-hắc-kyo-ê chin-ha-ka-yơ chon-gong chi-si-gưl tơ ki-pi be-u-gô sip-sưm-ni-da", viet: "Sau khi học tiếng Hàn chăm chỉ tại Hàn Quốc, tôi muốn vào đại học để học sâu hơn về chuyên ngành." },
-  { korean: "또한 다양한 경험을 쌓아 국제적인 역량을 갖춘 인재로 성장하고 싶습니다.", roman: "tto-han ta-yang-han kyong-hơ-mưl ssa-a kuk-che-chơ-gin yong-nyang-ưl kat-chun in-che-rô song-chang-ha-gô sip-sưm-ni-da", viet: "Tôi cũng muốn tích lũy nhiều kinh nghiệm để trưởng thành thành người tài có năng lực quốc tế." },
-  { korean: "감사합니다.", roman: "kam-sa-ham-ni-da", viet: "Xin cảm ơn." }
-];
+  <script>
+    const sentences = [
+      { korean: "안녕하십니까.", roman: "an-nhông-ha-sim-ni-ka", viet: "Xin chào." },
+      { korean: "저는 하노이에서 온 라반상이라고 합니다.", roman: "chơ-nưn ha-no-i-ê-sơ on la-ban-sang-i-ra-gô ham-ni-da", viet: "Tôi tên là La Văn Sang, đến từ Hà Nội." },
+      { korean: "올해 스물두 살입니다.", roman: "ôl-he sư-mul-tu sal im-ni-da", viet: "Năm nay tôi 22 tuổi." },
+      { korean: "저는 2022년에 고등학교를 졸업했고, 2025년에 전문대학교를 졸업했습니다.", roman: "chơ-nưn i-chon-i-sip-i-nhơ-nê cô-đưng-hắc-kyo-rưl cho-rốp-hét-cô, i-chon-i-sip-o-nhơ-nê chon-mun-de-hắc-kyo-rưl cho-rốp-hét-sưm-ni-da", viet: "Tôi tốt nghiệp trung học năm 2022 và tốt nghiệp cao đẳng năm 2025." },
+      { korean: "가족은 부모님과 저, 총 3명입니다.", roman: "ca-chô-gưn bu-mo-nim-gwa chơ, chông sam-myông-im-ni-da", viet: "Gia đình gồm bố mẹ và tôi, tổng cộng 3 người." },
+      { korean: "아버지는 57세이시고, 어머니는 49세이십니다.", roman: "a-bơ-chi-nưn o-sip-chil-sê-i-si-gô, ô-mô-ni-nưn sa-sip-gu-sê-i-sim-ni-da", viet: "Bố tôi 57 tuổi và mẹ tôi 49 tuổi." },
+      { korean: "아버지와 어머니는 화분 사업을 하고 계십니다.", roman: "a-bơ-chi-wa ô-mô-ni-nưn hoa-bun sa-ôp-ưl ha-gô ghê-sim-ni-da", viet: "Bố và mẹ tôi đang kinh doanh chậu hoa." },
+      { korean: "제 취미는 한국 음악 듣기와 한국 영화 보기입니다.", roman: "chê chwi-mi-nưn han-guk ưm-ak đưt-gi-wa han-guk yông-hoa bo-gi-im-ni-da", viet: "Sở thích của tôi là nghe nhạc Hàn Quốc và xem phim Hàn Quốc." },
+      { korean: "저는 명지대학교 학생이 되면 열심히 공부하겠습니다.", roman: "chơ-nưn myông-chi-đe-hắc-kyo hắc-seng-i đoê-myôn yôl-sim-hi công-bu-ha-ghét-sưm-ni-da", viet: "Nếu trở thành sinh viên của Đại học Myongji, tôi sẽ học tập thật chăm chỉ." },
+      { korean: "잘 부탁 드립니다.", roman: "chal bu-thắc đư-rim-ni-da", viet: "Rất mong được sự quan tâm của mọi người." },
+      { korean: "감사합니다.", roman: "kam-sa-ham-ni-da", viet: "Xin cảm ơn." }
+    ];
 
-let currentIdx = -1, isPlaying = false, autoplayTimeout = null, speed = 0.8;
-let showRoman = true, showViet = true, showKorean = true;
-let loopIdx = -1, loopCount = 0, loopMax = 3, loopTimeout = null, isLooping = false;
-let loopDefaultMax = 3;
-const synth = window.speechSynthesis;
+    let currentIdx = -1, isPlaying = false, autoplayTimeout = null, speed = 0.8;
+    let showRoman = true, showViet = true, showKorean = true;
+    let loopIdx = -1, loopCount = 0, loopMax = 3, loopTimeout = null, isLooping = false;
+    let loopDefaultMax = 3;
+    const synth = window.speechSynthesis;
 
-function toggleView(type) {
-  if (type === 'roman') { showRoman = !showRoman; document.getElementById('tog-roman').classList.toggle('on', showRoman); }
-  if (type === 'viet') { showViet = !showViet; document.getElementById('tog-viet').classList.toggle('on', showViet); }
-  if (type === 'korean') { showKorean = !showKorean; document.getElementById('tog-korean').classList.toggle('on', showKorean); }
-  renderList();
-}
+    function toggleView(type) {
+      if (type === 'roman') { showRoman = !showRoman; document.getElementById('tog-roman').classList.toggle('on', showRoman); }
+      if (type === 'viet') { showViet = !showViet; document.getElementById('tog-viet').classList.toggle('on', showViet); }
+      if (type === 'korean') { showKorean = !showKorean; document.getElementById('tog-korean').classList.toggle('on', showKorean); }
+      renderList();
+    }
 
-function updateSpeed(v) {
-  speed = parseFloat(v);
-  document.getElementById('speed-val').textContent = speed.toFixed(1) + 'x';
-}
+    function updateSpeed(v) {
+      speed = parseFloat(v);
+      document.getElementById('speed-val').textContent = speed.toFixed(1) + 'x';
+    }
 
-function updateLoopDefault(v) {
-  loopDefaultMax = parseInt(v);
-}
+    function updateLoopDefault(v) {
+      loopDefaultMax = parseInt(v);
+    }
 
-function speakKorean(text, onEnd) {
-  synth.cancel();
-  const utt = new SpeechSynthesisUtterance(text);
-  utt.lang = 'ko-KR'; utt.rate = speed;
-  utt.onend = onEnd || null;
-  synth.speak(utt);
-}
+    function speakKorean(text, onEnd) {
+      synth.cancel();
+      const utt = new SpeechSynthesisUtterance(text);
+      utt.lang = 'ko-KR'; utt.rate = speed;
+      utt.onend = onEnd || null;
+      synth.speak(utt);
+    }
 
-function startLoop(idx) {
-  stopAll();
-  loopIdx = idx;
-  loopMax = loopDefaultMax;
-  loopCount = 0;
-  isLooping = true;
-  currentIdx = idx;
-  setActive(idx);
-  updateLoopCounter(idx);
-  playLoopStep();
-}
+    function startLoop(idx) {
+      stopAll();
+      loopIdx = idx;
+      loopMax = loopDefaultMax;
+      loopCount = 0;
+      isLooping = true;
+      currentIdx = idx;
+      setActive(idx);
+      updateLoopCounter(idx);
+      playLoopStep();
+    }
 
-function playLoopStep() {
-  if (!isLooping || loopIdx < 0) return;
-  const infinite = loopMax === 99;
-  if (!infinite && loopCount >= loopMax) {
-    stopLoop();
-    return;
-  }
-  loopCount++;
-  updateLoopCounter(loopIdx);
-  document.getElementById('autoplay-info').textContent = infinite
-    ? `Đang lặp câu ${loopIdx+1} — lần ${loopCount}...`
-    : `Đang lặp câu ${loopIdx+1} — lần ${loopCount}/${loopMax}`;
-  speakKorean(sentences[loopIdx].korean, () => {
-    if (!isLooping) return;
-    loopTimeout = setTimeout(() => playLoopStep(), 500);
-  });
-}
+    function playLoopStep() {
+      if (!isLooping || loopIdx < 0) return;
+      const infinite = loopMax === 99;
+      if (!infinite && loopCount >= loopMax) {
+        stopLoop();
+        return;
+      }
+      loopCount++;
+      updateLoopCounter(loopIdx);
+      document.getElementById('autoplay-info').textContent = infinite
+        ? `Đang lặp câu ${loopIdx + 1} — lần ${loopCount}...`
+        : `Đang lặp câu ${loopIdx + 1} — lần ${loopCount}/${loopMax}`;
+      speakKorean(sentences[loopIdx].korean, () => {
+        if (!isLooping) return;
+        loopTimeout = setTimeout(() => playLoopStep(), 500);
+      });
+    }
 
-function stopLoop() {
-  isLooping = false;
-  synth.cancel();
-  clearTimeout(loopTimeout);
-  const old = loopIdx;
-  loopIdx = -1;
-  loopCount = 0;
-  currentIdx = -1;
-  setActive(-1);
-  document.getElementById('autoplay-info').textContent = '';
-  if (old >= 0) updateLoopCounter(old);
-}
+    function stopLoop() {
+      isLooping = false;
+      synth.cancel();
+      clearTimeout(loopTimeout);
+      const old = loopIdx;
+      loopIdx = -1;
+      loopCount = 0;
+      currentIdx = -1;
+      setActive(-1);
+      document.getElementById('autoplay-info').textContent = '';
+      if (old >= 0) updateLoopCounter(old);
+    }
 
-function toggleLoop(idx, e) {
-  e.stopPropagation();
-  if (isLooping && loopIdx === idx) {
-    stopLoop();
-  } else {
-    startLoop(idx);
-  }
-}
+    function toggleLoop(idx, e) {
+      e.stopPropagation();
+      if (isLooping && loopIdx === idx) {
+        stopLoop();
+      } else {
+        startLoop(idx);
+      }
+    }
 
-function updateLoopCounter(idx) {
-  const el = document.getElementById('loop-cnt-' + idx);
-  if (!el) return;
-  const btn = document.getElementById('loop-btn-' + idx);
-  if (isLooping && loopIdx === idx) {
-    const infinite = loopMax === 99;
-    el.textContent = infinite ? '∞' : loopCount + '/' + loopMax;
-    btn.classList.add('loop-on');
-    btn.textContent = '⏹';
-    btn.title = 'Dừng lặp';
-  } else {
-    el.textContent = '';
-    btn.classList.remove('loop-on');
-    btn.textContent = '🔁';
-    btn.title = 'Lặp câu này';
-  }
-}
+    function updateLoopCounter(idx) {
+      const el = document.getElementById('loop-cnt-' + idx);
+      if (!el) return;
+      const btn = document.getElementById('loop-btn-' + idx);
+      if (isLooping && loopIdx === idx) {
+        const infinite = loopMax === 99;
+        el.textContent = infinite ? '∞' : loopCount + '/' + loopMax;
+        btn.classList.add('loop-on');
+        btn.textContent = '⏹';
+        btn.title = 'Dừng lặp';
+      } else {
+        el.textContent = '';
+        btn.classList.remove('loop-on');
+        btn.textContent = '🔁';
+        btn.title = 'Lặp câu này';
+      }
+    }
 
-function renderList() {
-  const list = document.getElementById('sentence-list');
-  list.innerHTML = sentences.map((s, i) => `
+    function renderList() {
+      const list = document.getElementById('sentence-list');
+      list.innerHTML = sentences.map((s, i) => `
     <div class="sentence-card ${i === currentIdx ? 'playing' : ''}" id="card-${i}" onclick="playSingle(${i})">
       <div class="card-content">
-        <div class="sentence-num">Câu ${i+1} / ${sentences.length}</div>
+        <div class="sentence-num">Câu ${i + 1} / ${sentences.length}</div>
         ${showKorean ? `<div class="korean">${s.korean}</div>` : ''}
         ${showRoman ? `<div class="romanization">${s.roman}</div>` : ''}
         ${showViet ? `<div class="vietnamese">${s.viet}</div>` : ''}
@@ -208,61 +407,62 @@ function renderList() {
         <div class="loop-counter" id="loop-cnt-${i}"></div>
       </div>
     </div>`).join('');
-}
+    }
 
-function setActive(idx) {
-  document.querySelectorAll('.sentence-card').forEach((c, i) => c.classList.toggle('playing', i === idx));
-  if (idx >= 0) document.getElementById('card-' + idx)?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  document.getElementById('progress').style.width = idx >= 0 ? Math.round(((idx+1)/sentences.length)*100)+'%' : '0%';
-}
+    function setActive(idx) {
+      document.querySelectorAll('.sentence-card').forEach((c, i) => c.classList.toggle('playing', i === idx));
+      if (idx >= 0) document.getElementById('card-' + idx)?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      document.getElementById('progress').style.width = idx >= 0 ? Math.round(((idx + 1) / sentences.length) * 100) + '%' : '0%';
+    }
 
-function playSingle(idx) {
-  if (isLooping) stopLoop();
-  stopAll();
-  currentIdx = idx; setActive(idx); speakKorean(sentences[idx].korean);
-}
+    function playSingle(idx) {
+      if (isLooping) stopLoop();
+      stopAll();
+      currentIdx = idx; setActive(idx); speakKorean(sentences[idx].korean);
+    }
 
-function playAll() {
-  if (isLooping) stopLoop();
-  stopAll(); isPlaying = true;
-  document.getElementById('btn-play-all').style.display = 'none';
-  document.getElementById('btn-stop').style.display = '';
-  playNext(0);
-}
+    function playAll() {
+      if (isLooping) stopLoop();
+      stopAll(); isPlaying = true;
+      document.getElementById('btn-play-all').style.display = 'none';
+      document.getElementById('btn-stop').style.display = '';
+      playNext(0);
+    }
 
-function playNext(idx) {
-  if (!isPlaying || idx >= sentences.length) {
-    if (idx >= sentences.length) {
-      document.getElementById('autoplay-info').textContent = '✓ Đã phát xong toàn bộ bài!';
+    function playNext(idx) {
+      if (!isPlaying || idx >= sentences.length) {
+        if (idx >= sentences.length) {
+          document.getElementById('autoplay-info').textContent = '✓ Đã phát xong toàn bộ bài!';
+          document.getElementById('btn-play-all').style.display = '';
+          document.getElementById('btn-stop').style.display = 'none';
+          isPlaying = false; setActive(-1);
+        }
+        return;
+      }
+      currentIdx = idx; setActive(idx);
+      document.getElementById('autoplay-info').textContent = `Đang phát câu ${idx + 1}/${sentences.length}...`;
+      speakKorean(sentences[idx].korean, () => {
+        if (!isPlaying) return;
+        autoplayTimeout = setTimeout(() => playNext(idx + 1), 600);
+      });
+    }
+
+    function stopAll() {
+      isPlaying = false; synth.cancel(); clearTimeout(autoplayTimeout);
       document.getElementById('btn-play-all').style.display = '';
       document.getElementById('btn-stop').style.display = 'none';
-      isPlaying = false; setActive(-1);
+      document.getElementById('autoplay-info').textContent = '';
+      setActive(-1); currentIdx = -1;
     }
-    return;
-  }
-  currentIdx = idx; setActive(idx);
-  document.getElementById('autoplay-info').textContent = `Đang phát câu ${idx+1}/${sentences.length}...`;
-  speakKorean(sentences[idx].korean, () => {
-    if (!isPlaying) return;
-    autoplayTimeout = setTimeout(() => playNext(idx + 1), 600);
-  });
-}
 
-function stopAll() {
-  isPlaying = false; synth.cancel(); clearTimeout(autoplayTimeout);
-  document.getElementById('btn-play-all').style.display = '';
-  document.getElementById('btn-stop').style.display = 'none';
-  document.getElementById('autoplay-info').textContent = '';
-  setActive(-1); currentIdx = -1;
-}
+    function resetAll() {
+      if (isLooping) stopLoop();
+      stopAll();
+      document.getElementById('progress').style.width = '0%';
+    }
 
-function resetAll() {
-  if (isLooping) stopLoop();
-  stopAll();
-  document.getElementById('progress').style.width = '0%';
-}
-
-renderList();
-</script>
+    renderList();
+  </script>
 </body>
+
 </html>
