@@ -13,11 +13,48 @@
       padding: 0;
     }
 
+    :root {
+      --bg: #f5f5f5;
+      --surface: #fff;
+      --border: #ddd;
+      --text: #222;
+      --text-sub: #666;
+      --text-muted: #999;
+      --text-roman: #534AB7;
+      --accent: #7F77DD;
+      --accent-bg: #EEEDFE;
+      --accent-text: #3C3489;
+      --hover-bg: #f0f0f0;
+      --card-hover: #fafafa;
+      --danger: #A32D2D;
+      --control-bg: #fff;
+      --control-color: #222;
+    }
+
+    body.dark {
+      --bg: #1a1a2e;
+      --surface: #16213e;
+      --border: #2d3561;
+      --text: #e0e0e0;
+      --text-sub: #a0a0b0;
+      --text-muted: #606080;
+      --text-roman: #9b94f0;
+      --accent: #7F77DD;
+      --accent-bg: #1e1b4b;
+      --accent-text: #c4bfff;
+      --hover-bg: #0f3460;
+      --card-hover: #1c2952;
+      --danger: #e05c5c;
+      --control-bg: #16213e;
+      --control-color: #e0e0e0;
+    }
+
     body {
       font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      color: #222;
+      background: var(--bg);
+      color: var(--text);
       padding: 20px;
+      transition: background 0.25s, color 0.25s;
     }
 
     h1 {
@@ -28,8 +65,52 @@
 
     .subtitle {
       font-size: 13px;
-      color: #666;
+      color: var(--text-sub);
       margin-bottom: 16px;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 4px;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .icon-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 17px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, border-color 0.15s;
+      flex-shrink: 0;
+    }
+
+    .icon-btn:hover {
+      background: var(--hover-bg);
+    }
+
+    .icon-btn.muted {
+      background: #fff0f0;
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+
+    body.dark .icon-btn.muted {
+      background: #3a1a1a;
     }
 
     .controls {
@@ -43,9 +124,9 @@
     .btn {
       padding: 7px 14px;
       border-radius: 8px;
-      border: 1px solid #ccc;
-      background: #fff;
-      color: #222;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
       font-size: 13px;
       cursor: pointer;
       display: flex;
@@ -55,12 +136,12 @@
     }
 
     .btn:hover {
-      background: #f0f0f0;
+      background: var(--hover-bg);
     }
 
     .btn.danger {
-      border-color: #A32D2D;
-      color: #A32D2D;
+      border-color: var(--danger);
+      color: var(--danger);
     }
 
     .speed-row {
@@ -68,7 +149,7 @@
       align-items: center;
       gap: 8px;
       font-size: 13px;
-      color: #555;
+      color: var(--text-sub);
     }
 
     .toggle-row {
@@ -81,29 +162,30 @@
     .toggle-btn {
       padding: 4px 12px;
       border-radius: 20px;
-      border: 1px solid #ccc;
-      background: #eee;
-      color: #555;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text-sub);
       font-size: 12px;
       cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
     }
 
     .toggle-btn.on {
-      background: #EEEDFE;
-      border-color: #7F77DD;
-      color: #3C3489;
+      background: var(--accent-bg);
+      border-color: var(--accent);
+      color: var(--accent-text);
     }
 
     .progress-bar {
       height: 3px;
-      background: #ddd;
+      background: var(--border);
       border-radius: 2px;
       margin-bottom: 16px;
     }
 
     .progress-fill {
       height: 100%;
-      background: #7F77DD;
+      background: var(--accent);
       border-radius: 2px;
       transition: width 0.3s;
     }
@@ -115,12 +197,12 @@
     }
 
     .sentence-card {
-      border: 1px solid #ddd;
+      border: 1px solid var(--border);
       border-radius: 12px;
       padding: 12px 14px;
-      background: #fff;
+      background: var(--surface);
       cursor: pointer;
-      transition: border-color 0.15s;
+      transition: border-color 0.15s, background 0.15s;
       display: flex;
       gap: 10px;
       align-items: flex-start;
@@ -128,12 +210,12 @@
 
     .sentence-card:hover {
       border-color: #aaa;
-      background: #fafafa;
+      background: var(--card-hover);
     }
 
     .sentence-card.playing {
-      border-color: #7F77DD;
-      background: #EEEDFE;
+      border-color: var(--accent);
+      background: var(--accent-bg);
     }
 
     .card-content {
@@ -143,13 +225,13 @@
 
     .sentence-num {
       font-size: 11px;
-      color: #999;
+      color: var(--text-muted);
       margin-bottom: 3px;
     }
 
     .korean {
       font-size: 15px;
-      color: #111;
+      color: var(--text);
       font-weight: 600;
       margin-bottom: 4px;
       line-height: 1.6;
@@ -157,7 +239,7 @@
 
     .romanization {
       font-size: 12px;
-      color: #534AB7;
+      color: var(--text-roman);
       font-family: monospace;
       line-height: 1.5;
       margin-bottom: 3px;
@@ -165,7 +247,7 @@
 
     .vietnamese {
       font-size: 12px;
-      color: #666;
+      color: var(--text-sub);
       line-height: 1.5;
     }
 
@@ -180,9 +262,9 @@
       width: 30px;
       height: 30px;
       border-radius: 8px;
-      border: 1px solid #ccc;
-      background: #fff;
-      color: #555;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-sub);
       font-size: 15px;
       cursor: pointer;
       display: flex;
@@ -192,19 +274,19 @@
     }
 
     .mini-btn:hover {
-      background: #f0f0f0;
+      background: var(--hover-bg);
     }
 
     .mini-btn.loop-on {
-      background: #EEEDFE;
-      border-color: #7F77DD;
-      color: #3C3489;
+      background: var(--accent-bg);
+      border-color: var(--accent);
+      color: var(--accent-text);
     }
 
     .loop-counter {
       font-size: 10px;
       text-align: center;
-      color: #999;
+      color: var(--text-muted);
       min-width: 30px;
     }
 
@@ -213,27 +295,47 @@
       align-items: center;
       gap: 6px;
       font-size: 13px;
-      color: #555;
+      color: var(--text-sub);
     }
 
     .autoplay-info {
       font-size: 12px;
-      color: #999;
+      color: var(--text-muted);
       margin-top: 10px;
       text-align: center;
     }
 
+    .mute-banner {
+      display: none;
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      color: #856404;
+      border-radius: 8px;
+      padding: 7px 12px;
+      font-size: 12px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    body.dark .mute-banner {
+      background: #3a2e00;
+      border-color: #b8860b;
+      color: #ffd966;
+    }
+
+    .mute-banner.show { display: block; }
+
     input[type=range] {
-      accent-color: #7F77DD;
+      accent-color: var(--accent);
     }
 
     select {
       font-size: 13px;
       padding: 4px 8px;
       border-radius: 8px;
-      border: 1px solid #ccc;
-      background: #fff;
-      color: #222;
+      border: 1px solid var(--border);
+      background: var(--control-bg);
+      color: var(--control-color);
       cursor: pointer;
     }
   </style>
@@ -241,8 +343,15 @@
 
 <body>
 
-  <h1>🎧 Luyện phỏng vấn tiếng Hàn</h1>
+  <div class="top-bar">
+    <h1>🎧 Luyện phỏng vấn tiếng Hàn</h1>
+    <div class="top-actions">
+      <button class="icon-btn" id="btn-mute" onclick="toggleMute()" title="Bật/tắt tiếng">🔊</button>
+      <button class="icon-btn" id="btn-theme" onclick="toggleTheme()" title="Chế độ sáng/tối">🌙</button>
+    </div>
+  </div>
   <p class="subtitle">Nhấn vào từng câu để nghe, hoặc phát toàn bộ bài. Nhấn 🔁 để lặp 1 câu.</p>
+  <div class="mute-banner" id="mute-banner">🔇 Đang tắt tiếng — bấm 🔇 ở góc trên để bật lại</div>
 
   <div class="toggle-row">
     <button class="toggle-btn on" id="tog-korean" onclick="toggleView('korean')">Chữ Hàn</button>
@@ -296,7 +405,41 @@
     let showRoman = true, showViet = true, showKorean = true;
     let loopIdx = -1, loopCount = 0, loopMax = 3, loopTimeout = null, isLooping = false;
     let loopDefaultMax = 3;
+    let isMuted = false;
     const synth = window.speechSynthesis;
+
+    function toggleTheme() {
+      const dark = document.body.classList.toggle('dark');
+      document.getElementById('btn-theme').textContent = dark ? '☀️' : '🌙';
+      document.getElementById('btn-theme').title = dark ? 'Chuyển sang sáng' : 'Chuyển sang tối';
+      localStorage.setItem('theme', dark ? 'dark' : 'light');
+    }
+
+    function toggleMute() {
+      isMuted = !isMuted;
+      const btn = document.getElementById('btn-mute');
+      const banner = document.getElementById('mute-banner');
+      if (isMuted) {
+        btn.textContent = '🔇';
+        btn.classList.add('muted');
+        btn.title = 'Bật tiếng';
+        banner.classList.add('show');
+        synth.cancel();
+        if (isPlaying) stopAll();
+        if (isLooping) stopLoop();
+      } else {
+        btn.textContent = '🔊';
+        btn.classList.remove('muted');
+        btn.title = 'Tắt tiếng';
+        banner.classList.remove('show');
+      }
+    }
+
+    // Restore theme on load
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark');
+      document.getElementById('btn-theme').textContent = '☀️';
+    }
 
     function toggleView(type) {
       if (type === 'roman') { showRoman = !showRoman; document.getElementById('tog-roman').classList.toggle('on', showRoman); }
@@ -316,6 +459,10 @@
 
     function speakKorean(text, onEnd) {
       synth.cancel();
+      if (isMuted) {
+        if (onEnd) setTimeout(onEnd, 0);
+        return;
+      }
       const utt = new SpeechSynthesisUtterance(text);
       utt.lang = 'ko-KR'; utt.rate = speed;
       utt.onend = onEnd || null;
