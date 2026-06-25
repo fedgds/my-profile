@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hangul Dungeon</title>
+<style>
+:root{
+  --bg:#0d0d1a;--surface:#13131f;--surface2:#1a1a2e;--border:#252540;
+  --text:#e8e8f0;--text2:#8888aa;--text3:#444466;
+  --purple:#7c6dff;--pink:#ff6b9d;--teal:#00d4aa;--amber:#ffb347;
+  --red:#ff4757;--green:#2ed573;--blue:#3d9bff;
+  --hp-player:linear-gradient(90deg,#2ed573,#00d4aa);
+  --hp-enemy:linear-gradient(90deg,#ff4757,#ff6b9d);
+  --xp-bar:linear-gradient(90deg,#7c6dff,#ff6b9d);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow-x:hidden}
+
+/* SCREENS */
+.screen{display:none;width:100%;max-width:560px;padding:0 12px 24px}
+.screen.active{display:block}
+
+/* ============ TITLE SCREEN ============ */
+#titleScreen{text-align:center;padding-top:48px}
+.title-canvas-wrap{margin:0 auto 20px;position:relative;width:200px;height:140px}
+.game-title{font-size:2rem;font-weight:900;letter-spacing:2px;background:linear-gradient(135deg,var(--amber),var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
+.game-sub{font-size:.82rem;color:var(--text2);margin-bottom:32px;letter-spacing:.5px}
+.title-stats{display:flex;gap:12px;justify-content:center;margin-bottom:28px}
+.ts-box{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 18px;text-align:center}
+.ts-num{font-size:1.4rem;font-weight:800;color:var(--amber)}
+.ts-lbl{font-size:.65rem;color:var(--text2);text-transform:uppercase;letter-spacing:.8px}
+.big-btn{display:block;width:100%;max-width:280px;margin:0 auto 12px;padding:14px;border:none;border-radius:14px;font-size:1rem;font-weight:800;cursor:pointer;font-family:inherit;transition:transform .15s,box-shadow .15s}
+.big-btn:hover{transform:translateY(-2px)}
+.btn-start{background:linear-gradient(135deg,var(--amber),var(--purple));color:#fff;box-shadow:0 6px 24px rgba(124,109,255,.4)}
+.btn-start:hover{box-shadow:0 8px 28px rgba(124,109,255,.55)}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text2)}
+.btn-outline:hover{border-color:var(--purple);color:var(--text)}
+
+/* ============ GAME SCREEN ============ */
+#gameScreen{padding-top:10px}
+.top-bar{display:flex;align-items:center;justify-content:space-between;padding:6px 0 10px;gap:8px}
+.level-badge{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;font-size:.7rem;font-weight:800;padding:4px 10px;border-radius:20px;white-space:nowrap}
+.floor-badge{font-size:.72rem;color:var(--text2);background:var(--surface2);padding:4px 10px;border-radius:20px;border:1px solid var(--border)}
+.menu-btn{background:transparent;border:1px solid var(--border);color:var(--text2);border-radius:20px;padding:4px 10px;font-size:.72rem;cursor:pointer;font-family:inherit}
+
+/* XP bar */
+.xp-wrap{margin-bottom:8px}
+.xp-bar-bg{height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.xp-bar-fill{height:100%;background:var(--xp-bar);border-radius:2px;transition:width .5s ease}
+.xp-label{font-size:.6rem;color:var(--text3);text-align:right;margin-top:2px}
+
+/* DUNGEON CANVAS */
+.dungeon-wrap{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--border);margin-bottom:10px;background:#050510}
+#dungeonCanvas{display:block;width:100%;image-rendering:pixelated}
+
+/* PLAYER HUD */
+.player-hud{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:10px 14px;margin-bottom:10px}
+.hud-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.hud-row:last-child{margin-bottom:0}
+.hud-name{font-size:.72rem;font-weight:700;min-width:56px}
+.hud-hp-wrap{flex:1;position:relative}
+.hud-hp-bg{height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.hud-hp-fill{height:100%;border-radius:4px;transition:width .3s ease}
+.hud-hp-text{font-size:.6rem;color:var(--text2);text-align:right;margin-top:1px}
+
+/* BATTLE PANEL */
+#battlePanel{display:none;background:var(--surface);border:1px solid var(--purple);border-radius:16px;padding:16px;margin-bottom:10px;animation:slideUp .25s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.word-display{text-align:center;margin-bottom:14px}
+.word-korean{font-size:2rem;font-weight:900;color:var(--amber);letter-spacing:2px;text-shadow:0 0 20px rgba(255,179,71,.3)}
+.word-type{font-size:.65rem;color:var(--text2);background:var(--surface2);padding:2px 8px;border-radius:10px;display:inline-block;margin-top:4px}
+.word-context{font-size:.75rem;color:var(--text2);margin-top:6px;font-style:italic}
+.choices-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.choice-btn{padding:10px 8px;background:var(--surface2);border:1.5px solid var(--border);border-radius:11px;color:var(--text);font-size:.82rem;cursor:pointer;font-family:inherit;transition:all .15s;text-align:center;line-height:1.3}
+.choice-btn:hover:not(:disabled){border-color:var(--purple);background:#1e1e35}
+.choice-btn.correct{border-color:var(--green);background:rgba(46,213,115,.12);color:var(--green)}
+.choice-btn.wrong{border-color:var(--red);background:rgba(255,71,87,.12);color:var(--red)}
+.choice-btn:disabled{cursor:not-allowed;opacity:.7}
+.streak-bar{display:flex;align-items:center;gap:6px;margin-bottom:10px}
+.streak-label{font-size:.65rem;color:var(--text2)}
+.streak-flames{display:flex;gap:3px}
+.flame{width:14px;height:14px;border-radius:50% 50% 30% 30%;background:var(--border);transition:background .3s}
+.flame.lit{background:linear-gradient(180deg,var(--amber),var(--red))}
+
+/* LOOT PANEL */
+#lootPanel{display:none;background:var(--surface);border:1px solid var(--amber);border-radius:16px;padding:16px;margin-bottom:10px;text-align:center;animation:slideUp .3s ease}
+.loot-title{font-size:1rem;font-weight:800;color:var(--amber);margin-bottom:12px}
+.loot-items{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+.loot-item{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:10px 14px;text-align:center;min-width:90px}
+.loot-icon{font-size:1.4rem;margin-bottom:4px}
+.loot-name{font-size:.7rem;font-weight:700;color:var(--text)}
+.loot-stat{font-size:.62rem;color:var(--green)}
+
+/* LEVEL UP PANEL */
+#levelUpPanel{display:none;background:var(--surface);border:1px solid var(--purple);border-radius:16px;padding:16px;margin-bottom:10px;text-align:center;animation:slideUp .3s ease}
+.levelup-title{font-size:1.1rem;font-weight:900;color:var(--purple);margin-bottom:4px}
+.levelup-sub{font-size:.75rem;color:var(--text2);margin-bottom:14px}
+.skill-choices{display:grid;grid-template-columns:1fr;gap:8px}
+.skill-choice{background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;padding:12px;cursor:pointer;text-align:left;font-family:inherit;color:var(--text);transition:all .2s}
+.skill-choice:hover{border-color:var(--purple);background:#1a1a30}
+.skill-choice-name{font-size:.85rem;font-weight:700;margin-bottom:2px}
+.skill-choice-desc{font-size:.7rem;color:var(--text2)}
+
+/* LOG */
+.battle-log{background:var(--surface2);border-radius:10px;padding:8px 12px;font-size:.72rem;color:var(--text2);min-height:36px;line-height:1.6;border:1px solid var(--border);margin-bottom:10px}
+.log-good{color:var(--green)}
+.log-bad{color:var(--red)}
+.log-info{color:var(--amber)}
+.log-xp{color:var(--purple)}
+
+/* SKILLS HUD */
+.skills-row{display:flex;gap:6px;justify-content:center;margin-bottom:10px;flex-wrap:wrap}
+.skill-pip{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:5px 10px;font-size:.65rem;color:var(--text2);display:flex;align-items:center;gap:4px}
+.skill-pip.active{border-color:var(--purple);color:var(--purple)}
+
+/* GAME OVER / WIN */
+#resultScreen{text-align:center;padding-top:40px}
+.result-icon{font-size:3rem;margin-bottom:12px}
+.result-title{font-size:1.6rem;font-weight:900;margin-bottom:8px}
+.result-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:300px;margin:0 auto 24px;text-align:center}
+.rs-box{background:var(--surface2);border-radius:10px;padding:10px}
+.rs-num{font-size:1.3rem;font-weight:800}
+.rs-lbl{font-size:.62rem;color:var(--text2)}
+
+/* FLOATING DAMAGE */
+.float-text{position:absolute;pointer-events:none;font-weight:900;font-size:1.1rem;animation:floatUp .9s ease forwards;z-index:10}
+@keyframes floatUp{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-50px) scale(1.3)}}
+
+/* TRANSITIONS */
+.shake{animation:shake .35s ease}
+@keyframes shake{0%,100%{transform:translate(0)}20%{transform:translate(-5px,2px)}40%{transform:translate(5px,-2px)}60%{transform:translate(-3px,1px)}80%{transform:translate(3px,-1px)}}
+
+/* FLOOR TRANSITION */
+#floorTransition{position:fixed;inset:0;background:#0d0d1a;display:flex;align-items:center;justify-content:center;z-index:100;opacity:0;pointer-events:none;transition:opacity .4s}
+#floorTransition.show{opacity:1;pointer-events:auto}
+.ft-text{text-align:center}
+.ft-floor{font-size:2.5rem;font-weight:900;color:var(--amber)}
+.ft-sub{font-size:.9rem;color:var(--text2);margin-top:6px}
+</style>
+</head>
+<body>
+
+<!-- FLOOR TRANSITION OVERLAY -->
+<div id="floorTransition">
+  <div class="ft-text">
+    <div class="ft-floor" id="ftFloor">Tầng 1</div>
+    <div class="ft-sub" id="ftSub">Nhập Ngục...</div>
+  </div>
+</div>
+
+<!-- TITLE SCREEN -->
+<div id="titleScreen" class="screen active">
+  <canvas id="titleCanvas" width="200" height="140" style="display:block;margin:0 auto 20px;image-rendering:pixelated"></canvas>
+  <div class="game-title">HANGUL<br>DUNGEON</div>
+  <div class="game-sub">Học tiếng Hàn · Chinh phục ngục tối</div>
+  <div class="title-stats">
+    <div class="ts-box"><div class="ts-num" id="tsBestFloor">1</div><div class="ts-lbl">Tầng cao nhất</div></div>
+    <div class="ts-box"><div class="ts-num" id="tsWords">0</div><div class="ts-lbl">Từ đã học</div></div>
+    <div class="ts-box"><div class="ts-num" id="tsStreak">0</div><div class="ts-lbl">Streak</div></div>
+  </div>
+  <button class="big-btn btn-start" onclick="startGame()">⚔️ Vào Ngục</button>
+  <button class="big-btn btn-outline" onclick="showVocabList()">📖 Từ vựng đã học</button>
+</div>
+
+<!-- GAME SCREEN -->
+<div id="gameScreen" class="screen">
+  <div class="top-bar">
+    <div class="level-badge" id="levelBadge">Lv.1 Warrior</div>
+    <div class="floor-badge" id="floorBadge">Tầng 1 · Phòng 1/5</div>
+    <button class="menu-btn" onclick="pauseGame()">Menu</button>
+  </div>
+  <div class="xp-wrap">
+    <div class="xp-bar-bg"><div class="xp-bar-fill" id="xpBar" style="width:0%"></div></div>
+    <div class="xp-label" id="xpLabel">0 / 100 XP</div>
+  </div>
+  <div class="dungeon-wrap">
+    <canvas id="dungeonCanvas" width="520" height="220"></canvas>
+  </div>
+  <div class="player-hud">
+    <div class="hud-row">
+      <div class="hud-name" style="color:var(--teal)">⚔️ Bạn</div>
+      <div class="hud-hp-wrap">
+        <div class="hud-hp-bg"><div class="hud-hp-fill" id="playerHpFill" style="background:var(--hp-player);width:100%"></div></div>
+        <div class="hud-hp-text" id="playerHpText">100 / 100</div>
+      </div>
+    </div>
+    <div class="hud-row" id="enemyHudRow">
+      <div class="hud-name" style="color:var(--red)" id="enemyHudName">👾 Quái</div>
+      <div class="hud-hp-wrap">
+        <div class="hud-hp-bg"><div class="hud-hp-fill" id="enemyHpFill" style="background:var(--hp-enemy);width:100%"></div></div>
+        <div class="hud-hp-text" id="enemyHpText">60 / 60</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="skills-row" id="skillsRow"></div>
+  <div class="battle-log" id="battleLog">Bắt đầu hành trình...</div>
+
+  <div id="battlePanel">
+    <div class="streak-bar">
+      <span class="streak-label">Streak:</span>
+      <div class="streak-flames" id="streakFlames">
+        <div class="flame" id="f0"></div><div class="flame" id="f1"></div>
+        <div class="flame" id="f2"></div><div class="flame" id="f3"></div>
+        <div class="flame" id="f4"></div>
+      </div>
+    </div>
+    <div class="word-display">
+      <div class="word-korean" id="wordKorean">안녕하세요</div>
+      <div class="word-type" id="wordType">Lời chào</div>
+      <div class="word-context" id="wordContext"></div>
+    </div>
+    <div class="choices-grid" id="choicesGrid"></div>
+  </div>
+
+  <div id="lootPanel">
+    <div class="loot-title">🎁 Chiến lợi phẩm!</div>
+    <div class="loot-items" id="lootItems"></div>
+    <button class="big-btn btn-start" style="max-width:100%;margin:0" onclick="continueAfterLoot()">Tiếp tục →</button>
+  </div>
+
+  <div id="levelUpPanel">
+    <div class="levelup-title">✨ LEVEL UP!</div>
+    <div class="levelup-sub" id="levelUpSub">Chọn 1 skill mới</div>
+    <div class="skill-choices" id="skillChoices"></div>
+  </div>
+</div>
+
+<!-- RESULT SCREEN -->
+<div id="resultScreen" class="screen">
+  <div class="result-icon" id="resultIcon">💀</div>
+  <div class="result-title" id="resultTitle">Game Over</div>
+  <div class="result-stats">
+    <div class="rs-box"><div class="rs-num" id="rsFloor">1</div><div class="rs-lbl">Tầng đạt được</div></div>
+    <div class="rs-box"><div class="rs-num" id="rsWords">0</div><div class="rs-lbl">Từ đã trả lời</div></div>
+    <div class="rs-box"><div class="rs-num" id="rsCorrect">0%</div><div class="rs-lbl">Chính xác</div></div>
+    <div class="rs-box"><div class="rs-num" id="rsXp">0</div><div class="rs-lbl">XP kiếm được</div></div>
+  </div>
+  <button class="big-btn btn-start" onclick="startGame()">🔄 Chơi lại</button>
+  <button class="big-btn btn-outline" onclick="goTitle()" style="margin-top:8px">🏠 Menu chính</button>
+</div>
+
+<script>
+// =========================================================
+// VOCABULARY DATA
+// =========================================================
+const VOCAB = [
+  // Basic greetings
+  {k:'안녕하세요',v:'Xin chào',type:'Lời chào',ctx:'Dùng khi gặp người lạ hoặc người lớn tuổi'},
+  {k:'감사합니다',v:'Cảm ơn',type:'Lời cảm ơn',ctx:'Cảm ơn lịch sự, trang trọng'},
+  {k:'미안해요',v:'Xin lỗi',type:'Xin lỗi',ctx:''},
+  {k:'괜찮아요',v:'Không sao',type:'Phản hồi',ctx:''},
+  {k:'네',v:'Vâng / Có',type:'Xác nhận',ctx:''},
+  {k:'아니요',v:'Không',type:'Phủ định',ctx:''},
+  {k:'이름',v:'Tên',type:'Danh từ',ctx:''},
+  {k:'학교',v:'Trường học',type:'Danh từ',ctx:''},
+  {k:'친구',v:'Bạn bè',type:'Danh từ',ctx:''},
+  {k:'선생님',v:'Giáo viên',type:'Danh từ',ctx:''},
+  // Numbers / Time
+  {k:'하나',v:'Một (thuần Hàn)',type:'Số đếm',ctx:'Dùng để đếm đồ vật'},
+  {k:'오늘',v:'Hôm nay',type:'Thời gian',ctx:''},
+  {k:'내일',v:'Ngày mai',type:'Thời gian',ctx:''},
+  {k:'어제',v:'Hôm qua',type:'Thời gian',ctx:''},
+  {k:'지금',v:'Bây giờ',type:'Thời gian',ctx:''},
+  // Actions
+  {k:'먹다',v:'Ăn',type:'Động từ',ctx:''},
+  {k:'마시다',v:'Uống',type:'Động từ',ctx:''},
+  {k:'가다',v:'Đi',type:'Động từ',ctx:''},
+  {k:'오다',v:'Đến / Lại',type:'Động từ',ctx:''},
+  {k:'보다',v:'Nhìn / Xem',type:'Động từ',ctx:''},
+  {k:'듣다',v:'Nghe',type:'Động từ',ctx:''},
+  {k:'말하다',v:'Nói',type:'Động từ',ctx:''},
+  {k:'쓰다',v:'Viết',type:'Động từ',ctx:''},
+  {k:'읽다',v:'Đọc',type:'Động từ',ctx:''},
+  {k:'자다',v:'Ngủ',type:'Động từ',ctx:''},
+  // Adjectives
+  {k:'크다',v:'To / Lớn',type:'Tính từ',ctx:''},
+  {k:'작다',v:'Nhỏ',type:'Tính từ',ctx:''},
+  {k:'좋다',v:'Tốt / Thích',type:'Tính từ',ctx:''},
+  {k:'나쁘다',v:'Xấu / Tệ',type:'Tính từ',ctx:''},
+  {k:'빠르다',v:'Nhanh',type:'Tính từ',ctx:''},
+  {k:'느리다',v:'Chậm',type:'Tính từ',ctx:''},
+  {k:'맛있다',v:'Ngon',type:'Tính từ',ctx:'Dùng cho đồ ăn / thức uống'},
+  {k:'예쁘다',v:'Đẹp',type:'Tính từ',ctx:''},
+  {k:'귀엽다',v:'Dễ thương',type:'Tính từ',ctx:''},
+  {k:'무섭다',v:'Đáng sợ',type:'Tính từ',ctx:''},
+  // Food
+  {k:'밥',v:'Cơm',type:'Thức ăn',ctx:''},
+  {k:'물',v:'Nước',type:'Thức uống',ctx:''},
+  {k:'김치',v:'Kim chi',type:'Thức ăn',ctx:'Món ăn truyền thống Hàn Quốc'},
+  {k:'불고기',v:'Thịt nướng BBQ',type:'Thức ăn',ctx:''},
+  {k:'라면',v:'Mì ăn liền',type:'Thức ăn',ctx:''},
+  // Places
+  {k:'집',v:'Nhà',type:'Địa điểm',ctx:''},
+  {k:'병원',v:'Bệnh viện',type:'Địa điểm',ctx:''},
+  {k:'시장',v:'Chợ',type:'Địa điểm',ctx:''},
+  {k:'공원',v:'Công viên',type:'Địa điểm',ctx:''},
+  {k:'도서관',v:'Thư viện',type:'Địa điểm',ctx:''},
+];
+
+// =========================================================
+// ENEMY DATA
+// =========================================================
+const ENEMIES = [
+  {name:'Slime',color:'#4ecdc4',hp:40,atk:8,xp:20,loot:0.4,sprite:'slime'},
+  {name:'Goblin',color:'#a8e063',hp:60,atk:12,xp:35,loot:0.5,sprite:'goblin'},
+  {name:'Skeleton',color:'#ddd',hp:80,atk:16,xp:50,loot:0.55,sprite:'skeleton'},
+  {name:'Dark Mage',color:'#a29bfe',hp:70,atk:20,xp:65,loot:0.6,sprite:'mage'},
+  {name:'Dragon',color:'#fd79a8',hp:180,atk:30,xp:150,loot:1.0,sprite:'dragon',isBoss:true},
+  {name:'Orc Warrior',color:'#55efc4',hp:120,atk:22,xp:80,loot:0.65,sprite:'orc'},
+  {name:'Shadow',color:'#6c5ce7',hp:90,atk:25,xp:75,loot:0.6,sprite:'shadow'},
+  {name:'Ice Witch',color:'#74b9ff',hp:100,atk:28,xp:90,loot:0.7,sprite:'witch',isBoss:true},
+];
+
+const SKILLS_POOL = [
+  {id:'crit',name:'⚡ Critical Hit',desc:'20% cơ hội đánh đúng gây 2x sát thương',effect:'crit'},
+  {id:'leech',name:'🩸 Life Steal',desc:'Hồi 15 HP mỗi lần trả lời đúng',effect:'leech'},
+  {id:'scholar',name:'📚 Scholar',desc:'+30% XP từ mỗi trận chiến',effect:'scholar'},
+  {id:'shield',name:'🛡️ Iron Guard',desc:'Giảm 30% sát thương nhận vào',effect:'shield'},
+  {id:'fury',name:'🔥 Battle Fury',desc:'Combo 3 đúng liên tiếp → tấn công đôi',effect:'fury'},
+  {id:'lucky',name:'🍀 Lucky Find',desc:'Tăng 40% tỉ lệ rơi đồ',effect:'lucky'},
+  {id:'swift',name:'💨 Swift Mind',desc:'Câu hỏi khó hơn nhưng XP +50%',effect:'swift'},
+  {id:'heal',name:'💚 Recovery',desc:'Hồi 25 HP sau mỗi khi diệt quái',effect:'heal'},
+];
+
+const EQUIPMENT = [
+  {name:'Rune Sword',icon:'⚔️',stat:'+8 ATK'},
+  {name:'Iron Shield',icon:'🛡️',stat:'+15 DEF'},
+  {name:'Magic Tome',icon:'📖',stat:'+20% XP'},
+  {name:'Health Vial',icon:'🧪',stat:'+30 HP'},
+  {name:'Speed Ring',icon:'💍',stat:'+5 SPD'},
+  {name:'Dragon Scale',icon:'🐉',stat:'+12 ATK'},
+  {name:'Moon Amulet',icon:'🌙',stat:'+25 HP'},
+  {name:'Scholar Hat',icon:'🎓',stat:'+30% XP'},
+];
+
+// =========================================================
+// GAME STATE
+// =========================================================
+let G = {};
+function newGame(){
+  G = {
+    // player
+    hp:100, maxHp:100, atk:15, level:1, xp:0, xpNext:100,
+    skills:[], equipment:[],
+    streak:0, maxStreak:0,
+    // stats
+    floor:1, room:1, totalRooms:5,
+    wordsAnswered:0, wordsCorrect:0, totalXp:0,
+    // enemy
+    enemy:null, enemyHp:0, enemyMaxHp:0,
+    // flags
+    phase:'walk', // walk | battle | loot | levelup | dead | win
+    pendingLoot:[],
+    // animation
+    playerX:60, playerY:130, playerDir:1,
+    enemyX:380, enemyY:130,
+    walkOffset:0, atkAnim:0, enemyAtkAnim:0,
+    hitFlash:0, enemyHitFlash:0,
+    projectiles:[],
+    particles:[],
+    // vocab used
+    usedVocab:new Set(),
+    currentWord:null,
+    savedRecord: getSaved(),
+  };
+}
+
+function getSaved(){
+  try{
+    return JSON.parse(localStorage.getItem('hangulDungeon')||'{}');
+  }catch(e){return{};}
+}
+function saveRecord(){
+  const r = getSaved();
+  if((G.floor) > (r.bestFloor||0)) r.bestFloor = G.floor;
+  r.wordsLearned = (r.wordsLearned||0) + G.wordsCorrect;
+  r.streak = Math.max(r.streak||0, G.maxStreak);
+  try{localStorage.setItem('hangulDungeon',JSON.stringify(r));}catch(e){}
+}
+
+// =========================================================
+// CANVAS DRAWING
+// =========================================================
+const TILE = 40;
+let dungeonCtx, dungeonW, dungeonH;
+let animFrame = 0;
+let lastTime = 0;
+
+function initCanvas(){
+  const canvas = document.getElementById('dungeonCanvas');
+  dungeonCtx = canvas.getContext('2d');
+  dungeonW = canvas.width; dungeonH = canvas.height;
+  requestAnimationFrame(gameLoop);
+}
+
+function gameLoop(ts){
+  if(!G || G.phase === 'dead' || G.phase === 'win'){
+    drawDungeon();
+    return;
+  }
+  const dt = Math.min((ts - lastTime)/1000, 0.05);
+  lastTime = ts;
+  animFrame += dt * 60;
+
+  // Walk animation
+  if(G.phase === 'walk'){
+    G.walkOffset += dt * 100;
+    if(G.walkOffset > 20) G.walkOffset -= 20;
+  }
+
+  // attack anim decay
+  G.atkAnim = Math.max(0, G.atkAnim - dt*4);
+  G.enemyAtkAnim = Math.max(0, G.enemyAtkAnim - dt*4);
+  G.hitFlash = Math.max(0, G.hitFlash - dt*4);
+  G.enemyHitFlash = Math.max(0, G.enemyHitFlash - dt*4);
+
+  // projectiles
+  G.projectiles = G.projectiles.filter(p=>{
+    p.x += p.vx * dt * 60;
+    p.y += p.vy * dt * 60;
+    p.life -= dt;
+    return p.life > 0;
+  });
+  // particles
+  G.particles = G.particles.filter(p=>{
+    p.x += p.vx * dt * 60;
+    p.y += p.vy * dt * 60;
+    p.life -= dt;
+    p.vy += dt * 60 * 0.08;
+    return p.life > 0;
+  });
+
+  drawDungeon();
+  requestAnimationFrame(gameLoop);
+}
+
+function drawDungeon(){
+  const ctx = dungeonCtx;
+  const W = dungeonW, H = dungeonH;
+  ctx.clearRect(0,0,W,H);
+
+  // Background
+  ctx.fillStyle = '#050510';
+  ctx.fillRect(0,0,W,H);
+
+  // Floor tiles
+  const tileColors = ['#0e0e22','#0c0c1e'];
+  for(let x=0;x<W;x+=TILE){
+    for(let y=H-TILE;y<H;y+=TILE){
+      ctx.fillStyle = (Math.floor(x/TILE+y/TILE))%2===0 ? tileColors[0] : tileColors[1];
+      ctx.fillRect(x,y,TILE,TILE);
+    }
+  }
+  // Floor line
+  ctx.fillStyle = '#1a1a3e';
+  ctx.fillRect(0, H-TILE, W, 2);
+
+  // Wall
+  ctx.fillStyle = '#0a0a1a';
+  ctx.fillRect(0, 0, W, H-TILE-4);
+
+  // Wall bricks
+  ctx.strokeStyle = '#111128';
+  ctx.lineWidth = 1;
+  for(let y=20;y<H-TILE-4;y+=24){
+    const offset = (Math.floor(y/24)%2)*TILE/2;
+    for(let x=-offset;x<W;x+=TILE){
+      ctx.strokeRect(x, y, TILE, 24);
+    }
+  }
+
+  // Torches
+  drawTorch(ctx, 80, H-TILE-50);
+  drawTorch(ctx, W-80, H-TILE-50);
+
+  // Door (right side)
+  if(G && G.phase !== 'battle'){
+    drawDoor(ctx, W-30, H-TILE-70);
+  }
+
+  if(!G) return;
+
+  // PLAYER
+  const px = G.playerX + (G.atkAnim > 0 ? G.playerDir * G.atkAnim * 18 : 0);
+  const py = G.playerY;
+  const bobY = G.phase==='walk' ? Math.sin(animFrame*0.18)*3 : 0;
+  if(G.hitFlash > 0){
+    ctx.save();ctx.globalAlpha=G.hitFlash*0.6;
+    ctx.fillStyle='#ff0000';
+    ctx.fillRect(px-18,py-30+bobY,36,50);
+    ctx.restore();
+  }
+  drawPlayer(ctx, px, py+bobY, G.playerDir, G.phase==='walk');
+
+  // ENEMY
+  if(G.enemy && G.phase !== 'dead'){
+    const ex = G.enemyX + (G.enemyAtkAnim > 0 ? -G.enemyAtkAnim * 15 : 0);
+    const ey = G.enemyY;
+    const eBob = G.phase==='battle' ? Math.sin(animFrame*0.12)*2 : 0;
+    if(G.enemyHitFlash > 0){
+      ctx.save();ctx.globalAlpha=G.enemyHitFlash*0.7;
+      ctx.fillStyle='#ff0000';
+      ctx.fillRect(ex-22,ey-35+eBob,44,55);
+      ctx.restore();
+    }
+    drawEnemy(ctx, ex, ey+eBob, G.enemy);
+
+    // Enemy name + HP
+    ctx.fillStyle = 'rgba(0,0,0,0.6)';
+    ctx.fillRect(ex-40, ey-58, 80, 18);
+    ctx.fillStyle = G.enemy.isBoss ? '#ff6b9d' : '#aaa';
+    ctx.font = `bold ${G.enemy.isBoss?9:8}px monospace`;
+    ctx.textAlign = 'center';
+    ctx.fillText(G.enemy.isBoss ? '👑 '+G.enemy.name : G.enemy.name, ex, ey-46);
+    // mini hp bar
+    const hpPct = G.enemyHp / G.enemyMaxHp;
+    ctx.fillStyle = '#333';
+    ctx.fillRect(ex-38, ey-44, 76, 6);
+    ctx.fillStyle = hpPct > 0.5 ? '#ff4757' : hpPct > 0.25 ? '#ff7f50' : '#ff0000';
+    ctx.fillRect(ex-38, ey-44, 76*hpPct, 6);
+  }
+
+  // Projectiles
+  G.projectiles.forEach(p=>{
+    ctx.save();
+    ctx.globalAlpha = p.life;
+    ctx.fillStyle = p.color||'#ffb347';
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r||5, 0, Math.PI*2);
+    ctx.fill();
+    // glow
+    ctx.globalAlpha = p.life * 0.4;
+    ctx.fillStyle = p.color||'#ffb347';
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, (p.r||5)*2.5, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+  });
+
+  // Particles
+  G.particles.forEach(p=>{
+    ctx.save();
+    ctx.globalAlpha = p.life;
+    ctx.fillStyle = p.color||'#fff';
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r||3, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+  });
+
+  // Phase label
+  if(G.phase === 'walk'){
+    ctx.fillStyle = 'rgba(0,212,170,0.8)';
+    ctx.font = '9px monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText('→ Đang di chuyển...', 12, 20);
+  }
+}
+
+function drawTorch(ctx, x, y){
+  const flicker = Math.sin(animFrame * 0.22 + x) * 3;
+  // stick
+  ctx.fillStyle = '#5d4037';
+  ctx.fillRect(x-2, y, 4, 20);
+  // flame
+  ctx.fillStyle = `rgba(255,${100+Math.floor(flicker*10)},0,0.9)`;
+  ctx.beginPath();
+  ctx.arc(x, y+2, 7+flicker, 0, Math.PI*2);
+  ctx.fill();
+  ctx.fillStyle = 'rgba(255,220,0,0.7)';
+  ctx.beginPath();
+  ctx.arc(x, y+2, 4, 0, Math.PI*2);
+  ctx.fill();
+  // light
+  const grad = ctx.createRadialGradient(x,y,0,x,y,60);
+  grad.addColorStop(0,`rgba(255,160,0,0.08)`);
+  grad.addColorStop(1,'rgba(255,160,0,0)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(x-60,y-60,120,120);
+}
+
+function drawDoor(ctx, x, y){
+  ctx.fillStyle = '#2c1810';
+  ctx.fillRect(x-20, y, 40, 70);
+  ctx.strokeStyle = '#5d3a1a';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(x-20, y, 40, 70);
+  ctx.fillStyle = '#8B4513';
+  ctx.fillRect(x-15, y+8, 16, 54);
+  ctx.fillRect(x-1, y+8, 16, 54);
+  ctx.fillStyle = '#f0a500';
+  ctx.beginPath();
+  ctx.arc(x, y+35, 3, 0, Math.PI*2);
+  ctx.fill();
+}
+
+// PIXEL CHARACTER DRAWINGS
+function drawPlayer(ctx, x, y, dir=1, walking=false){
+  const bob = walking ? Math.sin(animFrame*0.22)*2 : 0;
+  ctx.save();
+  if(dir < 0){ ctx.translate(x,y); ctx.scale(-1,1); x=0; y=0; } else { ctx.translate(0,0); }
+
+  const px = dir<0 ? 0 : x;
+  const py = y + bob;
+
+  // Shadow
+  ctx.fillStyle = 'rgba(0,0,0,0.3)';
+  ctx.beginPath();ctx.ellipse(px,py+22,14,5,0,0,Math.PI*2);ctx.fill();
+
+  // Body (armor)
+  ctx.fillStyle = '#4a6fa5';
+  ctx.fillRect(px-10,py-20,20,22);
+  // Armor detail
+  ctx.fillStyle = '#5a8fc5';
+  ctx.fillRect(px-8,py-18,16,6);
+  ctx.fillStyle = '#7c9abf';
+  ctx.fillRect(px-5,py-12,10,3);
+
+  // Legs
+  const legOffset = walking ? Math.sin(animFrame*0.22)*4 : 0;
+  ctx.fillStyle = '#2c3e50';
+  ctx.fillRect(px-9,py+2,8,16);
+  ctx.fillRect(px+1,py+2,8,16);
+  // Boots
+  ctx.fillStyle = '#6d4c41';
+  ctx.fillRect(px-10,py+14,9,8);
+  ctx.fillRect(px+1,py+14,9,8);
+
+  // Head
+  ctx.fillStyle = '#f5cba7';
+  ctx.fillRect(px-8,py-34,16,16);
+  // Helmet
+  ctx.fillStyle = '#4a6fa5';
+  ctx.fillRect(px-9,py-40,18,12);
+  ctx.fillStyle = '#7c9abf';
+  ctx.fillRect(px-7,py-38,14,4);
+  // Eyes
+  ctx.fillStyle = '#1a1a2e';
+  ctx.fillRect(px-5,py-28,3,4);
+  ctx.fillRect(px+2,py-28,3,4);
+  ctx.fillStyle = '#00d4aa';
+  ctx.fillRect(px-4,py-27,1,2);
+  ctx.fillRect(px+3,py-27,1,2);
+
+  // Sword
+  ctx.fillStyle = '#c0c0c0';
+  ctx.fillRect(px+10,py-30,4,32);
+  ctx.fillStyle = '#8B4513';
+  ctx.fillRect(px+8,py-10,8,5);
+  ctx.fillStyle = '#FFD700';
+  ctx.fillRect(px+11,py-34,2,6);
+
+  // Cape
+  ctx.fillStyle = '#8B0000';
+  ctx.fillRect(px-12,py-18,4,20);
+
+  ctx.restore();
+}
+
+function drawEnemy(ctx, x, y, enemy){
+  const t = animFrame * 0.15;
+  ctx.save();
+  ctx.translate(x, y);
+
+  switch(enemy.sprite){
+    case 'slime': {
+      // Body
+      const s = 0.8 + Math.sin(t*1.2)*0.08;
+      ctx.fillStyle = enemy.color;
+      ctx.save();ctx.scale(1,s);
+      ctx.beginPath();
+      ctx.ellipse(0,0,22,18,0,0,Math.PI*2);
+      ctx.fill();
+      ctx.restore();
+      // Eyes
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(-8,-5,7,8); ctx.fillRect(2,-5,7,8);
+      ctx.fillStyle = '#000';
+      ctx.fillRect(-6,-4,4,5); ctx.fillRect(4,-4,4,5);
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(-5,-3,2,2); ctx.fillRect(5,-3,2,2);
+      // Mouth
+      ctx.strokeStyle='#000';ctx.lineWidth=1.5;
+      ctx.beginPath();ctx.arc(0,6,6,0.2,Math.PI-0.2);ctx.stroke();
+      break;
+    }
+    case 'goblin': {
+      const hobble = Math.sin(t)*2;
+      // Shadow
+      ctx.fillStyle='rgba(0,0,0,0.3)';
+      ctx.beginPath();ctx.ellipse(0,22,14,4,0,0,Math.PI*2);ctx.fill();
+      // Body
+      ctx.fillStyle = enemy.color;
+      ctx.fillRect(-12,hobble-12,24,24);
+      // Head
+      ctx.fillStyle = '#8bc34a';
+      ctx.fillRect(-10,hobble-30,20,20);
+      // Ears
+      ctx.fillRect(-16,hobble-26,8,8);ctx.fillRect(8,hobble-26,8,8);
+      // Eyes
+      ctx.fillStyle='#ff0';
+      ctx.fillRect(-7,hobble-24,4,5);ctx.fillRect(3,hobble-24,4,5);
+      ctx.fillStyle='#000';
+      ctx.fillRect(-6,hobble-23,2,3);ctx.fillRect(4,hobble-23,2,3);
+      // Nose
+      ctx.fillStyle='#4a7c18';
+      ctx.fillRect(-2,hobble-18,4,4);
+      // Teeth
+      ctx.fillStyle='#fff';
+      ctx.fillRect(-5,hobble-13,3,5);ctx.fillRect(2,hobble-13,3,5);
+      // Club
+      ctx.fillStyle='#6d4c41';
+      ctx.fillRect(12,hobble-20,5,28);
+      ctx.fillRect(8,hobble-22,12,8);
+      break;
+    }
+    case 'skeleton': {
+      // Shadow
+      ctx.fillStyle='rgba(0,0,0,0.3)';
+      ctx.beginPath();ctx.ellipse(0,24,12,4,0,0,Math.PI*2);ctx.fill();
+      // Ribcage
+      ctx.fillStyle = '#ddd';
+      ctx.fillRect(-10,-5,20,20);
+      for(let i=0;i<4;i++){
+        ctx.fillStyle='#111';
+        ctx.fillRect(-8,-3+i*5,16,2);
+      }
+      // Skull
+      ctx.fillStyle='#eee';
+      ctx.fillRect(-9,-26,18,22);
+      // Jaw
+      ctx.fillRect(-7,-6,14,6);
+      ctx.fillStyle='#222';
+      ctx.fillRect(-6,-26,5,6);ctx.fillRect(1,-26,5,6); // eye sockets
+      ctx.fillRect(-5,-28,10,4); // forehead
+      // Teeth
+      ctx.fillStyle='#eee';
+      ctx.fillRect(-5,-4,3,5);ctx.fillRect(-1,-4,3,5);ctx.fillRect(3,-4,3,5);
+      // Arms
+      ctx.fillStyle='#ddd';
+      ctx.fillRect(-18,2,8,16);ctx.fillRect(10,2,8,16);
+      ctx.fillRect(-14,16,5,8);ctx.fillRect(11,16,5,8);
+      // Legs
+      ctx.fillRect(-8,15,6,18);ctx.fillRect(2,15,6,18);
+      ctx.fillRect(-10,31,6,8);ctx.fillRect(4,31,6,8);
+      break;
+    }
+    case 'mage': {
+      const float = Math.sin(t)*4;
+      ctx.save();ctx.translate(0,float);
+      // Robe
+      ctx.fillStyle='#5e35b1';
+      ctx.beginPath();
+      ctx.moveTo(-14,22);ctx.lineTo(-10,-10);ctx.lineTo(10,-10);ctx.lineTo(14,22);
+      ctx.closePath();ctx.fill();
+      // Robe detail
+      ctx.fillStyle='#7c4dff';
+      ctx.fillRect(-5,-10,10,20);
+      // Head
+      ctx.fillStyle='#f5cba7';
+      ctx.fillRect(-8,-28,16,18);
+      // Hat
+      ctx.fillStyle='#311b92';
+      ctx.fillRect(-12,-30,24,6);
+      ctx.fillRect(-6,-50,12,22);
+      // Star on hat
+      ctx.fillStyle='#ffd700';
+      ctx.font='10px serif';ctx.textAlign='center';
+      ctx.fillText('★',0,-38);
+      // Eyes (glowing)
+      ctx.fillStyle='#e040fb';
+      ctx.fillRect(-5,-22,4,5);ctx.fillRect(1,-22,4,5);
+      ctx.fillStyle='rgba(224,64,251,0.4)';
+      ctx.beginPath();ctx.arc(-3,-20,6,0,Math.PI*2);ctx.fill();
+      ctx.beginPath();ctx.arc(3,-20,6,0,Math.PI*2);ctx.fill();
+      // Staff
+      ctx.fillStyle='#6d4c41';ctx.fillRect(14,-28,4,50);
+      ctx.fillStyle='#7c4dff';ctx.beginPath();ctx.arc(16,-30,6,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='rgba(124,77,255,0.5)';ctx.beginPath();ctx.arc(16,-30,10,0,Math.PI*2);ctx.fill();
+      ctx.restore();
+      break;
+    }
+    case 'dragon': {
+      const roar = Math.sin(t*0.7)*4;
+      ctx.save();ctx.translate(0,roar);
+      // Body
+      ctx.fillStyle='#c2185b';
+      ctx.fillRect(-28,-10,56,34);
+      // Belly
+      ctx.fillStyle='#f48fb1';
+      ctx.fillRect(-18,0,36,22);
+      // Neck
+      ctx.fillRect(-8,-28,16,22);
+      // Head
+      ctx.fillStyle='#c2185b';
+      ctx.fillRect(-16,-50,32,26);
+      // Snout
+      ctx.fillRect(-10,-38,20,14);
+      // Eyes
+      ctx.fillStyle='#ffeb3b';
+      ctx.fillRect(-12,-46,8,8);ctx.fillRect(4,-46,8,8);
+      ctx.fillStyle='#000';
+      ctx.fillRect(-10,-44,4,4);ctx.fillRect(6,-44,4,4);
+      // Horns
+      ctx.fillStyle='#880e4f';
+      ctx.beginPath();ctx.moveTo(-14,-50);ctx.lineTo(-8,-68);ctx.lineTo(-4,-50);ctx.closePath();ctx.fill();
+      ctx.beginPath();ctx.moveTo(4,-50);ctx.lineTo(10,-68);ctx.lineTo(14,-50);ctx.closePath();ctx.fill();
+      // Teeth
+      ctx.fillStyle='#fff';
+      ctx.fillRect(-8,-26,4,7);ctx.fillRect(-2,-26,4,7);ctx.fillRect(4,-26,4,7);
+      // Wings
+      ctx.fillStyle='rgba(194,24,91,0.7)';
+      ctx.beginPath();ctx.moveTo(-28,-5);ctx.lineTo(-60,-30);ctx.lineTo(-50,10);ctx.closePath();ctx.fill();
+      ctx.beginPath();ctx.moveTo(28,-5);ctx.lineTo(60,-30);ctx.lineTo(50,10);ctx.closePath();ctx.fill();
+      // Wing details
+      ctx.strokeStyle='#880e4f';ctx.lineWidth=1.5;
+      ctx.beginPath();ctx.moveTo(-28,-5);ctx.lineTo(-60,-30);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(-28,-5);ctx.lineTo(-50,10);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(28,-5);ctx.lineTo(60,-30);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(28,-5);ctx.lineTo(50,10);ctx.stroke();
+      // Tail
+      ctx.fillStyle='#c2185b';
+      ctx.fillRect(28,10,30,12);
+      ctx.fillRect(52,8,12,8);
+      ctx.beginPath();ctx.moveTo(60,6);ctx.lineTo(72,0);ctx.lineTo(66,14);ctx.closePath();ctx.fill();
+      // Claws
+      ctx.fillStyle='#880e4f';
+      ctx.fillRect(-28,22,10,10);ctx.fillRect(-20,30,8,6);
+      ctx.fillRect(18,22,10,10);ctx.fillRect(14,30,8,6);
+      // Fire breath occasionally
+      if(Math.sin(t*0.5) > 0.7){
+        for(let i=0;i<6;i++){
+          const fx = -16+i*6, fy = -30-i*5;
+          ctx.fillStyle = `rgba(255,${100-i*15},0,${0.8-i*0.12})`;
+          ctx.beginPath();ctx.arc(fx,fy,8-i,0,Math.PI*2);ctx.fill();
+        }
+      }
+      ctx.restore();
+      break;
+    }
+    case 'orc': {
+      const stomp = Math.abs(Math.sin(t*0.8))*2;
+      ctx.save();ctx.translate(0,stomp);
+      ctx.fillStyle='#26a69a';
+      ctx.fillRect(-14,-10,28,28);
+      // Chest armor
+      ctx.fillStyle='#795548';
+      ctx.fillRect(-12,-6,24,16);
+      ctx.fillRect(-10,-4,8,10);ctx.fillRect(2,-4,8,10);
+      // Head
+      ctx.fillStyle='#26a69a';
+      ctx.fillRect(-12,-32,24,24);
+      // Tusks
+      ctx.fillStyle='#fff';
+      ctx.fillRect(-8,-10,4,10);ctx.fillRect(4,-10,4,10);
+      // Eyes
+      ctx.fillStyle='#f44336';
+      ctx.fillRect(-8,-26,6,7);ctx.fillRect(2,-26,6,7);
+      ctx.fillStyle='#000';
+      ctx.fillRect(-6,-24,3,4);ctx.fillRect(4,-24,3,4);
+      // Axe
+      ctx.fillStyle='#795548';ctx.fillRect(14,-36,5,50);
+      ctx.fillStyle='#9e9e9e';
+      ctx.beginPath();ctx.moveTo(14,-36);ctx.lineTo(30,-26);ctx.lineTo(30,-10);ctx.lineTo(14,-16);ctx.closePath();ctx.fill();
+      ctx.restore();
+      break;
+    }
+    case 'shadow': {
+      const waver = Math.sin(t)*3;
+      ctx.fillStyle=`rgba(108,92,231,0.85)`;
+      ctx.beginPath();
+      ctx.ellipse(0,waver,20,30,0,0,Math.PI*2);
+      ctx.fill();
+      ctx.fillStyle=`rgba(80,60,200,0.6)`;
+      ctx.beginPath();
+      ctx.ellipse(-5,waver-5,14,22,0.3,0,Math.PI*2);
+      ctx.fill();
+      // glowing eyes
+      ctx.fillStyle='#fff';
+      ctx.shadowColor='#fff';ctx.shadowBlur=8;
+      ctx.fillRect(-8,waver-8,5,6);ctx.fillRect(3,waver-8,5,6);
+      ctx.shadowBlur=0;
+      // tendrils
+      ctx.fillStyle='rgba(108,92,231,0.5)';
+      for(let i=0;i<4;i++){
+        const tx = (i-1.5)*10;
+        const ty = 20+Math.sin(t+i)*6;
+        ctx.beginPath();ctx.arc(tx,ty,4,0,Math.PI*2);ctx.fill();
+      }
+      break;
+    }
+    case 'witch': {
+      const hover = Math.sin(t*0.9)*5;
+      ctx.save();ctx.translate(0,hover);
+      // Dress
+      ctx.fillStyle='#1a237e';
+      ctx.beginPath();ctx.moveTo(-18,24);ctx.lineTo(-8,-12);ctx.lineTo(8,-12);ctx.lineTo(18,24);ctx.closePath();ctx.fill();
+      ctx.fillStyle='#283593';
+      ctx.fillRect(-5,-12,10,22);
+      // Cloak
+      ctx.fillStyle='#0d47a1';
+      ctx.fillRect(-20,-8,6,30);ctx.fillRect(14,-8,6,30);
+      // Head
+      ctx.fillStyle='#f5cba7';
+      ctx.fillRect(-8,-30,16,20);
+      // Hat
+      ctx.fillStyle='#1a237e';
+      ctx.fillRect(-14,-32,28,6);
+      ctx.fillRect(-6,-54,12,24);
+      ctx.fillStyle='#90caf9';
+      ctx.fillRect(-14,-33,28,3);
+      // Eyes (ice blue)
+      ctx.fillStyle='#90caf9';
+      ctx.fillRect(-6,-24,5,6);ctx.fillRect(1,-24,5,6);
+      ctx.shadowColor='#90caf9';ctx.shadowBlur=6;
+      ctx.fillRect(-5,-23,3,3);ctx.fillRect(2,-23,3,3);
+      ctx.shadowBlur=0;
+      // Ice crystal staff
+      ctx.fillStyle='#e0f7fa';ctx.fillRect(16,-32,3,50);
+      ctx.fillStyle='#90caf9';
+      for(let i=0;i<6;i++){
+        const a=i/6*Math.PI*2;
+        ctx.fillRect(17.5+Math.cos(a)*10-2,-33+Math.sin(a)*10-2,4,4);
+      }
+      ctx.restore();
+      break;
+    }
+  }
+  ctx.restore();
+}
+
+// Title screen animation
+function drawTitleAnimation(){
+  const canvas = document.getElementById('titleCanvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = 200, H = 140;
+  ctx.clearRect(0,0,W,H);
+  // Dark bg
+  ctx.fillStyle='#050510';ctx.fillRect(0,0,W,H);
+  // Floor
+  ctx.fillStyle='#0e0e22';ctx.fillRect(0,H-30,W,30);
+  ctx.fillStyle='#1a1a3e';ctx.fillRect(0,H-32,W,2);
+  // Torch
+  drawTorch(ctx,30,H-65);drawTorch(ctx,170,H-65);
+  // Player
+  const pBob = Math.sin(Date.now()/400)*2;
+  drawPlayer(ctx, 70, H-28+pBob, 1, false);
+  // Enemy
+  const eData = ENEMIES[3]; // dark mage
+  ctx.save();ctx.translate(140, H-28);
+  drawEnemy(ctx, 0, 0, eData);
+  ctx.restore();
+  // VS text
+  ctx.fillStyle='rgba(255,179,71,0.9)';
+  ctx.font='bold 11px monospace';
+  ctx.textAlign='center';
+  ctx.fillText('VS', 105, H-45);
+
+  requestAnimationFrame(drawTitleAnimation);
+}
+
+// =========================================================
+// GAME LOGIC
+// =========================================================
+function startGame(){
+  newGame();
+  showScreen('gameScreen');
+  initCanvas();
+  startFloor(1);
+  loadTitleStats();
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function goTitle(){
+  showScreen('titleScreen');
+  loadTitleStats();
+}
+
+function loadTitleStats(){
+  const r = getSaved();
+  document.getElementById('tsBestFloor').textContent = r.bestFloor||1;
+  document.getElementById('tsWords').textContent = r.wordsLearned||0;
+  document.getElementById('tsStreak').textContent = r.streak||0;
+}
+
+function showVocabList(){
+  const r = getSaved();
+  alert(`Đã học: ${r.wordsLearned||0} từ\nBest streak: ${r.streak||0}\nBest floor: ${r.bestFloor||1}`);
+}
+
+async function startFloor(floor){
+  G.floor = floor;
+  G.room = 1;
+  G.totalRooms = floor < 3 ? 5 : floor < 5 ? 6 : 7;
+
+  // Floor transition
+  const ft = document.getElementById('floorTransition');
+  document.getElementById('ftFloor').textContent = `Tầng ${floor}`;
+  document.getElementById('ftSub').textContent = floor % 5 === 0 ? '⚠️ BOSS FLOOR!' : 'Nhập Ngục...';
+  ft.classList.add('show');
+  await sleep(1400);
+  ft.classList.remove('show');
+  await sleep(500);
+
+  startRoom();
+}
+
+function startRoom(){
+  updateHUD();
+  hidePanels();
+
+  // Pick enemy
+  const isBossRoom = G.room === G.totalRooms;
+  const bossEnemies = ENEMIES.filter(e=>e.isBoss);
+  const normalEnemies = ENEMIES.filter(e=>!e.isBoss);
+  const pool = isBossRoom ? bossEnemies : normalEnemies;
+  const eTemplate = pool[Math.floor(Math.random()*pool.length)];
+
+  const scaleFactor = 1 + (G.floor-1)*0.18;
+  G.enemy = {...eTemplate};
+  G.enemyMaxHp = Math.floor(eTemplate.hp * scaleFactor);
+  G.enemyHp = G.enemyMaxHp;
+  G.enemy.scaledAtk = Math.floor(eTemplate.atk * scaleFactor);
+
+  G.phase = 'walk';
+  G.playerX = 60;
+  G.enemyX = 380;
+
+  // Walk to enemy
+  setLog(`Phòng ${G.room}/${G.totalRooms}: ${G.enemy.isBoss?'👑 BOSS':'👾'} ${G.enemy.name} xuất hiện!`, 'info');
+
+  setTimeout(()=>{
+    G.phase = 'battle';
+    showBattlePanel();
+  }, 1200);
+}
+
+function showBattlePanel(){
+  const panel = document.getElementById('battlePanel');
+  panel.style.display = 'block';
+  hidePanels(['lootPanel','levelUpPanel']);
+  presentWord();
+}
+
+function presentWord(){
+  // Pick vocab not recently used
+  const available = VOCAB.filter(v=>!G.usedVocab.has(v.k));
+  const pool = available.length > 4 ? available : VOCAB;
+  const word = pool[Math.floor(Math.random()*pool.length)];
+  G.currentWord = word;
+  G.usedVocab.add(word.k);
+  if(G.usedVocab.size > VOCAB.length * 0.7) G.usedVocab.clear();
+
+  document.getElementById('wordKorean').textContent = word.k;
+  document.getElementById('wordType').textContent = word.type;
+  document.getElementById('wordContext').textContent = word.ctx || '';
+
+  // Build choices
+  const wrong = VOCAB.filter(v=>v.k!==word.k)
+    .sort(()=>Math.random()-.5).slice(0,3).map(v=>v.v);
+  const choices = [...wrong, word.v].sort(()=>Math.random()-.5);
+
+  const grid = document.getElementById('choicesGrid');
+  grid.innerHTML = '';
+  choices.forEach(c=>{
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.textContent = c;
+    btn.onclick = ()=>handleAnswer(c, word.v, btn);
+    grid.appendChild(btn);
+  });
+}
+
+function handleAnswer(chosen, correct, btn){
+  const isCorrect = chosen === correct;
+  document.querySelectorAll('.choice-btn').forEach(b=>{
+    b.disabled = true;
+    if(b.textContent === correct) b.classList.add('correct');
+  });
+
+  G.wordsAnswered++;
+
+  if(isCorrect){
+    btn.classList.add('correct');
+    G.streak++;
+    G.maxStreak = Math.max(G.maxStreak, G.streak);
+    G.wordsCorrect++;
+    updateStreakUI();
+
+    // Damage calculation
+    let dmg = G.atk;
+    let isCrit = false;
+    if(G.skills.includes('crit') && Math.random()<0.2){ dmg*=2; isCrit=true; }
+    if(G.skills.includes('fury') && G.streak>=3){ dmg = Math.floor(dmg*1.5); }
+
+    // Leech
+    if(G.skills.includes('leech')){
+      G.hp = Math.min(G.maxHp, G.hp+15);
+    }
+
+    // Attack animation
+    G.atkAnim = 1;
+    setTimeout(()=>{
+      G.projectiles.push({
+        x:G.playerX+30, y:G.playerY-10,
+        vx:3.5, vy:-0.3,
+        color: isCrit ? '#ffd700' : '#7c6dff',
+        r: isCrit ? 8 : 5,
+        life:1
+      });
+    }, 150);
+
+    setTimeout(()=>{
+      G.enemyHitFlash = 1;
+      G.enemyHp -= dmg;
+      spawnParticles(G.enemyX, G.enemyY-10, isCrit ? '#ffd700' : '#ff4757', 8);
+
+      const xpGain = Math.floor(G.currentWord && G.skills.includes('scholar') ? 12*1.3 : G.skills.includes('swift') ? 12*1.5 : 12);
+      G.xp += xpGain;
+      G.totalXp += xpGain;
+
+      const critTxt = isCrit ? ' ⚡CRITICAL!' : '';
+      setLog(`✅ Đúng! "${G.currentWord.k}" = "${correct}". Đánh ${dmg} sát thương!${critTxt} (+${xpGain} XP)`, 'good');
+
+      if(G.enemyHp <= 0){
+        G.enemyHp = 0;
+        updateHUD();
+        setTimeout(defeatEnemy, 600);
+      } else {
+        updateHUD();
+        checkLevelUp(()=>setTimeout(presentWord, 1200));
+      }
+    }, 400);
+
+  } else {
+    btn.classList.add('wrong');
+    G.streak = 0;
+    updateStreakUI();
+
+    // Enemy attacks
+    let dmg = G.enemy.scaledAtk;
+    if(G.skills.includes('shield')) dmg = Math.floor(dmg*0.7);
+    G.enemyAtkAnim = 1;
+    setTimeout(()=>{
+      G.hitFlash = 1;
+      G.hp -= dmg;
+      spawnParticles(G.playerX, G.playerY-10, '#ff4757', 6);
+      setLog(`❌ Sai! "${G.currentWord.k}" = "${correct}". ${G.enemy.name} phản đòn ${dmg} sát thương!`, 'bad');
+
+      if(G.hp <= 0){
+        G.hp = 0;
+        updateHUD();
+        setTimeout(gameOver, 800);
+      } else {
+        updateHUD();
+        setTimeout(presentWord, 1200);
+      }
+    }, 350);
+  }
+}
+
+function spawnParticles(x, y, color, n){
+  for(let i=0;i<n;i++){
+    const a = Math.random()*Math.PI*2;
+    const spd = 0.5+Math.random()*1.5;
+    G.particles.push({
+      x,y, vx:Math.cos(a)*spd, vy:Math.sin(a)*spd-1,
+      color, r:2+Math.random()*3, life:0.8
+    });
+  }
+}
+
+function defeatEnemy(){
+  spawnParticles(G.enemyX, G.enemyY, G.enemy.color, 16);
+  G.enemy = null;
+
+  // XP from kill
+  const killXp = Math.floor(G.enemy?.xp || 50 * (1+(G.floor-1)*0.15));
+  const actualKillXp = Math.floor(50*(1+(G.floor-1)*0.15) * (G.skills.includes('scholar')?1.3:1) * (G.skills.includes('swift')?1.5:1));
+  G.xp += actualKillXp;
+  G.totalXp += actualKillXp;
+
+  // Heal on kill
+  if(G.skills.includes('heal')){
+    G.hp = Math.min(G.maxHp, G.hp+25);
+  }
+
+  setLog(`⚔️ ${ENEMIES.find(e=>!e)?'':'Quái'} bị tiêu diệt! +${actualKillXp} XP`, 'xp');
+  hidePanels(['battlePanel']);
+
+  // Check loot
+  const lootChance = (G.enemy?.loot||0.5) * (G.skills.includes('lucky')?1.4:1);
+  const dropLoot = Math.random() < 0.55;
+
+  if(dropLoot){
+    const items = [];
+    const n = Math.random()<0.3 ? 2 : 1;
+    for(let i=0;i<n;i++){
+      items.push(EQUIPMENT[Math.floor(Math.random()*EQUIPMENT.length)]);
+    }
+    G.pendingLoot = items;
+    G.equipment.push(...items);
+    showLootPanel(items);
+  } else {
+    checkLevelUp(()=>setTimeout(nextRoom, 1000));
+  }
+}
+
+function showLootPanel(items){
+  const panel = document.getElementById('lootPanel');
+  const container = document.getElementById('lootItems');
+  container.innerHTML = '';
+  items.forEach(item=>{
+    const div = document.createElement('div');
+    div.className = 'loot-item';
+    div.innerHTML = `<div class="loot-icon">${item.icon}</div><div class="loot-name">${item.name}</div><div class="loot-stat">${item.stat}</div>`;
+    container.appendChild(div);
+  });
+  panel.style.display = 'block';
+}
+
+function continueAfterLoot(){
+  hidePanels(['lootPanel']);
+  checkLevelUp(()=>setTimeout(nextRoom, 600));
+}
+
+function checkLevelUp(next){
+  const needed = G.level * 100;
+  if(G.xp >= needed){
+    G.xp -= needed;
+    G.level++;
+    G.maxHp += 20;
+    G.hp = Math.min(G.maxHp, G.hp+20);
+    G.atk += 3;
+    showLevelUp(next);
+  } else {
+    updateHUD();
+    if(next) next();
+  }
+}
+
+function showLevelUp(next){
+  updateHUD();
+  const panel = document.getElementById('levelUpPanel');
+  document.getElementById('levelUpSub').textContent = `Level ${G.level}! Chọn 1 skill mới:`;
+
+  // Pick 3 random skills not owned
+  const available = SKILLS_POOL.filter(s=>!G.skills.includes(s.effect));
+  const choices = available.sort(()=>Math.random()-.5).slice(0,3);
+
+  const cont = document.getElementById('skillChoices');
+  cont.innerHTML='';
+  choices.forEach(sk=>{
+    const btn = document.createElement('button');
+    btn.className='skill-choice';
+    btn.innerHTML=`<div class="skill-choice-name">${sk.name}</div><div class="skill-choice-desc">${sk.desc}</div>`;
+    btn.onclick=()=>{
+      G.skills.push(sk.effect);
+      panel.style.display='none';
+      updateSkillsUI();
+      setLog(`✨ Đã học skill: ${sk.name}!`, 'xp');
+      if(next) next();
+    };
+    cont.appendChild(btn);
+  });
+
+  if(choices.length===0){
+    // No more skills - just heal
+    G.hp = G.maxHp;
+    panel.style.display='none';
+    setLog('✨ Level up! Đã hồi đầy HP!','xp');
+    if(next) next();
+    return;
+  }
+  panel.style.display='block';
+}
+
+async function nextRoom(){
+  if(G.room >= G.totalRooms){
+    // Floor complete
+    if(G.floor >= 10){
+      await sleep(500);
+      winGame();
+    } else {
+      startFloor(G.floor+1);
+    }
+  } else {
+    G.room++;
+    updateHUD();
+    startRoom();
+  }
+}
+
+function gameOver(){
+  G.phase = 'dead';
+  saveRecord();
+  document.getElementById('rsFloor').textContent = G.floor;
+  document.getElementById('rsWords').textContent = G.wordsAnswered;
+  document.getElementById('rsCorrect').textContent = G.wordsAnswered>0 ? Math.round(G.wordsCorrect/G.wordsAnswered*100)+'%' : '0%';
+  document.getElementById('rsXp').textContent = G.totalXp;
+  document.getElementById('resultIcon').textContent = '💀';
+  document.getElementById('resultTitle').textContent = 'Ngã Xuống...';
+  document.getElementById('resultTitle').style.color = 'var(--red)';
+  showScreen('resultScreen');
+}
+
+function winGame(){
+  G.phase = 'win';
+  saveRecord();
+  document.getElementById('rsFloor').textContent = G.floor;
+  document.getElementById('rsWords').textContent = G.wordsAnswered;
+  document.getElementById('rsCorrect').textContent = G.wordsAnswered>0 ? Math.round(G.wordsCorrect/G.wordsAnswered*100)+'%' : '0%';
+  document.getElementById('rsXp').textContent = G.totalXp;
+  document.getElementById('resultIcon').textContent = '🏆';
+  document.getElementById('resultTitle').textContent = 'Chiến Thắng!';
+  document.getElementById('resultTitle').style.color = 'var(--amber)';
+  showScreen('resultScreen');
+}
+
+function pauseGame(){
+  if(confirm('Thoát về menu chính? (Tiến trình sẽ mất)')) goTitle();
+}
+
+// =========================================================
+// UI HELPERS
+// =========================================================
+function updateHUD(){
+  if(!G) return;
+  document.getElementById('levelBadge').textContent = `Lv.${G.level} Warrior`;
+  document.getElementById('floorBadge').textContent = `Tầng ${G.floor} · Phòng ${G.room}/${G.totalRooms}`;
+
+  const pPct = G.hp/G.maxHp*100;
+  document.getElementById('playerHpFill').style.width = pPct+'%';
+  document.getElementById('playerHpText').textContent = `${G.hp} / ${G.maxHp}`;
+
+  if(G.enemy){
+    const ePct = Math.max(0,G.enemyHp/G.enemyMaxHp*100);
+    document.getElementById('enemyHudName').textContent = (G.enemy.isBoss?'👑':'👾')+' '+G.enemy.name;
+    document.getElementById('enemyHpFill').style.width = ePct+'%';
+    document.getElementById('enemyHpText').textContent = `${Math.max(0,G.enemyHp)} / ${G.enemyMaxHp}`;
+    document.getElementById('enemyHudRow').style.display = 'flex';
+  } else {
+    document.getElementById('enemyHudRow').style.display = 'none';
+  }
+
+  // XP
+  const xpPct = Math.min(100, G.xp/(G.level*100)*100);
+  document.getElementById('xpBar').style.width = xpPct+'%';
+  document.getElementById('xpLabel').textContent = `${G.xp} / ${G.level*100} XP`;
+}
+
+function updateStreakUI(){
+  for(let i=0;i<5;i++){
+    const f = document.getElementById('f'+i);
+    if(f) f.className = 'flame' + (G.streak>i?' lit':'');
+  }
+}
+
+function updateSkillsUI(){
+  const row = document.getElementById('skillsRow');
+  row.innerHTML = '';
+  const skillMap = {'crit':'⚡ Crit','leech':'🩸 Leech','scholar':'📚 Scholar','shield':'🛡️ Guard','fury':'🔥 Fury','lucky':'🍀 Lucky','swift':'💨 Swift','heal':'💚 Heal'};
+  G.skills.forEach(s=>{
+    const d = document.createElement('div');
+    d.className = 'skill-pip active';
+    d.textContent = skillMap[s]||s;
+    row.appendChild(d);
+  });
+}
+
+function hidePanels(which=['battlePanel','lootPanel','levelUpPanel']){
+  which.forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.style.display = 'none';
+  });
+}
+
+function setLog(msg, type=''){
+  const log = document.getElementById('battleLog');
+  const cls = type==='good'?'log-good':type==='bad'?'log-bad':type==='info'?'log-info':type==='xp'?'log-xp':'';
+  log.innerHTML = `<span class="${cls}">${msg}</span>`;
+}
+
+function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+
+// =========================================================
+// INIT
+// =========================================================
+loadTitleStats();
+drawTitleAnimation();
+</script>
+</body>
+</html>
