@@ -1347,6 +1347,10 @@ body::after {
       <div class="tower-lb-title" style="margin-top:4px;">Huy hiệu đạt được</div>
       <div class="tower-badges" id="towerBadgesEarned"></div>
     </div>
+    <div id="towerWordsWrap" style="display:none;">
+      <div class="tower-lb-title" style="margin-top:10px;">📖 Từ đã luyện tập trong ván này</div>
+      <div id="towerWordsList" style="display:flex;flex-direction:column;gap:6px;margin-top:6px;max-height:260px;overflow-y:auto;"></div>
+    </div>
     <div class="tower-result-btns">
       <button class="tower-result-btn primary" onclick="towerStart()">🔄 Chơi lại</button>
       <button class="tower-result-btn secondary" onclick="towerShowLobby()">🏆 Bảng điểm</button>
@@ -2655,6 +2659,7 @@ function towerStart() {
     floor10Time: null,
     minLivesReached: 10,
     minLivesFloor: 1,
+    sessionWords: {},    // track words practiced this run: word -> {word,romanization,meaning_vi,correct,wrong}
   };
 
   document.getElementById('towerLobby').style.display='none';
@@ -2759,6 +2764,20 @@ function towerSelectAnswer(ans, btn) {
   towerState.total++;
 
   const correct = ans === towerState.correctAns;
+
+  // Track word practiced this session
+  {
+    const w = towerState.currentWord;
+    if(w){
+      const key = w.word;
+      if(!towerState.sessionWords[key]) {
+        towerState.sessionWords[key] = { word:w.word, romanization:w.romanization||'', meaning_vi:w.meaning_vi||'', correct:0, wrong:0 };
+      }
+      if(correct) towerState.sessionWords[key].correct++;
+      else towerState.sessionWords[key].wrong++;
+    }
+  }
+
   const opts = document.querySelectorAll('.tower-opt');
   opts.forEach(b=>{ b.classList.add('t-disabled'); if(b.textContent===towerState.correctAns) b.classList.add('t-correct'); });
   if(btn && !correct) btn.classList.add('t-wrong');
@@ -3014,6 +3033,35 @@ function towerGameOver() {
       html += locked.map(b=>`<div class="tower-badge" title="${b.desc}" style="opacity:0.28;filter:grayscale(1);">${b.icon} <span style="font-size:0.6rem">${b.desc}</span></div>`).join('');
     }
     badgeEl.innerHTML = html;
+  }
+
+  // Show list of words practiced this session
+  {
+    const wordsWrap = document.getElementById('towerWordsWrap');
+    const wordsListEl = document.getElementById('towerWordsList');
+    const sw = towerState.sessionWords || {};
+    const list = Object.values(sw).sort((a,b)=> (b.correct+b.wrong)-(a.correct+a.wrong));
+    if(list.length===0){
+      wordsWrap.style.display='none';
+    } else {
+      wordsWrap.style.display='';
+      wordsListEl.innerHTML = list.map(w=>{
+        const total = w.correct + w.wrong;
+        const allCorrect = w.wrong===0;
+        const statusColor = allCorrect ? 'var(--green)' : (w.correct===0 ? 'var(--red)' : 'var(--yellow)');
+        const statusIcon = allCorrect ? '✅' : (w.correct===0 ? '❌' : '⚠️');
+        return `<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--card2);border:1.5px solid ${statusColor};border-radius:10px;padding:8px 12px;">
+          <div style="text-align:left;">
+            <div style="font-weight:700;font-size:0.92rem;">${w.word}${w.romanization?` <span style="font-weight:400;color:var(--text2);font-size:0.72rem;">(${w.romanization})</span>`:''}</div>
+            <div style="font-size:0.76rem;color:var(--text2);">${w.meaning_vi}</div>
+          </div>
+          <div style="text-align:right;white-space:nowrap;">
+            <div style="font-size:0.9rem;">${statusIcon}</div>
+            <div style="font-size:0.65rem;color:var(--text3);">${w.correct}/${total} đúng</div>
+          </div>
+        </div>`;
+      }).join('');
+    }
   }
 
   // Show newly unlocked skills
@@ -3375,8 +3423,8 @@ function renderTowerMonster(floor) {
   const isBoss = towerIsBossFloor(floor);
   let content;
   if (isBoss) {
-    // ảnh boss: image/boss/10.jpg ~ 200.jpg (20 ảnh), floor >200 lặp lại từ 10
-    const imgNum = ((Math.floor(floor / 10) - 1) % 20) * 10 + 10;
+    // ảnh boss: image/boss/10.jpg ~ 250.jpg (25 ảnh), floor >250 lặp lại từ 10
+    const imgNum = ((Math.floor(floor / 10) - 1) % 25) * 10 + 10;
     const imgSrc = `image/boss/${imgNum}.jpg`;
     content = `<img src="${imgSrc}" style="height:120px;width:auto;object-fit:contain;display:block;" draggable="false">`;
   } else {
