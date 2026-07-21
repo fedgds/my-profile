@@ -848,7 +848,7 @@ input[type="range"]::-moz-range-thumb{
     if (repeatMode === 'one'){
       audioEl.currentTime = 0;
       playTrack();
-    } else if (repeatMode === 'all' || currentIndex < playlist.length - 1){
+    } else if (repeatMode === 'all' || shuffle || currentIndex < playlist.length - 1){
       nextTrack();
     } else {
       isPlaying = false;

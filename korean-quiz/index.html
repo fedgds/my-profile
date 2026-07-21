@@ -1299,7 +1299,7 @@ body::after {
 
     <div style="margin-top:14px;background:var(--card2);border-radius:12px;padding:12px 14px;font-size:0.78rem;color:var(--text2);text-align:left;line-height:1.7;">
       <div style="font-weight:700;color:var(--yellow);margin-bottom:6px;">📋 Luật chơi</div>
-      <div>❤️ Bắt đầu với <b style="color:var(--accent2);">10 mạng</b></div>
+      <div>❤️ Bắt đầu với <b style="color:var(--accent2);">5 mạng</b></div>
       <div>❌ Trả lời sai hoặc hết giờ → <b style="color:var(--red);">-1 mạng</b></div>
       <div>✅ Trả lời đúng → leo lên 1 tầng, tích điểm combo</div>
       <div>🎁 Mỗi <b style="color:var(--green);">10 tầng</b> đạt được → nhận thêm <b style="color:var(--accent2);">+1 mạng</b></div>
@@ -2550,7 +2550,7 @@ const TOWER_BADGES = [
 let towerState = {
   floor:1, score:0, combo:0, maxCombo:0,
   correct:0, total:0,
-  lives:10, maxLives:10,
+  lives:5, maxLives:5,
   timerInterval:null, timerPct:100, timerSec:0,
   currentWord:null, correctAns:'', pool:[],
   playerName:'', gameActive:false,
@@ -2649,7 +2649,7 @@ function towerStart() {
   towerState = {
     floor:1, score:0, combo:0, maxCombo:0,
     correct:0, total:0,
-    lives:10, maxLives:10,
+    lives:5, maxLives:5,
     timerInterval:null, timerPct:100, timerSec:0,
     currentWord:null, correctAns:'', pool,
     playerName:name, gameActive:true,
@@ -2657,7 +2657,7 @@ function towerStart() {
     sessionSpecial:[],   // track runtime special badges
     startTime: Date.now(),
     floor10Time: null,
-    minLivesReached: 10,
+    minLivesReached: 5,
     minLivesFloor: 1,
     sessionWords: {},    // track words practiced this run: word -> {word,romanization,meaning_vi,correct,wrong}
   };
