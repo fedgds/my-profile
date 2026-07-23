@@ -2171,16 +2171,23 @@ function renderBrowseList(words, displayCount) {
   c.innerHTML=h;
 }
 function browseLoadMore() {
+  const list = document.getElementById('browseList');
+  const prevScroll = list ? list.scrollTop : 0;
   browseDisplayCount += 100;
   renderBrowseList(browseCurrentPool, browseDisplayCount);
-  // Scroll to bottom of list smoothly
-  const list = document.getElementById('browseList');
-  if(list) list.lastElementChild && list.lastElementChild.scrollIntoView({behavior:'smooth', block:'nearest'});
+  // Keep the view where it was, just reveal the new items below
+  if(list) list.scrollTop = prevScroll;
 }
 function addToLearnedFromBrowse(word) {
   const all = getAllVocabWords();
   const w = all.find(x=>x.word===word);
-  if(w) { addToLearned(w); filterBrowse(); }
+  if(w) {
+    addToLearned(w);
+    const list = document.getElementById('browseList');
+    const prevScroll = list ? list.scrollTop : 0;
+    renderBrowseList(browseCurrentPool, browseDisplayCount);
+    if(list) list.scrollTop = prevScroll;
+  }
 }
 
 // ===== LEARNED PANEL =====
