@@ -29,26 +29,46 @@
 html,body{margin:0;height:100%}
 body{
   background:
-    radial-gradient(900px 520px at 50% -12%, #17203f 0%, transparent 68%),
-    radial-gradient(700px 420px at 8% 108%, #1a1030 0%, transparent 64%),
-    radial-gradient(700px 420px at 92% 108%, #10202e 0%, transparent 64%),
+    radial-gradient(1100px 640px at 50% -16%, #1d2a54 0%, #131c3c 34%, transparent 70%),
+    radial-gradient(760px 460px at 6% 112%, #23123f 0%, transparent 62%),
+    radial-gradient(760px 460px at 94% 112%, #0d2437 0%, transparent 62%),
+    radial-gradient(1200px 900px at 50% 50%, #0a0d1c 0%, var(--bg) 78%),
     var(--bg);
   color:var(--ink); font:14px/1.5 var(--sans);
   display:flex; align-items:center; justify-content:center; overflow:hidden;
   -webkit-font-smoothing:antialiased;
+  position:relative;
 }
+/* ambient arcane haze: two slow-drifting light blooms so the frame around
+   the app feels alive rather than flat black */
+body::before{
+  content:''; position:fixed; inset:-20% -10%; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(420px 420px at 20% 30%, #4a7cf022, transparent 70%),
+    radial-gradient(480px 480px at 82% 68%, #ff5d7a1c, transparent 70%);
+  filter:blur(6px);
+  animation:drift 26s ease-in-out infinite alternate;
+}
+@keyframes drift{
+  from{transform:translate3d(-2%,-1%,0) scale(1)}
+  to  {transform:translate3d(3%,2%,0)   scale(1.08)}
+}
+#app{z-index:1}
 #app{width:min(1180px,100vw); height:min(760px,100vh); position:relative}
 .screen{position:absolute; inset:0; display:none; flex-direction:column; padding:18px}
 .screen.on{display:flex; animation:screenIn .28s ease both}
 @keyframes screenIn{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none}}
 
-h1{font:700 52px/1 var(--disp); letter-spacing:-2px; margin:0}
+h1{font:700 54px/1 var(--disp); letter-spacing:-2px; margin:0}
 h1 span{
   background:linear-gradient(96deg,var(--cool),#a97bff 48%,var(--hot));
+  background-size:220% 100%;
   -webkit-background-clip:text; background-clip:text; color:transparent;
-  filter:drop-shadow(0 0 26px #6a5cff40);
+  filter:drop-shadow(0 0 30px #6a5cff55);
+  animation:sheen 9s ease-in-out infinite;
 }
-.sub{color:var(--dim); max-width:52ch; margin:12px 0 0}
+@keyframes sheen{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.sub{color:#9aa4c8; max-width:52ch; margin:13px 0 0; line-height:1.5}
 .mono,.stats{font-variant-numeric:tabular-nums}
 
 /* ---------- controls ---------- */
@@ -107,10 +127,18 @@ h1 span{
 /* ---------- title ---------- */
 #title{align-items:center; justify-content:center; text-align:center}
 #title .card{
-  background:linear-gradient(180deg,#0b101fdd,#070a13ee);
-  border:1px solid var(--line); border-radius:22px;
-  padding:38px 44px; backdrop-filter:blur(8px); max-width:660px;
-  box-shadow:var(--pane-hi), 0 30px 70px -40px #000, 0 0 0 1px #ffffff05;
+  position:relative; isolation:isolate;
+  background:linear-gradient(180deg,#0c1122ee,#070a13f2);
+  border:1px solid #222c4d; border-radius:24px;
+  padding:40px 46px; backdrop-filter:blur(10px); max-width:660px;
+  box-shadow:var(--pane-hi), 0 40px 90px -44px #000, 0 0 0 1px #ffffff06,
+    inset 0 1px 0 rgba(255,255,255,.05);
+}
+#title .card::before{
+  content:''; position:absolute; z-index:-1; left:50%; top:-24%;
+  width:78%; height:60%; transform:translateX(-50%);
+  background:radial-gradient(60% 100% at 50% 0%,#6a5cff33,#5fd0ff14 45%,transparent 72%);
+  filter:blur(14px); pointer-events:none;
 }
 .namerow{display:flex; gap:12px; justify-content:center; margin:22px 0 4px; flex-wrap:wrap}
 .namerow label{display:flex; flex-direction:column; gap:6px; align-items:flex-start}
@@ -121,8 +149,12 @@ h1 span{
 }
 .nameinput::placeholder{color:#4c5677}
 .nameinput:focus{border-color:#4a7cf0; box-shadow:inset 0 1px 3px #0006, var(--focus)}
-.legend{display:flex; gap:14px; justify-content:center; margin:20px 0 4px; flex-wrap:wrap}
-.legend b{font:700 10.5px/1 var(--sans); letter-spacing:.15em; text-transform:uppercase}
+.legend{display:flex; gap:9px; justify-content:center; margin:22px 0 4px; flex-wrap:wrap}
+.legend b{font:700 10px/1 var(--sans); letter-spacing:.13em; text-transform:uppercase;
+  padding:5px 11px; border-radius:999px;
+  border:1px solid color-mix(in srgb,currentColor 34%,transparent);
+  background:color-mix(in srgb,currentColor 9%,#070a14);
+  box-shadow:0 0 16px -10px currentColor, inset 0 1px 0 rgba(255,255,255,.04);}
 #record{margin-top:18px; max-width:340px; margin-inline:auto; text-align:left}
 .hrow{display:flex; justify-content:space-between; font-size:11.5px; color:#8b96bb;
   padding:4px 0; border-top:1px solid var(--line-soft)}
@@ -223,54 +255,89 @@ h1 span{
 
 /* ---------- battle ---------- */
 #battle{gap:11px}
-.hud{display:grid; grid-template-columns:1fr 108px 1fr; gap:14px; align-items:center}
+.hud{display:grid; grid-template-columns:1fr 120px 1fr; gap:16px; align-items:center}
 .hp{
-  position:relative; height:30px; border:1px solid var(--line); border-radius:9px;
-  background:linear-gradient(180deg,#0a0e1c,#070a14); overflow:hidden;
-  box-shadow:inset 0 2px 6px #0009;
+  position:relative; height:34px; border:1px solid var(--line); border-radius:11px;
+  background:linear-gradient(180deg,#0b1020,#06090f); overflow:hidden;
+  box-shadow:inset 0 2px 8px #000a, inset 0 0 0 1px #ffffff08;
 }
+/* the coloured fill, a soft top-gloss, and a bright leading edge that
+   tracks the bar's end so damage reads as a receding wall of light */
 .hp .fill{position:absolute; inset:0; transform-origin:left; transition:transform .12s linear}
-.hp.p1 .fill{background:linear-gradient(90deg,#1a6fc4,#5fd0ff)}
-.hp.p2 .fill{background:linear-gradient(90deg,#c8305a,#ff8fae)}
+.hp .fill::after{
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(180deg,#ffffff40 0%,#ffffff10 32%,transparent 60%);
+}
+.hp .fill::before{
+  content:''; position:absolute; top:0; bottom:0; right:0; width:3px;
+  background:#fff; box-shadow:0 0 12px 2px currentColor; opacity:.9;
+}
+.hp.p1 .fill{color:#8fe3ff; background:linear-gradient(90deg,#134a86,#2f8fd6 55%,#7fe0ff)}
+.hp.p2 .fill{color:#ffb0c8; background:linear-gradient(90deg,#8f2242,#d6396a 55%,#ff9db8)}
+/* travelling specular sweep — subtle, so the bars feel lit, not busy */
+.hp .fill{background-size:100% 100%}
 .hp .sh{position:absolute; inset:0; transform-origin:left; background:#e8f4ffcc; opacity:.5}
 /* quarter ticks: turns a smooth bar into something you can actually read */
 .hp::after{
   content:''; position:absolute; inset:0; pointer-events:none;
   background:repeating-linear-gradient(90deg,transparent 0 calc(25% - 1px),#00000055 calc(25% - 1px) 25%);
-  box-shadow:inset 0 1px 0 #ffffff12;
+  box-shadow:inset 0 1px 0 #ffffff14, inset 0 -6px 12px -6px #0008;
 }
 .hp .lab{
   position:absolute; inset:0; display:flex; align-items:center; justify-content:space-between;
-  padding:0 11px; font:700 12.5px/1 var(--sans); text-shadow:0 1px 4px #000c; z-index:1;
-  letter-spacing:.03em;
+  padding:0 13px; font:700 13px/1 var(--sans); text-shadow:0 1px 5px #000e; z-index:1;
+  letter-spacing:.04em;
 }
-.hp .lab span:last-child{font-family:var(--num); font-variant-numeric:tabular-nums}
-.hp.p2{direction:rtl}
+.hp .lab span:first-child{text-transform:uppercase; letter-spacing:.08em}
+.hp .lab span:last-child{font-family:var(--num); font-variant-numeric:tabular-nums; font-size:13.5px}
+.hp.p1{box-shadow:inset 0 2px 8px #000a, inset 0 0 0 1px #ffffff08, 0 0 24px -14px #5fd0ff}
+.hp.p2{direction:rtl; box-shadow:inset 0 2px 8px #000a, inset 0 0 0 1px #ffffff08, 0 0 24px -14px #ff5d7a}
 .hp.p2 .lab{direction:ltr}
 .hp.p2 .fill,.hp.p2 .sh{transform-origin:right}
+.hp.p2 .fill::before{right:auto; left:0}
 .timer{
-  text-align:center; font:700 22px/1 var(--num); color:#9aa6cc;
+  text-align:center; font:800 24px/1 var(--num); color:#cdd8ff;
   font-variant-numeric:tabular-nums; letter-spacing:.02em;
-  padding:6px 0; border-radius:9px; border:1px solid var(--line-soft); background:#080b16aa;
+  padding:8px 0; border-radius:11px; border:1px solid #2a3560;
+  background:linear-gradient(180deg,#0f1531,#080b18);
+  box-shadow:var(--pane-hi), inset 0 -8px 16px -10px #000, 0 0 22px -14px #4a7cf0;
+  text-shadow:0 0 14px #4a7cf055;
 }
 #stage{
-  position:relative; flex:1; min-height:0; border:1px solid var(--line);
-  border-radius:16px; overflow:hidden; background:#04060d;
-  box-shadow:inset 0 0 60px -20px #4a7cf033, var(--pane-hi);
+  position:relative; flex:1; min-height:0; border:1px solid #2a3560;
+  border-radius:18px; overflow:hidden; background:#04060d;
+  box-shadow:inset 0 0 70px -18px #4a7cf033, var(--pane-hi),
+             0 24px 60px -34px #000, 0 0 0 1px #ffffff06;
 }
 #cv{display:block; width:100%; height:100%}
 /* vignette keeps the arena reading as a lit pit rather than a flat rectangle */
 #stage::after{
-  content:''; position:absolute; inset:0; pointer-events:none;
+  content:''; position:absolute; inset:0; pointer-events:none; z-index:2;
   background:radial-gradient(120% 90% at 50% 50%, transparent 52%, #000a 100%);
+}
+/* a faint arcane rim-light traces the inside of the frame, so the arena
+   reads as a contained battle-pit with its own glow */
+#stage::before{
+  content:''; position:absolute; inset:0; pointer-events:none; z-index:2;
+  border-radius:18px;
+  box-shadow:inset 0 0 0 1px #6fa0ff1f, inset 0 2px 24px -8px #6fa0ff26;
 }
 #log{
   height:92px; overflow:hidden; font:11.5px/1.5 var(--num); color:#8e9ac0;
-  border:1px solid var(--line); border-radius:12px; padding:9px 12px;
-  background:linear-gradient(180deg,#0a0e1acc,#070a12cc); box-shadow:var(--pane-hi);
+  border:1px solid #232c4c; border-radius:13px; padding:10px 14px;
+  background:linear-gradient(180deg,#0b1120e8,#070a12e8);
+  box-shadow:var(--pane-hi), inset 0 0 30px -18px #4a7cf0;
+  position:relative;
 }
-#log div{opacity:.7; transition:opacity .2s}
-#log div:first-child{color:#dfe7ff; opacity:1}
+/* left accent bar marks the log as the fight's running record */
+#log::before{
+  content:''; position:absolute; left:0; top:9px; bottom:9px; width:2px;
+  border-radius:2px;
+  background:linear-gradient(180deg,#5fd0ff,#a97bff,transparent);
+  opacity:.6;
+}
+#log div{opacity:.55; transition:opacity .2s}
+#log div:first-child{color:#eaf0ff; opacity:1}
 
 /* ---------- battle side rails ----------
    The arena sits between two skill columns. Both rails always render the
@@ -284,26 +351,30 @@ h1 span{
 .rail{display:flex; flex-direction:column; gap:6px; min-height:0;
   overflow-y:auto; overflow-x:hidden; padding-right:2px}
 .rail-h{
-  font:700 9px/1 var(--sans); letter-spacing:.15em; text-transform:uppercase;
-  color:var(--mute); padding:2px 2px 6px; display:flex; justify-content:space-between;
+  font:700 9px/1 var(--sans); letter-spacing:.16em; text-transform:uppercase;
+  color:#8f9bc4; padding:3px 2px 7px; display:flex; justify-content:space-between;
   gap:6px; align-items:baseline; position:sticky; top:0; z-index:2;
-  background:linear-gradient(180deg,#06070d 62%,transparent);
+  background:linear-gradient(180deg,#06070d 60%,transparent);
 }
+.rail-h span:first-child{color:#d6ddf5; text-shadow:0 0 10px rgba(120,150,255,.25)}
 .rail.r2 .rail-h{flex-direction:row-reverse}
 .rail-h span{overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
 
 /* one skill slot: rune dot, name, and a countdown that reads in seconds */
 .sk{
-  position:relative; border:1px solid var(--line); border-radius:9px;
-  background:linear-gradient(180deg,#0c1120,#080c18); overflow:hidden;
-  padding:0 9px; display:flex; align-items:center; gap:8px;
+  position:relative; border:1px solid var(--line); border-radius:10px;
+  background:linear-gradient(180deg,#0d1322,#080c18); overflow:hidden;
+  padding:0 10px; display:flex; align-items:center; gap:9px;
   height:var(--slotH); flex:0 0 var(--slotH);
-  box-shadow:var(--pane-hi);
-  transition:border-color .15s, box-shadow .15s, background .15s;
+  box-shadow:var(--pane-hi), inset 0 1px 0 rgba(255,255,255,.03);
+  transition:border-color .18s, box-shadow .18s, background .18s, transform .18s;
 }
-.sk .swipe{position:absolute; inset:0; transform-origin:left; opacity:.17;
-  background:var(--sc); pointer-events:none}
-.rail.r2 .sk .swipe{transform-origin:right}
+.sk .swipe{position:absolute; inset:0; transform-origin:left; opacity:.2;
+  background:linear-gradient(90deg,color-mix(in srgb,var(--sc) 55%,transparent),var(--sc));
+  pointer-events:none; box-shadow:inset -1px 0 0 color-mix(in srgb,var(--sc) 70%,transparent)}
+.rail.r2 .sk .swipe{transform-origin:right;
+  background:linear-gradient(270deg,color-mix(in srgb,var(--sc) 55%,transparent),var(--sc));
+  box-shadow:inset 1px 0 0 color-mix(in srgb,var(--sc) 70%,transparent)}
 .sk .sn{font:700 10.5px/1.15 var(--sans); color:#c3cbe6; position:relative;
   flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
 .sk .sd{font:700 10.5px/1 var(--num); color:#7f8bb0; position:relative;
@@ -312,8 +383,11 @@ h1 span{
   flex:0 0 auto; position:relative; box-shadow:0 0 8px var(--sc)}
 .rail.r2 .sk{flex-direction:row-reverse}
 /* ready: the row lights up in the skill's own colour and stays lit */
-.sk.rdy{border-color:var(--sc); background:linear-gradient(180deg,#0e1626,#0a1020)}
-.sk.rdy .sn{color:#fff}
+.sk.rdy{border-color:color-mix(in srgb,var(--sc) 75%,#2a3560);
+  background:linear-gradient(180deg,#101a2e,#0a1020);
+  box-shadow:var(--pane-hi), 0 0 14px -4px var(--sc), inset 2px 0 0 var(--sc)}
+.rail.r2 .sk.rdy{box-shadow:var(--pane-hi), 0 0 14px -4px var(--sc), inset -2px 0 0 var(--sc)}
+.sk.rdy .sn{color:#fff; text-shadow:0 0 8px color-mix(in srgb,var(--sc) 45%,transparent)}
 .sk.rdy .sd{color:var(--sc); font-size:9px; letter-spacing:.1em}
 .sk.rdy .dot{animation:dotPulse 1.6s ease-in-out infinite}
 @keyframes dotPulse{50%{box-shadow:0 0 14px var(--sc)}}
@@ -367,10 +441,10 @@ h1 span{
    Sits over the arena rather than in the HUD: it belongs to the fight,
    and the HUD's three-column grid is already balanced around the clock. */
 .speedbar{
-  position:absolute; right:10px; bottom:10px; z-index:3;
-  display:flex; gap:4px; padding:4px; border-radius:11px;
-  background:#080b15c4; border:1px solid var(--line);
-  box-shadow:var(--pane-hi); backdrop-filter:blur(6px);
+  position:absolute; right:12px; bottom:12px; z-index:4;
+  display:flex; gap:4px; padding:5px; border-radius:13px;
+  background:#080b15d8; border:1px solid #2a3560;
+  box-shadow:var(--pane-hi), 0 8px 24px -12px #000; backdrop-filter:blur(8px);
 }
 .speedbar .btn{padding:5px 10px; font:700 11px/1 var(--num); border-radius:7px}
 .speedbar #bSkip{font-family:var(--sans); letter-spacing:.06em}
@@ -1073,6 +1147,79 @@ const FAMILY = {
   veil:  {name:'Veil',    col:'#d9f2ff', lore:'For a moment, not strictly present.'},
   bind:  {name:'Bind',    col:'#c0a6ff', lore:'Something else does the dying.'},
 };
+
+/* ═══════════════════════════════════════════════════════════════
+   ELEMENTAL VISUAL IDENTITY — cosmetic only; the sim never reads it.
+
+   Every skill already carries a TAGS entry (its family list). We reuse
+   that to give each element a BEHAVIOUR signature for its particles and
+   trails, so two skills of the same `kind` but different element no
+   longer look identical: fire rises and smoulders, frost sheds falling
+   shards, storm forks and jitters, void drags inward, blood falls heavy,
+   holy ascends softly, blade cuts thin and fast.
+
+   Fields:
+     sh     particle shape ('dot' | 'streak' | 'shard' | 'soft')
+     rise   vertical launch bias  (negative = upward)
+     grav   gravity applied per second (negative = floats up)
+     drag   velocity retention (lower = snappier decay)
+     glow   multiplier on glow radius / brightness
+     jit    lateral jitter added to spark spawns
+     trailW multiplier on trail ribbon width
+     core   colour of the hot inner core
+     smoke  optional dark smoke tint for smouldering elements
+     pull   motes converge on origin instead of scattering
+     soft   prefer soft additive puffs over hard dots
+   ═══════════════════════════════════════════════════════════════ */
+const EFX = {
+  fire:   {sh:'dot',    rise:-130, grav:-30, drag:0.90, glow:1.18, jit:1.0, trailW:1.20, smoke:'#2a140a', core:'#ffe6b0'},
+  frost:  {sh:'shard',  rise:10,   grav:90,  drag:0.93, glow:1.02, jit:0.4, trailW:1.00,                  core:'#eaffff'},
+  storm:  {sh:'streak', rise:-20,  grav:20,  drag:0.85, glow:1.12, jit:2.4, trailW:0.92,                  core:'#ffffff'},
+  arcane: {sh:'dot',    rise:-30,  grav:0,   drag:0.93, glow:1.12, jit:0.7, trailW:1.00,                  core:'#dfffff'},
+  void:   {sh:'dot',    rise:0,    grav:0,   drag:0.95, glow:1.22, jit:0.6, trailW:1.15, pull:true,       core:'#e6d0ff'},
+  blade:  {sh:'streak', rise:-10,  grav:160, drag:0.90, glow:0.96, jit:0.3, trailW:0.85,                  core:'#ffffff'},
+  blood:  {sh:'dot',    rise:20,   grav:300, drag:0.90, glow:1.02, jit:0.5, trailW:1.05,                  core:'#ffd0dc'},
+  holy:   {sh:'dot',    rise:-160, grav:-40, drag:0.92, glow:1.30, jit:0.4, trailW:1.15, soft:true,       core:'#fffbe6'},
+  shadow: {sh:'soft',   rise:-40,  grav:-10, drag:0.95, glow:1.06, jit:0.8, trailW:1.05, soft:true,       core:'#d9b8ff'},
+  blight: {sh:'dot',    rise:-6,   grav:90,  drag:0.94, glow:1.00, jit:0.6, trailW:1.00, smoke:'#16240a', core:'#e6ffb0'},
+  earth:  {sh:'shard',  rise:-20,  grav:360, drag:0.87, glow:0.92, jit:0.5, trailW:1.10, smoke:'#241a10', core:'#ffe9c0'},
+  wind:   {sh:'streak', rise:-30,  grav:15,  drag:0.90, glow:0.96, jit:1.1, trailW:0.90,                  core:'#eafff5'},
+  life:   {sh:'dot',    rise:-120, grav:-20, drag:0.92, glow:1.06, jit:0.4, trailW:1.00,                  core:'#eaffea'},
+  swift:  {sh:'streak', rise:-20,  grav:10,  drag:0.90, glow:0.96, jit:0.9, trailW:0.90,                  core:'#f0fff8'},
+  control:{sh:'dot',    rise:-10,  grav:0,   drag:0.93, glow:1.10, jit:0.5, trailW:1.00,                  core:'#fff0d0'},
+};
+const EFX_DEFAULT = {sh:'dot', rise:-30, grav:40, drag:0.92, glow:1.0, jit:0.6, trailW:1.0, core:'#ffffff'};
+/* When a skill has several families we pick ONE to drive its look. The
+   priority favours the more visually dominant element so, e.g., a
+   void/frost skill reads as void. */
+const ELEM_PRIORITY = ['void','fire','frost','storm','holy','blood','blight',
+  'shadow','earth','life','blade','wind','swift','arcane','control'];
+const _elemCache = {};
+function elemOf(sk){
+  if(!sk || !sk.id) return null;
+  if(sk.id in _elemCache) return _elemCache[sk.id];
+  const tags = TAGS[sk.id] || [];
+  let el = null;
+  for(const p of ELEM_PRIORITY) if(tags.indexOf(p) >= 0){ el = p; break; }
+  if(!el) el = tags[0] || null;
+  return (_elemCache[sk.id] = el);
+}
+function efxOf(sk){ return EFX[elemOf(sk)] || EFX_DEFAULT; }
+
+/* Spawn one signature spark for a skill at (x,y).
+   opt overrides: ang, spd, vx, vy, col, life, r, grav, drag, sh, rise, jit. */
+function efxSpark(sk, x, y, opt){
+  const e = efxOf(sk); opt = opt || {};
+  const spd = opt.spd!=null ? opt.spd : rnd(120,40);
+  const ang = opt.ang!=null ? opt.ang : rnd(TAU);
+  const jit = e.jit * (opt.jit!=null?opt.jit:1);
+  let vx = (opt.vx!=null?opt.vx:Math.cos(ang)*spd) + rnd(30,-30)*jit;
+  let vy = (opt.vy!=null?opt.vy:Math.sin(ang)*spd) + e.rise*(opt.rise!=null?opt.rise:1) + rnd(20,-20)*jit;
+  return spawn({x, y, vx, vy, col:opt.col||sk.col||'#fff',
+    life:opt.life!=null?opt.life:rnd(.6,.25), r:opt.r!=null?opt.r:rnd(3.4,1.2),
+    grav:opt.grav!=null?opt.grav:e.grav, drag:opt.drag!=null?opt.drag:e.drag,
+    sh:opt.sh||e.sh, rot:ang, spin:opt.spin||0, add:opt.add});
+}
 
 /* ── COMBO BONUSES ──────────────────────────────────────────────
    Every bonus is a PERCENTAGE MULTIPLIER on something the build
@@ -2001,7 +2148,7 @@ class Sim {
           const dl = this.hit(f,foe,a.dmg,{col:sk.col,x:a.x,y:a.y,kind:'impact',
             exec:sk.fx==='exec', noVamp:a.noVamp, key:sk.id});
           this.rider(sk,lvl,f,foe,dl);
-          this.emit('burst',{x:a.x,y:a.y,col:sk.col,n:a.basic?9:22,pow:a.basic?1:1.7});
+          this.emit('burst',{x:a.x,y:a.y,col:sk.col,n:a.basic?9:22,pow:a.basic?1:1.7,el:elemOf(sk)});
           return false;
         }
         return true;
@@ -2012,7 +2159,7 @@ class Sim {
           a.next = a.per; a.left--;
           const dl = this.hit(f,foe,a.dmg,{col:sk.col,kind:'beam',key:sk.id});
           this.rider(sk,lvl,f,foe,dl);
-          this.emit('burst',{x:foe.x,y:foe.y-8,col:sk.col,n:14,pow:1.2});
+          this.emit('burst',{x:foe.x,y:foe.y-8,col:sk.col,n:14,pow:1.2,el:elemOf(sk)});
         }
         return a.t < a.dur;
       }
@@ -2031,7 +2178,7 @@ class Sim {
             a.struck.add(tg);
             const dl = this.hit(f,tg,a.dmg,{col:sk.col,kind:'nova',key:sk.id});
             this.rider(sk,lvl,f,tg,dl);
-            this.emit('burst',{x:tg.x,y:tg.y-8,col:sk.col,n:26,pow:2});
+            this.emit('burst',{x:tg.x,y:tg.y-8,col:sk.col,n:26,pow:2,el:elemOf(sk)});
           }
         }
         return a.t < 0.5;
@@ -2046,7 +2193,7 @@ class Sim {
             if(Math.hypot(dx,dy) < sk.reach && ang < sk.spread){
               const dl = this.hit(f,tg,a.dmg,{col:sk.col,kind:'cone',key:sk.id});
               this.rider(sk,lvl,f,tg,dl);
-              this.emit('burst',{x:tg.x,y:tg.y-8,col:sk.col,n:12,pow:1.3});
+              this.emit('burst',{x:tg.x,y:tg.y-8,col:sk.col,n:12,pow:1.3,el:elemOf(sk)});
             }
           }
         }
@@ -2062,8 +2209,8 @@ class Sim {
               this.rider(sk,lvl,f,tg,dl);
             }
           }
-          this.emit('shock',{x:a.tx,y:a.ty,col:sk.col,r:96});
-          this.emit('burst',{x:a.tx,y:a.ty,col:sk.col,n:30,pow:2.2});
+          this.emit('shock',{x:a.tx,y:a.ty,col:sk.col,r:96,el:elemOf(sk)});
+          this.emit('burst',{x:a.tx,y:a.ty,col:sk.col,n:30,pow:2.2,el:elemOf(sk)});
         }
         return a.t < a.fall + 0.5;
       }
@@ -2076,7 +2223,7 @@ class Sim {
           for(const tg of inside){
             const dl = this.hit(f,tg,a.dmg,{col:sk.col,x:tg.x,y:tg.y,kind:'field',noCrit:a.left%2===1,key:sk.id});
             this.rider(sk,lvl,f,tg,dl);
-            this.emit('burst',{x:tg.x,y:tg.y-8,col:sk.col,n:10,pow:1.1});
+            this.emit('burst',{x:tg.x,y:tg.y-8,col:sk.col,n:10,pow:1.1,el:elemOf(sk)});
           }
         }
         return a.t < a.dur;
@@ -2087,7 +2234,7 @@ class Sim {
           a.next = a.per; a.left--;
           if(dist(f,foe) < 340){
             this.hit(f,foe,a.dmg,{col:sk.col,kind:'orbit',key:sk.id});
-            this.emit('burst',{x:foe.x,y:foe.y-8,col:sk.col,n:12,pow:1.2});
+            this.emit('burst',{x:foe.x,y:foe.y-8,col:sk.col,n:12,pow:1.2,el:elemOf(sk)});
           }
         }
         return a.t < a.dur;
@@ -2097,12 +2244,12 @@ class Sim {
         if(a.next<=0 && a.left>0){
           a.next = a.per; a.left--;
           const side = a.left%2 ? 1 : -1;
-          this.emit('ghost',{x:f.x,y:f.y,col:sk.col,side:f.side});
+          this.emit('ghost',{x:f.x,y:f.y,col:sk.col,side:f.side,el:elemOf(sk)});
           f.x = clamp(foe.x + side*62, 120, ARENA_W-120);
           f.y = clamp(foe.y + rnd(30,-30), 130, ARENA_H-90);
           const dl = this.hit(f,foe,a.dmg,{col:sk.col,kind:'slash',key:sk.id});
           this.rider(sk,lvl,f,foe,dl);
-          this.emit('slash',{x:foe.x,y:foe.y-8,col:sk.col,ang:rnd(TAU)});
+          this.emit('slash',{x:foe.x,y:foe.y-8,col:sk.col,ang:rnd(TAU),el:elemOf(sk)});
         }
         return a.left>0 || a.t < 0.4;
       }
@@ -2234,6 +2381,12 @@ const World = {
           rings.push({x:d.x,y:d.y,r:6,vr:420,life:.75,max:.75,col:d.col,w:12});
           burst(d.x,d.y,'#ffffff',26,2.4); burst(d.x,d.y,d.col,34,2.1);
           smoke(d.x,d.y,'#2a2038',8);
+          /* a crisp spike-star: eight fast streaks fired on the cardinals and
+             diagonals, so a crit punctuates with a readable STAR, not just a
+             fuzzy cloud of sparks */
+          for(let s=0;s<8;s++){ const aa=s*TAU/8;
+            spawn({x:d.x, y:d.y, vx:Math.cos(aa)*rnd(560,360), vy:Math.sin(aa)*rnd(560,360),
+              col:'#fff', life:.24, r:2.6, drag:0.8, sh:'streak', add:true}); }
           /* Only a *meaningful* crit stops the world. Rain/field skills land
              many small ticks; without this floor the fight would spend most
              of its life in slow motion.
@@ -2282,45 +2435,99 @@ const World = {
         log(`${d.src.name} — <b style="color:${v.col}">${v.name}</b> ${d.tgt.name} (${d.dur.toFixed(1)}s)`);
         break;
       }
-      case 'burst': burst(d.x,d.y,d.col,d.n,d.pow); break;
+      case 'burst': {
+        /* An impact carries the element of whatever landed it. `el` is a
+           cosmetic hint from the sim (never read back); when present the
+           debris flies with that element's shape and motion, so a fire hit
+           throws rising embers and a frost hit sheds falling shards. */
+        const e = d.el ? (EFX[d.el] || EFX_DEFAULT) : null;
+        if(!e){ burst(d.x,d.y,d.col,d.n,d.pow); break; }
+        glow(d.x,d.y,(10+d.n*0.6)*e.glow,d.col,0.6);
+        for(let i=0;i<d.n;i++){ const aa=rnd(TAU), sp=rnd(220,40)*d.pow;
+          spawn({x:d.x, y:d.y, vx:Math.cos(aa)*sp, vy:Math.sin(aa)*sp+e.rise*0.4,
+            col:i%4? d.col : e.core, life:rnd(.55,.2), r:rnd(3.6,1.2)*d.pow,
+            grav:e.grav, drag:e.drag, sh:e.sh, rot:aa, spin:rnd(6,-6)}); }
+        break;
+      }
       case 'shock':
         rings.push({x:d.x,y:d.y,r:8,vr:d.r*3.4,life:.42,max:.42,col:d.col,w:7});
-        smoke(d.x,d.y,d.col,5); shake=Math.min(26,shake+5); break;
-      case 'slash': slashes.push({x:d.x,y:d.y,ang:d.ang,life:.26,max:.26,col:d.col,len:rnd(150,90)}); break;
-      case 'ghost': ghosts.push({x:d.x,y:d.y,life:.34,max:.34,side:d.side,col:d.col}); break;
+        /* ground scorch/frost-bloom under a landed rain strike, tinted by the
+           element's smoke colour when it has one */
+        smoke(d.x,d.y,(d.el && (EFX[d.el]||{}).smoke) || d.col,5);
+        shake=Math.min(26,shake+5); break;
+      case 'slash': {
+        slashes.push({x:d.x,y:d.y,ang:d.ang,life:.26,max:.26,col:d.col,len:rnd(150,90)});
+        /* the strike sheds its element on contact — a fire dash leaves embers
+           rising, a frost dash flings shards, a blade dash sprays fast streaks */
+        const e = EFX[d.el] || EFX_DEFAULT;
+        for(let i=0;i<8;i++){ const aa=rnd(TAU);
+          spawn({x:d.x, y:d.y, vx:Math.cos(aa)*rnd(200,60), vy:Math.sin(aa)*rnd(180,50)+e.rise*0.5,
+            col:d.col, life:rnd(.4,.18), r:rnd(3.4,1.2), grav:e.grav, drag:e.drag, sh:e.sh, rot:aa}); }
+        break;
+      }
+      case 'ghost': ghosts.push({x:d.x,y:d.y,life:.34,max:.34,side:d.side,col:d.col,el:d.el}); break;
       case 'heal':
         if(d.amt > 12) sfx.heal();
         floats.push({x:d.f.x,y:d.f.y-60,vy:-46,life:.9,max:.9,txt:'+'+Math.round(d.amt),col:'#8dffa8'});
+        /* motes drift UP and gather — restoration reads as something being
+           given back, the opposite of damage scattering away */
         for(let i=0;i<18;i++) spawn({x:d.f.x+rnd(30,-30),y:d.f.y+rnd(24,-24),
-          vx:rnd(24,-24),vy:rnd(-70,-130),col:'#8dffa8',life:rnd(1,.5),r:rnd(3.6,1.4)});
+          vx:rnd(24,-24),vy:rnd(-70,-130),col:'#8dffa8',life:rnd(1,.5),r:rnd(3.6,1.4),grav:-30});
+        /* a soft contracting ring for larger heals — a visible "mend" pulse */
+        if(d.amt > 12){
+          rings.push({x:d.f.x,y:d.f.y,r:52,vr:-70,life:.5,max:.5,col:'#8dffa8',w:3});
+          glow(d.f.x,d.f.y-6,40,'#8dffa8',0.4);
+        }
         break;
-      case 'buff':
+      case 'buff': {
         sfx.shield();
+        const e = efxOf(d.sk);
         rings.push({x:d.f.x,y:d.f.y,r:60,vr:-90,life:.55,max:.55,col:d.sk.col,w:4});
+        /* the gather-in motes wear the caster's element: a summon's pact
+           pulls dark motes inward, a holy blessing draws bright ones */
         for(let i=0;i<22;i++){const a=rnd(TAU);
-          spawn({x:d.f.x+Math.cos(a)*70,y:d.f.y+Math.sin(a)*70,vx:-Math.cos(a)*150,vy:-Math.sin(a)*150,
-            col:d.sk.col,life:.5,r:rnd(3.6,1.6),drag:.9});}
+          efxSpark(d.sk, d.f.x+Math.cos(a)*70, d.f.y+Math.sin(a)*70,
+            {vx:-Math.cos(a)*150, vy:-Math.sin(a)*150, life:.5, r:rnd(3.6,1.6), drag:.9, rise:0.3});}
+        glow(d.f.x,d.f.y,60*e.glow,d.sk.col,0.5);
         log(`${d.f.name} — <b style="color:${d.sk.col}">${d.sk.name}</b>`);
         break;
+      }
       case 'cast':
         if(d.basic) sfx.basic(); else sfx.cast(d.sk);
         if(!d.basic){
           log(`${d.f.name} casts <b style="color:${d.sk.col}">${d.sk.name}</b>`);
           flareSkill(d.f, d.idx);
-          for(let i=0;i<10;i++){const a=rnd(TAU);
-            spawn({x:d.f.x,y:d.f.y-8,vx:Math.cos(a)*rnd(150,50),vy:Math.sin(a)*rnd(150,50),
-              col:d.sk.col,life:rnd(.5,.2),r:rnd(3,1.2)});}
+          /* the cast flash sheds the skill's element, so you can read what's
+             coming from the burst around the caster before the act resolves */
+          for(let i=0;i<12;i++){const a=rnd(TAU);
+            efxSpark(d.sk, d.f.x, d.f.y-8, {ang:a, spd:rnd(160,50), life:rnd(.5,.2), r:rnd(3,1.2)});}
         }
         break;
       case 'shieldHit':
         rings.push({x:d.t.x,y:d.t.y,r:44,vr:60,life:.3,max:.3,col:'#dff0ff',w:3}); break;
       case 'death': {
         const f = d.f;
+        /* A minion popping should not read like a champion falling. The
+           `quiet` flag (set when pets are cleaned up) gets a small, local
+           puff — no full-screen flash, no world-stopping shake. */
+        if(d.quiet || f.minion){
+          sfx.death();
+          rings.push({x:f.x,y:f.y,r:8,vr:520,life:.5,max:.5,col:f.side?'#ff8fae':'#7fd4ff',w:5});
+          burst(f.x,f.y,'#ffffff',24,1.6); burst(f.x,f.y,f.side?'#ff5d7a':'#5fd0ff',30,1.4);
+          smoke(f.x,f.y,'#241c33',8);
+          shake = Math.min(26, shake+6);
+          break;
+        }
         sfx.death();
         for(let w=0;w<3;w++) rings.push({x:f.x,y:f.y,r:10+w*20,vr:700-w*140,life:.9,max:.9,
           col:w?f.side?'#ff8fae':'#7fd4ff':'#fff',w:9-w*2});
         burst(f.x,f.y,'#ffffff',90,3); burst(f.x,f.y,f.side?'#ff5d7a':'#5fd0ff',110,2.6);
         smoke(f.x,f.y,'#241c33',26);
+        /* a slow column of embers rises off the fallen champion — the moment
+           lingers a beat instead of just flashing and clearing */
+        for(let i=0;i<26;i++)
+          spawn({x:f.x+rnd(34,-34), y:f.y+rnd(10,-30), vx:rnd(30,-30), vy:rnd(-40,-150),
+            col:f.side?'#ffb0c4':'#bfe4ff', life:rnd(1.5,.7), r:rnd(3.4,1.2), grav:-24, drag:0.95});
         shake = 30; flashScr = 1; flashCol='#fff';
         break;
       }
@@ -2628,6 +2835,182 @@ function drawFighter(f, t){
   }
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   PIXEL-ART CUTE MONSTER RENDERER — used for PvE enemies only
+   ═══════════════════════════════════════════════════════════════ */
+function drawMonster(f, t){
+  const R = f.R || 30;
+  const bob = Math.sin(t*1.8 + f.sway)*4;
+  const x = f.x, y = f.y + bob;
+  const hurt = f.flash;
+  const sc = 1 + f.scaleP*0.12 - hurt*0.05;
+
+  /* Pixel-perfect rendering hint */
+  ctx.imageSmoothingEnabled = false;
+
+  /* Ground shadow */
+  ctx.save();
+  ctx.globalAlpha = 0.35;
+  ctx.fillStyle = '#000';
+  ctx.beginPath();
+  ctx.ellipse(f.x, ARENA_H+18, R*1.15, R*0.28, 0,0,TAU);
+  ctx.fill();
+  ctx.restore();
+
+  ctx.save();
+  ctx.translate(x,y);
+  ctx.scale(sc,sc);
+
+  /* Boss gets a subtle glow */
+  if(f.boss){
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    glow(0, 0, R*2.8, '#ffb056', 0.25);
+    ctx.restore();
+  }
+
+  /* Draw pixel art cute monster body */
+  const pixelSize = f.boss ? 3.5 : 3;
+  const isBoss = f.boss;
+
+  /* Color palette based on monster type */
+  const palette = isBoss ?
+    {main:'#ffb056', dark:'#d97d2e', light:'#ffe8b3', accent:'#ff6b4a'} :
+    {main:'#ff7a8a', dark:'#d94a5e', light:'#ffb4c1', accent:'#fff59d'};
+
+  /* Helper to draw a pixel */
+  const px = (ox, oy, col) => {
+    ctx.fillStyle = col;
+    ctx.fillRect(ox*pixelSize - pixelSize/2, oy*pixelSize - pixelSize/2, pixelSize, pixelSize);
+  };
+
+  /* Cute blob body pattern - different for boss vs normal */
+  if(isBoss){
+    /* Boss: bigger, more detailed */
+    const w = 8, h = 9;
+    const body = [
+      '  ####  ',
+      ' ###### ',
+      '########',
+      '##.##.##',
+      '########',
+      '########',
+      ' ###### ',
+      '  ####  ',
+      '   ##   '
+    ];
+    for(let r=0;r<body.length;r++){
+      for(let c=0;c<body[r].length;c++){
+        const char = body[r][c];
+        if(char==='#') px(c-w/2, r-h/2, palette.main);
+        else if(char==='.') px(c-w/2, r-h/2, palette.dark);
+      }
+    }
+    /* Boss eyes - glowing */
+    px(-2, -2, palette.accent);
+    px(2, -2, palette.accent);
+    /* Boss crown/horns */
+    px(-3, -5, palette.light);
+    px(0, -6, palette.light);
+    px(3, -5, palette.light);
+  } else {
+    /* Normal monster: smaller, simpler, cuter */
+    const w = 6, h = 6;
+    const body = [
+      '  ##  ',
+      ' #### ',
+      '######',
+      '######',
+      ' #### ',
+      '  ##  '
+    ];
+    for(let r=0;r<body.length;r++){
+      for(let c=0;c<body[r].length;c++){
+        if(body[r][c]==='#'){
+          px(c-w/2, r-h/2, r<3 ? palette.light : palette.main);
+        }
+      }
+    }
+    /* Cute eyes */
+    px(-1, -1, palette.dark);
+    px(1, -1, palette.dark);
+    /* Tiny bounce indicators */
+    if(Math.floor(t*2)%2===0){
+      px(-2, -3, palette.accent);
+      px(2, -3, palette.accent);
+    }
+  }
+
+  /* Hurt flash overlay */
+  if(hurt>0){
+    ctx.globalAlpha = hurt*0.5;
+    ctx.fillStyle='#fff';
+    ctx.fillRect(-R*0.8, -R*0.8, R*1.6, R*1.6);
+    ctx.globalAlpha=1;
+  }
+
+  /* Shield bubble */
+  if(f.shield>0){
+    ctx.strokeStyle='#dff0ff';
+    ctx.globalAlpha=0.4+Math.sin(t*6)*0.12;
+    ctx.lineWidth=2;
+    ctx.beginPath();
+    ctx.arc(0,0,R*1.4,0,TAU);
+    ctx.stroke();
+    ctx.globalAlpha=0.08;
+    ctx.fillStyle='#bfe0ff';
+    ctx.fill();
+    ctx.globalAlpha=1;
+  }
+
+  ctx.restore();
+
+  /* Status effects - same as fighters */
+  ctx.save();
+  ctx.globalCompositeOperation='lighter';
+  if(f.has('burn') && Math.random()<0.5)
+    spawn({x:x+rnd(25,-25),y:y+rnd(15,-15),vx:rnd(15,-15),vy:rnd(-50,-100),
+      col:'#ff9a4d',life:rnd(.6,.3),r:rnd(3,1.2)});
+  if(f.has('bleed') && Math.random()<0.4)
+    spawn({x:x+rnd(25,-25),y:y+rnd(15,-15),vx:rnd(25,-25),vy:rnd(30,-10),
+      col:'#9dff6b',life:rnd(.7,.3),r:rnd(2.8,1.2),grav:100});
+  if(f.has('chill')){ glow(x,y,R*1.3,'#a8e6ff',0.18); }
+  ctx.restore();
+
+  /* CC effects - simplified for monsters */
+  const cc = f.ccActive;
+  if(cc){
+    const v = CC_VIS[cc];
+    ctx.save();
+    ctx.globalCompositeOperation='lighter';
+    if(cc==='stun'){
+      for(let i=0;i<3;i++){
+        const a = t*4 + i*TAU/3;
+        const sx = x + Math.cos(a)*R*0.85, sy = y - R*1.3 + Math.sin(a)*R*0.25;
+        glow(sx, sy, 9, v.col, 0.8);
+        ctx.fillStyle='#fff';
+        ctx.beginPath();
+        ctx.arc(sx,sy,1.8,0,TAU);
+        ctx.fill();
+      }
+    } else if(cc==='freeze'){
+      ctx.strokeStyle=v.col;
+      ctx.lineWidth=2;
+      ctx.globalAlpha=0.75;
+      ctx.beginPath();
+      ctx.arc(x, y, R*1.4, 0, TAU);
+      ctx.stroke();
+      ctx.globalAlpha=0.12;
+      ctx.fillStyle=v.col;
+      ctx.fill();
+      ctx.globalAlpha=1;
+    }
+    ctx.restore();
+  }
+
+  ctx.imageSmoothingEnabled = true;
+}
+
 function drawActs(sim, t){
   ctx.save(); ctx.globalCompositeOperation='lighter';
   for(const a of sim.acts){
@@ -2642,20 +3025,24 @@ function drawActs(sim, t){
     switch(a.k){
       case 'proj': {
         if(a.delay>0) break;
-        /* trail ribbon */
+        const e = efxOf(sk);
+        /* trail ribbon — width and inner-core colour take on the element,
+           so a fireball trails fat and warm while a shard flies thin */
         if(a.trail.length>3){
           ctx.beginPath(); ctx.moveTo(a.trail[0],a.trail[1]);
           for(let i=2;i<a.trail.length;i+=2) ctx.lineTo(a.trail[i],a.trail[i+1]);
-          ctx.strokeStyle=col; ctx.globalAlpha=0.5; ctx.lineWidth=(a.basic?2.5:5.5)*V;
+          ctx.strokeStyle=col; ctx.globalAlpha=0.5; ctx.lineWidth=(a.basic?2.5:5.5)*V*e.trailW;
           ctx.lineCap='round'; ctx.stroke();
-          /* combo projectiles get a white-hot inner core on the trail */
-          if(lit){
-            ctx.strokeStyle='#fff'; ctx.globalAlpha=0.5; ctx.lineWidth=1.8*V;
-            ctx.stroke();
-          }
+          /* every projectile gets a hot inner core; combo ones burn brighter */
+          ctx.strokeStyle=e.core; ctx.globalAlpha=lit?0.55:0.4;
+          ctx.lineWidth=(lit?1.8:1.2)*V; ctx.stroke();
           ctx.globalAlpha=1;
         }
-        glow(a.x,a.y,(a.basic?15:26)*V,col,0.95);
+        glow(a.x,a.y,(a.basic?15:26)*V*e.glow,col,0.95);
+        /* one signature spark shed each frame — element decides how it moves
+           (fire licks upward, frost/earth sheds falling shards, storm forks) */
+        if(!a.basic && Math.random()<0.9)
+          efxSpark(sk, a.x, a.y, {spd:rnd(50,10), r:rnd(3,1.1)*V, life:rnd(.45,.2)});
         if(lit){
           /* orbiting sparks mark a combo-charged projectile */
           for(let i=0;i<3;i++){
@@ -2664,10 +3051,11 @@ function drawActs(sim, t){
               vx:rnd(30,-30), vy:rnd(30,-30), col, life:rnd(.3,.14), r:rnd(2.4,1)});
           }
         }
-        ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(a.x,a.y,(a.basic?2.6:4.4)*V,0,TAU); ctx.fill();
+        ctx.fillStyle=e.core; ctx.beginPath(); ctx.arc(a.x,a.y,(a.basic?2.6:4.4)*V,0,TAU); ctx.fill();
         break;
       }
       case 'beam': {
+        const e = efxOf(sk);
         const p = a.t/a.dur, w = (a.basic?4:13)*(0.55+Math.sin(t*40)*0.12)*(1-p*0.3)*V;
         const x1=a.f.x+a.f.facing*40, y1=a.f.y-8, x2=a.foe.x, y2=a.foe.y-8;
         ctx.strokeStyle=col; ctx.lineCap='round';
@@ -2675,13 +3063,26 @@ function drawActs(sim, t){
         ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
         ctx.globalAlpha=0.85; ctx.lineWidth=w; ctx.beginPath();
         ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
-        ctx.globalAlpha=1; ctx.strokeStyle='#fff'; ctx.lineWidth=w*0.32;
+        /* inner core takes the element's hot colour instead of flat white */
+        ctx.globalAlpha=1; ctx.strokeStyle=e.core; ctx.lineWidth=w*0.32;
         ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
-        glow(x2,y2,(34+Math.sin(t*30)*6)*V,col,0.8);
-        /* combo beams spawn more energized particles */
+        /* storm/wind beams crackle: a jagged secondary bolt that reforms
+           each frame reads as unstable charge rather than a clean ray */
+        if(e.jit>=1){
+          const seg=6; ctx.globalAlpha=(0.5+Math.sin(t*50)*0.2); ctx.strokeStyle=e.core;
+          ctx.lineWidth=Math.max(1,w*0.22); ctx.beginPath(); ctx.moveTo(x1,y1);
+          for(let s=1;s<seg;s++){ const q=s/seg;
+            ctx.lineTo(lerp(x1,x2,q)+rnd(9,-9)*e.jit, lerp(y1,y2,q)+rnd(9,-9)*e.jit); }
+          ctx.lineTo(x2,y2); ctx.stroke(); ctx.globalAlpha=1;
+        }
+        glow(x2,y2,(34+Math.sin(t*30)*6)*V*e.glow,col,0.8);
+        /* signature motes stream along the beam toward the target */
         const rate = lit ? 1 : 0.7;
-        if(Math.random()<rate) spawn({x:lerp(x1,x2,Math.random()),y:lerp(y1,y2,Math.random()),
-          vx:rnd(60,-60),vy:rnd(-30,-110),col,life:rnd(.5,.2),r:rnd(3.4,1.2)*V});
+        if(Math.random()<rate){
+          const q=Math.random();
+          efxSpark(sk, lerp(x1,x2,q), lerp(y1,y2,q),
+            {vx:(x2-x1)*0.12+rnd(40,-40), vy:rnd(-30,-90), r:rnd(3.4,1.2)*V, life:rnd(.5,.2)});
+        }
         break;
       }
       case 'nova': {
@@ -2693,8 +3094,10 @@ function drawActs(sim, t){
         /* trailing inner ring reads as depth, not a flat circle */
         ctx.globalAlpha=(1-p)*0.35; ctx.lineWidth=3*V;
         ctx.beginPath(); ctx.arc(a.f.x,a.f.y,r*0.72,0,TAU); ctx.stroke();
-        /* a hot white edge right at the wavefront sells the force */
-        ctx.globalAlpha=(1-p)*0.75; ctx.strokeStyle='#fff'; ctx.lineWidth=2*V;
+        /* a hot edge right at the wavefront sells the force; it wears the
+           element's core colour so a void nova rimmed pale-violet reads
+           differently from a fire nova rimmed warm gold */
+        ctx.globalAlpha=(1-p)*0.75; ctx.strokeStyle=efxOf(sk).core; ctx.lineWidth=2*V;
         ctx.beginPath(); ctx.arc(a.f.x,a.f.y,r*1.01,0,TAU); ctx.stroke();
         /* ground scorch under an expanding nova */
         ctx.globalAlpha=(1-p)*0.20; ctx.strokeStyle=col; ctx.lineWidth=5*V;
@@ -2702,9 +3105,10 @@ function drawActs(sim, t){
         ctx.globalAlpha=1;
         if(Math.random()<0.9*V){
           const aa=rnd(TAU);
-          spawn({x:a.f.x+Math.cos(aa)*r, y:a.f.y+Math.sin(aa)*r*0.85,
-            vx:Math.cos(aa)*rnd(200,60), vy:Math.sin(aa)*rnd(200,60)-30,
-            col, life:rnd(.5,.2), r:rnd(4,1.4)*V, sh:'streak', rot:aa});
+          /* debris thrown along the wavefront carries the element's shape
+             and motion — earth flings tumbling shards, fire licks upward */
+          efxSpark(sk, a.f.x+Math.cos(aa)*r, a.f.y+Math.sin(aa)*r*0.85,
+            {vx:Math.cos(aa)*rnd(220,80), vy:Math.sin(aa)*rnd(200,60), r:rnd(4,1.4)*V, life:rnd(.5,.2)});
         }
         break;
       }
@@ -2737,8 +3141,10 @@ function drawActs(sim, t){
         ctx.globalAlpha=1;
         if(Math.random()<0.9){
           const aa=rnd(sk.spread,-sk.spread), rr=rnd(sk.reach);
-          spawn({x:fx+Math.cos(aa)*rr*dir,y:fy+Math.sin(aa)*rr,
-            vx:Math.cos(aa)*260*dir,vy:Math.sin(aa)*260-40,col,life:rnd(.6,.25),r:rnd(6,2)*V});
+          /* spray carries the element: a flame cone billows upward, a frost
+             cone spits shards that fall, a storm cone scatters wide */
+          efxSpark(sk, fx+Math.cos(aa)*rr*dir, fy+Math.sin(aa)*rr,
+            {vx:Math.cos(aa)*260*dir, vy:Math.sin(aa)*260, r:rnd(6,2)*V, life:rnd(.6,.25)});
         }
         break;
       }
@@ -2759,15 +3165,16 @@ function drawActs(sim, t){
             ctx.beginPath(); ctx.moveTo(a.tx+s*98, a.ty); ctx.lineTo(a.tx+s*66, a.ty); ctx.stroke();
           }
           ctx.globalAlpha=1;
-          /* falling body */
+          /* falling body — inner core wears the element's hot colour */
+          const e = efxOf(sk);
           ctx.strokeStyle=col; ctx.lineWidth=9*V; ctx.globalAlpha=0.6; ctx.lineCap='round';
           ctx.beginPath(); ctx.moveTo(a.tx,sy-120*V); ctx.lineTo(a.tx,sy); ctx.stroke();
-          ctx.globalAlpha=0.9; ctx.strokeStyle='#fff'; ctx.lineWidth=2.6*V;
+          ctx.globalAlpha=0.9; ctx.strokeStyle=e.core; ctx.lineWidth=2.6*V;
           ctx.beginPath(); ctx.moveTo(a.tx,sy-70*V); ctx.lineTo(a.tx,sy); ctx.stroke();
           ctx.globalAlpha=1;
-          glow(a.tx,sy,28*V,col,1);
-          if(Math.random()<0.8) spawn({x:a.tx+rnd(10,-10),y:sy,vx:rnd(50,-50),vy:rnd(-40,-160),
-            col,life:rnd(.6,.25),r:rnd(5,2)*V});
+          glow(a.tx,sy,28*V*e.glow,col,1);
+          if(Math.random()<0.8)
+            efxSpark(sk, a.tx+rnd(10,-10), sy, {vx:rnd(50,-50), vy:rnd(-40,-160), r:rnd(5,2)*V, life:rnd(.6,.25)});
         }
         break;
       }
@@ -2795,16 +3202,21 @@ function drawActs(sim, t){
           ctx.lineWidth=2*V; ctx.stroke();
         }
         ctx.globalAlpha=1;
-        /* inward-spiralling motes */
+        /* field motes take the element's character. Most elements settle
+           inward toward the field centre; a void field drags them in hard,
+           while fire/holy fields let them rise out of the disc instead. */
         if(Math.random()<0.9){
+          const e = efxOf(sk);
           const aa=rnd(TAU);
-          spawn({x:a.x+Math.cos(aa)*sk.area,y:a.y+Math.sin(aa)*sk.area,
-            vx:-Math.cos(aa)*rnd(280,120),vy:-Math.sin(aa)*rnd(280,120),
-            col,life:rnd(.7,.35),r:rnd(4,1.6)*V,drag:0.95});
+          const ex=a.x+Math.cos(aa)*sk.area, ey=a.y+Math.sin(aa)*sk.area;
+          const pull = e.pull ? rnd(420,220) : rnd(280,120);
+          efxSpark(sk, ex, ey, {vx:-Math.cos(aa)*pull, vy:-Math.sin(aa)*pull,
+            r:rnd(4,1.6)*V, life:rnd(.7,.35), drag:0.95, rise: e.rise<-80?1:0.3});
         }
         break;
       }
       case 'orbit': {
+        const e = efxOf(sk);
         for(let i=0;i<sk.count;i++){
           const aa = a.a + i*TAU/sk.count;
           const ox = a.f.x+Math.cos(aa)*90, oy = a.f.y+Math.sin(aa)*90*0.6;
@@ -2813,10 +3225,12 @@ function drawActs(sim, t){
           ctx.strokeStyle=col; ctx.globalAlpha=0.16; ctx.lineWidth=1.4*V;
           ctx.beginPath(); ctx.moveTo(a.f.x, a.f.y); ctx.lineTo(ox, oy); ctx.stroke();
           ctx.globalAlpha=1;
-          glow(ox,oy,22*V,col,0.95);
-          ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(ox,oy,3.6*V,0,TAU); ctx.fill();
-          if(Math.random()<0.5) spawn({x:ox,y:oy,vx:rnd(30,-30),vy:rnd(30,-30),
-            col,life:rnd(.45,.2),r:rnd(3,1.2)*V});
+          glow(ox,oy,22*V*e.glow,col,0.95);
+          /* orbiting body cores wear the element's hot colour — a holy
+             orbit glows warm gold, a void orbit dark violet */
+          ctx.fillStyle=e.core; ctx.beginPath(); ctx.arc(ox,oy,3.6*V,0,TAU); ctx.fill();
+          if(Math.random()<0.5)
+            efxSpark(sk, ox, oy, {spd:rnd(80,20), r:rnd(3,1.2)*V, life:rnd(.45,.2)});
         }
         break;
       }
@@ -2905,6 +3319,17 @@ function drawFx(rdt, t){
       ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(Math.atan2(p.vy,p.vx));
       ctx.fillStyle=p.col;
       ctx.fillRect(-p.r*3.5, -p.r*0.42, p.r*7, p.r*0.84);
+      ctx.restore();
+    } else if(p.sh==='shard'){
+      /* a small angular sliver — frost/earth debris that tumbles as it
+         falls, reading as solid matter rather than a soft spark */
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot);
+      ctx.fillStyle=p.col;
+      const rr=Math.max(0.6,p.r*a);
+      ctx.beginPath();
+      ctx.moveTo(rr*1.6,0); ctx.lineTo(-rr*0.7, rr*0.7);
+      ctx.lineTo(-rr*0.3,0); ctx.lineTo(-rr*0.7,-rr*0.7);
+      ctx.closePath(); ctx.fill();
       ctx.restore();
     } else if(p.sh==='soft'){
       glow(p.x,p.y,p.r*(2-a),p.col,a*0.32);
@@ -3035,7 +3460,7 @@ function frame(now){
     /* back-to-front by y so overlap reads correctly */
     const order = [...sim.f].sort((a,b)=>a.y-b.y);
     drawActs(sim,t);
-    for(const f of order) if(!f.dead) drawFighter(f,t);
+    for(const f of order) if(!f.dead){ f.mob ? drawMonster(f,t) : drawFighter(f,t); }
   }
   drawFx(rdt,t);
 
@@ -3758,7 +4183,7 @@ function beginBattle(){
 /* PVE-BLOCK-START — everything between these markers is lifted verbatim by
    _balance/pvefit.js and run headless. Keep it free of DOM references so
    the tuner and the game can never disagree about the difficulty curve. */
-const PVE_MAX_STAGE  = 50;
+const PVE_MAX_STAGE  = 100;
 const PVE_MAX_SKILLS = 10;
 const PVE_BOSS_EVERY = 10;
 
@@ -3850,6 +4275,9 @@ function makePack(stage){
       title: '',
       sway: rnd(TAU),
     });
+    /* mark as a Delve monster so the renderer draws it as a pixel-art
+       creature instead of the abstract polygon champion */
+    f.mob = true;
     out.push(f);
   }
   return out;
