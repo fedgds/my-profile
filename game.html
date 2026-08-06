@@ -739,6 +739,7 @@ th{color:var(--mute); font:600 9.5px/1 var(--sans); letter-spacing:.12em; text-t
       <p class="big" style="font-size:26px;margin:0 0 4px">CHOOSE ONE</p>
       <p class="sub" id="offSub" style="margin:0 auto 20px"></p>
       <div id="offCards"></div>
+      <div style="margin-top:16px"><button id="offReroll" class="btn" style="font-size:12px">↻ Refresh (1 left)</button></div>
       <p class="sub" id="offKit" style="font-size:11.5px;margin-top:18px;color:#5b6488"></p>
     </div>
   </section>
@@ -1083,6 +1084,47 @@ const SKILLS = [
     {col:'#e8dcc0',fx:'summon',u:18.0000,fxDur:10,count:1,petName:'Bone Sentinel',
      petHpMul:2.1,est:true,
      txt:'Raises a sentinel that soaks blows meant for you.'}),
+
+  /* ── New mechanics ────────────────────────────────────────────
+     Seven skills that each add a NEW verb to the sim: shield-pierce,
+     knockback, a repelling barrier, a position swap, an undying
+     trigger, a timed reflect window, and a two-enemy link. Their
+     role/u values are SEEDED from tier peers (est:true), not solved
+     by the balance harness — the harness only knows the original 40.
+     The handling for each lives in Sim.cast / Sim.rider / Sim.hit. */
+  /* Shield-pierce: routes its hit through hit() with pierce:true, the
+     same door bleed already uses, so wards soak nothing. */
+  S('voidpierce','Void Piercer',3,'proj',4.5,1,0.9000,
+    {col:'#c8a0ff',spd:560,pierce:true,est:true,
+     txt:'A bolt that phases through wards — ignores shields entirely.'}),
+  /* Knockback: a nova whose rider shoves every caught enemy outward.
+     Damage is real, the shove is the point. */
+  S('cyclonepush','Cyclone Push',2,'nova',5.0,1,0.9000,
+    {col:'#b8ffe0',reach:260,fx:'knock',u:170,fxDur:0.3,est:true,
+     txt:'A burst of wind that hurls nearby enemies away.'}),
+  /* Barrier: a self ward that also raises a repulsion wall — enemies
+     inside its radius are pushed back out for its duration. */
+  S('bulwarkwall','Barrier Wall',3,'self',12.0,1,0,
+    {col:'#bfe0ff',fx:'wall',u:300,fxDur:5,est:true,
+     txt:'Raises a warded wall that repels enemies and shields you.'}),
+  /* Swap: a bolt that trades the caster and the target's positions. */
+  S('warpswap','Warp Swap',4,'proj',9.0,1,0.4000,
+    {col:'#d68cff',spd:600,fx:'swap',est:true,
+     txt:'Trades places with the target across the arena.'}),
+  /* Undying: a long-recharge self buff that turns the next lethal blow
+     into a partial heal instead of death. */
+  S('undyingwill','Undying Will',5,'self',30.0,1,0,
+    {col:'#ffce5a',fx:'undying',u:0.45,fxDur:999,est:true,
+     txt:'The next lethal blow leaves you at 45% health. Long recharge.'}),
+  /* Reflect window: a timed variant of Mirror Guard, one tier cheaper. */
+  S('retribution','Retribution',3,'self',11.0,1,0,
+    {col:'#cfe8ff',fx:'reflect',u:0.3000,fxDur:6,est:true,
+     txt:'For a time, returns a share of all damage taken to attackers.'}),
+  /* Link: binds the struck enemy to its nearest ally. While the link
+     holds, damage or CC on one is echoed onto the other. */
+  S('soulbind','Soul Bind',4,'proj',8.0,1,0.4000,
+    {col:'#ff7ad9',spd:520,fx:'link',u:0.75,fxDur:6,est:true,
+     txt:'Binds two enemies: harm or control one, and the other suffers too.'}),
 ];
 /* ═══════════════════════════════════════════════════════════════
    TAG FAMILIES — the substrate the Codex combo system reads.
@@ -1126,6 +1168,11 @@ const TAGS = {
   phaseveil:['veil','arcane'],     stillpoint:['veil','void'],
   wraithcall:['bind','shadow'],    direwolves:['bind','wind'],
   bonebulwark:['bind','guard'],
+  /* new-mechanic skills */
+  voidpierce:['void','arcane'],    cyclonepush:['wind','storm'],
+  bulwarkwall:['guard','earth'],   warpswap:['void','arcane'],
+  undyingwill:['holy','life'],     retribution:['guard','arcane'],
+  soulbind:['blood','void'],
 };
 const FAMILY = {
   fire:  {name:'Fire',    col:'#ff7a3d', lore:'Heat that does not ask permission.'},
@@ -1147,6 +1194,234 @@ const FAMILY = {
   veil:  {name:'Veil',    col:'#d9f2ff', lore:'For a moment, not strictly present.'},
   bind:  {name:'Bind',    col:'#c0a6ff', lore:'Something else does the dying.'},
 };
+/* ═══════════════════════════════════════════════════════════════
+   PROCEDURAL GEOMETRY — cosmetic only; the sim never reads any of it.
+
+   Additive noise on a circle still reads as a circle with a wobble, and
+   noise on a straight line still reads as a straight line. These
+   helpers build silhouettes that are structurally irregular instead:
+   recursive subdivision for lightning, harmonic radius modulation for
+   blast fronts, and closed per-element paths for projectile bodies.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Cheap deterministic hash -> 0..1. Used to derive stable phases and
+   offsets from a seed, so a shape can be regenerated identically for
+   as many frames as we like. */
+function _hash1(n){ const s = Math.sin(n*127.1 + 311.7)*43758.5453123; return s - Math.floor(s); }
+
+/* xorshift PRNG. A bolt reseeded every frame flickers like TV snow, so
+   callers advance the seed on a slower clock: the bolt HOLDS its shape
+   for a few frames, then snaps to a new one. */
+function _srand(seed){
+  let s = (seed>>>0) || 1;
+  return function(){ s^=s<<13; s>>>=0; s^=s>>>17; s^=s<<5; s>>>=0; return s/4294967296; };
+}
+
+/* Smooth 1-D value noise, -1..1. For open-ended wobble (falling wakes,
+   trails) where the two ends never have to meet up. */
+function _vnoise(x){
+  const i = Math.floor(x), f = x - i, u = f*f*(3-2*f);
+  return lerp(_hash1(i), _hash1(i+1), u)*2 - 1;
+}
+
+/* Periodic noise for CLOSED outlines, -1..1. A sum of harmonics with
+   INTEGER frequencies, so f(a) === f(a+TAU) exactly and a ring shows no
+   seam where the loop wraps. Amplitude falls off as ~1/f, the usual
+   recipe that makes layered noise look natural rather than buzzy. */
+/* The phase of each harmonic depends only on (seed, harm), never on the
+   angle — so computing it inside the vertex loop meant one Math.sin per
+   harmonic per vertex, i.e. several hundred wasted trig calls for every
+   ring drawn. Cache the phase table per seed instead; output is
+   bit-identical, the cost drops to one sin per harmonic per vertex. */
+const _phaseCache = new Map();
+function _phases(seed, harm){
+  const key = seed + '|' + harm;
+  let p = _phaseCache.get(key);
+  if(p === undefined){
+    p = new Float64Array(harm + 1);       // p[harm] holds the amplitude sum
+    let amp = 1, tot = 0;
+    for(let k=1; k<=harm; k++){
+      p[k-1] = _hash1(seed*7.31 + k*13.7)*TAU;
+      tot += amp; amp *= 0.62;
+    }
+    p[harm] = tot;
+    /* acts are transient, so bound the cache rather than leak one entry
+       per projectile for the lifetime of the page */
+    if(_phaseCache.size > 512) _phaseCache.clear();
+    _phaseCache.set(key, p);
+  }
+  return p;
+}
+/* Evaluate the harmonic sum against an ALREADY-resolved phase table.
+   Vertex loops call this directly so the per-vertex cost is pure trig,
+   with no map lookup or key construction in the inner loop. */
+function _loopNoiseP(a, ph, harm){
+  let v = 0, amp = 1;
+  for(let k=1; k<=harm; k++){ v += Math.sin(a*k + ph[k-1]) * amp; amp *= 0.62; }
+  return v/ph[harm];
+}
+/* Convenience wrapper for one-off samples (e.g. placing a single spark). */
+function _loopNoise(a, seed, harm){
+  harm = harm || 5;
+  return _loopNoiseP(a, _phases(seed, harm), harm);
+}
+
+/* ── LIGHTNING ───────────────────────────────────────────────────
+   Recursive midpoint displacement. Split a segment, kick its midpoint
+   along the PERPENDICULAR (which keeps both endpoints exactly where
+   they were, so the bolt still connects caster to target), then recurse
+   on each half with the displacement budget cut back. That self-similar
+   structure is the whole difference between a real bolt and a straight
+   line with noise added: the kinks have kinks.
+
+   Forks peel off a midpoint at an angle and are generated by the same
+   routine, so a branch is a bolt in miniature rather than a smooth
+   whisker. Returns {main:[[x,y],...], forks:[[[x,y],...],...]}.       */
+function boltPath(x1, y1, x2, y2, disp, depth, rng, forkChance, _forks){
+  const forks = _forks || [];
+  const pts = [[x1, y1]];
+  (function sub(ax, ay, bx, by, d, dep){
+    if(dep <= 0){ pts.push([bx, by]); return; }
+    const dx = bx-ax, dy = by-ay, len = Math.hypot(dx, dy) || 1;
+    const mx = (ax+bx)*0.5, my = (ay+by)*0.5;
+    const off = (rng()*2 - 1) * d;
+    const px = mx + (-dy/len)*off, py = my + (dx/len)*off;
+    if(dep > 1 && forkChance > 0 && rng() < forkChance){
+      const fa = Math.atan2(by-py, bx-px) + (rng()<0.5?-1:1)*(0.35 + rng()*0.55);
+      const fl = Math.hypot(bx-px, by-py) * (0.35 + rng()*0.40);
+      forks.push(boltPath(px, py, px+Math.cos(fa)*fl, py+Math.sin(fa)*fl,
+                          d*0.6, dep-1, rng, 0, forks).main);
+    }
+    sub(ax, ay, px, py, d*0.55, dep-1);
+    sub(px, py, bx, by, d*0.55, dep-1);
+  })(x1, y1, x2, y2, disp, depth);
+  return {main: pts, forks: forks};
+}
+
+/* Trace an array of [x,y] points into the current path. */
+function tracePts(pts){
+  ctx.beginPath(); ctx.moveTo(pts[0][0], pts[0][1]);
+  for(let i=1;i<pts.length;i++) ctx.lineTo(pts[i][0], pts[i][1]);
+}
+
+/* ── BLAST FRONT ─────────────────────────────────────────────────
+   A many-point polygon whose radius breathes under several harmonics at
+   once. Because those frequencies are incommensurate the outline never
+   settles into "rounded polygon" or "pulsing star", and rotating the
+   sample angle over time (`spin`) walks the lumps around the ring, so
+   an expanding front writhes rather than just scaling up.
+   `squash` flattens it for waves that lie on the ground plane.        */
+function blobPath(cx, cy, r, amp, seed, squash, spin){
+  squash = squash==null ? 1 : squash;
+  const N = clamp((r*0.5)|0, 20, 64);       // vertex count follows size
+  const ph = _phases(seed, 6), sp = spin||0;   // hoisted: constant per ring
+  ctx.beginPath();
+  for(let i=0;i<=N;i++){
+    const a  = i/N*TAU;
+    const rr = r * (1 + _loopNoiseP(a + sp, ph, 6)*amp);
+    const x  = cx + Math.cos(a)*rr, y = cy + Math.sin(a)*rr*squash;
+    i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+  }
+  ctx.closePath();
+}
+
+/* ── PROJECTILE SILHOUETTES ──────────────────────────────────────
+   A round dot is the one shape that reads as placeholder art. Each
+   element instead supplies shape(x, y, r, ang, t, seed), which traces a
+   CLOSED path oriented along `ang` (its direction of travel) and leaves
+   fill/stroke/alpha to the caller.                                    */
+
+/* fire / blood / life — a teardrop: round nose, tail streaming behind.
+   Two quadratics, so the profile is a true curve rather than a fan of
+   segments; the tail length and lash are driven off `t` so a flame
+   never freezes into a static logo. */
+function shpDrop(x, y, r, ang, t, seed){
+  const c = Math.cos(ang), s = Math.sin(ang);
+  const X = (a,b)=> x + a*c - b*s, Y = (a,b)=> y + a*s + b*c;
+  const nose  = r*1.25;
+  const tail  = -r*(2.2 + Math.sin(t*22 + seed)*0.5);
+  const bulge = r*(0.92 + Math.sin(t*17 + seed*1.3)*0.10);
+  const wag   = Math.sin(t*19 + seed*2.1)*r*0.35;
+  const nx = X(nose,0), ny = Y(nose,0);
+  const tx = X(tail,wag), ty = Y(tail,wag);
+  ctx.beginPath(); ctx.moveTo(nx, ny);
+  ctx.quadraticCurveTo(X(r*0.2, bulge), Y(r*0.2, bulge), tx, ty);
+  ctx.quadraticCurveTo(X(r*0.2,-bulge), Y(r*0.2,-bulge), nx, ny);
+  ctx.closePath();
+}
+
+/* frost — a six-sided crystal. Alternating long and short vertices make
+   it faceted instead of a regular hexagon, and the whole form is
+   stretched along travel so it reads as a thrown shard. */
+function shpCrystal(x, y, r, ang, t, seed){
+  const c = Math.cos(ang), s = Math.sin(ang);
+  ctx.beginPath();
+  for(let i=0;i<6;i++){
+    const a = i*TAU/6, rad = r*(i%2 ? 0.62 : 1.15);
+    const lx = Math.cos(a)*rad*1.45, ly = Math.sin(a)*rad*0.80;
+    const px = x + lx*c - ly*s, py = y + lx*s + ly*c;
+    i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+  }
+  ctx.closePath();
+}
+
+/* blight / void / shadow / earth — an indefinite lumpy mass. Periodic
+   noise per vertex keeps the outline irregular but seamless; drifting
+   the sample with `t` makes it churn instead of merely spinning. Pass
+   t = 0 for a rigid silhouette that only rotates (see the meteors). */
+function shpRough(x, y, r, ang, t, seed){
+  const N = 9;
+  const ph = _phases(seed, 4), dt = t*1.4;     // hoisted: constant per body
+  ctx.beginPath();
+  for(let i=0;i<N;i++){
+    const a   = i/N*TAU;
+    const rad = r*(0.78 + (_loopNoiseP(a + dt, ph, 4)*0.5 + 0.5)*0.62);
+    const px  = x + Math.cos(a+ang)*rad, py = y + Math.sin(a+ang)*rad;
+    i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+  }
+  ctx.closePath();
+}
+
+/* blade / wind / swift — a thin sliver: long nose, short tail. */
+function shpSliver(x, y, r, ang){
+  const c = Math.cos(ang), s = Math.sin(ang);
+  const X = (a,b)=> x + a*c - b*s, Y = (a,b)=> y + a*s + b*c;
+  ctx.beginPath();
+  ctx.moveTo(X(r*2.3, 0),   Y(r*2.3, 0));
+  ctx.lineTo(X(0,  r*0.62), Y(0,  r*0.62));
+  ctx.lineTo(X(-r*1.5, 0),  Y(-r*1.5, 0));
+  ctx.lineTo(X(0, -r*0.62), Y(0, -r*0.62));
+  ctx.closePath();
+}
+
+/* storm — a zigzag mote whose kink is driven by noise, so it stutters
+   along its own axis the way a spark jumps. */
+function shpBolt(x, y, r, ang, t, seed){
+  const c = Math.cos(ang), s = Math.sin(ang);
+  const X = (a,b)=> x + a*c - b*s, Y = (a,b)=> y + a*s + b*c;
+  const w = r*0.70, k = _vnoise(t*24 + seed)*r*0.6;
+  ctx.beginPath();
+  ctx.moveTo(X(r*2.0, 0),       Y(r*2.0, 0));
+  ctx.lineTo(X(r*0.3,  w+k),    Y(r*0.3,  w+k));
+  ctx.lineTo(X(-r*0.4, w*0.25), Y(-r*0.4, w*0.25));
+  ctx.lineTo(X(-r*2.0,-k*0.5),  Y(-r*2.0,-k*0.5));
+  ctx.lineTo(X(-r*0.4,-w*0.25), Y(-r*0.4,-w*0.25));
+  ctx.lineTo(X(r*0.3, -w+k),    Y(r*0.3, -w+k));
+  ctx.closePath();
+}
+
+/* holy / arcane / control — a four-point star that breathes and turns. */
+function shpStar(x, y, r, ang, t, seed){
+  const pts = 4, spin = ang + t*1.2;
+  ctx.beginPath();
+  for(let i=0;i<pts*2;i++){
+    const a   = spin + i*Math.PI/pts;
+    const rad = i%2 ? r*0.34 : r*(1.60 + Math.sin(t*9 + seed)*0.18);
+    const px  = x + Math.cos(a)*rad, py = y + Math.sin(a)*rad;
+    i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+  }
+  ctx.closePath();
+}
 
 /* ═══════════════════════════════════════════════════════════════
    ELEMENTAL VISUAL IDENTITY — cosmetic only; the sim never reads it.
@@ -1170,6 +1445,7 @@ const FAMILY = {
      smoke  optional dark smoke tint for smouldering elements
      pull   motes converge on origin instead of scattering
      soft   prefer soft additive puffs over hard dots
+     shape  closed-path silhouette for the projectile body (see below)
    ═══════════════════════════════════════════════════════════════ */
 const EFX = {
   fire:   {sh:'dot',    rise:-130, grav:-30, drag:0.90, glow:1.18, jit:1.0, trailW:1.20, smoke:'#2a140a', core:'#ffe6b0'},
@@ -1189,6 +1465,19 @@ const EFX = {
   control:{sh:'dot',    rise:-10,  grav:0,   drag:0.93, glow:1.10, jit:0.5, trailW:1.00,                  core:'#fff0d0'},
 };
 const EFX_DEFAULT = {sh:'dot', rise:-30, grav:40, drag:0.92, glow:1.0, jit:0.6, trailW:1.0, core:'#ffffff'};
+/* Per-element projectile silhouette. Held in its own table so the
+   behaviour fields above stay scannable, then folded onto the EFX
+   entries so callers only ever need `efxOf(sk).shape`. Elements absent
+   from this table keep the default disc. */
+const EFX_SHAPE = {
+  fire:  shpDrop,    blood: shpDrop,    life:  shpDrop,
+  frost: shpCrystal,
+  storm: shpBolt,
+  void:  shpRough,   shadow:shpRough,   blight:shpRough,  earth:shpRough,
+  blade: shpSliver,  wind:  shpSliver,  swift: shpSliver,
+  holy:  shpStar,    arcane:shpStar,    control:shpStar,
+};
+for(const k in EFX_SHAPE) if(EFX[k]) EFX[k].shape = EFX_SHAPE[k];
 /* When a skill has several families we pick ONE to drive its look. The
    priority favours the more visually dominant element so, e.g., a
    void/frost skill reads as void. */
@@ -1425,8 +1714,14 @@ function skillLine(sk, lvl){
                                  + (u>0.60?' (capped)':''));
   if(sk.fx==='pact')   bits.push(`+${Math.round(Math.min(u,1.2)*100)}% dmg, −12% hp`
                                  + (u>1.2?' (capped)':''));
-  if(sk.fx==='reflect')bits.push(`${Math.round(u*100)}% reflect`);
+  if(sk.fx==='reflect')bits.push(`${Math.round(u*100)}% reflect${sk.fxDur?` for ${sk.fxDur}s`:''}`);
   if(sk.fx==='vamp')   bits.push(`${Math.round(u*100)}% lifesteal`);
+  /* New utility riders — shown so their cards aren't blank of effect text. */
+  if(sk.fx==='knock')  bits.push(`knockback ${Math.round(u)}${sk.fxDur?` · ${sk.fxDur}s stagger`:''}`);
+  if(sk.fx==='wall')   bits.push(`ward wall ${sk.fxDur}s · shield ${Math.round(u)}`);
+  if(sk.fx==='swap')   bits.push(`swap places`);
+  if(sk.fx==='undying')bits.push(`survive at ${Math.round(u*100)}% hp`);
+  if(sk.fx==='link')   bits.push(`bind foes ${sk.fxDur}s · ${Math.round(u*100)}% echo`);
   /* chill/shred scale on RIDER_MUL, not utilOf — and were previously
      invisible on the card, so their upgrades looked like pure damage */
   if(sk.fx==='chill')  bits.push(`−${Math.round(CHILL_CD*riderMul(sk,lvl)*100)}% enemy speed`);
@@ -1751,11 +2046,30 @@ class Sim {
     const back = Math.min(0.6, tgt.val('thorns') + tgt.val('reflect'));
     if(back > 0) this.raw(tgt, src, d*back, '_thorns');
 
+    /* Soul Bind echo: a linked partner takes a fraction of the same hit.
+       Routed through raw() (unmitigated, no further riders) so it cannot
+       re-trigger the link and spiral. */
+    if(tgt.link && tgt.link.t>0 && tgt.link.partner && !tgt.link.partner.dead && !opt.echo){
+      this.raw(src, tgt.link.partner, d*tgt.link.frac, opt.key);
+    }
+
     tgt.flash = 1; tgt.hitLag = crit ? 0.18 : 0.06;
     this.emit('hit', {src, tgt, dmg:d, crit, col:opt.col||'#fff', x:opt.x??tgt.x, y:opt.y??tgt.y, kind:opt.kind});
     if(crit) this.emit('crit', {src, tgt, dmg:d, x:opt.x??tgt.x, y:opt.y??tgt.y});
-    if(tgt.hp<=0) this.kill(tgt);
+    if(tgt.hp<=0 && !this.saveUndying(tgt)) this.kill(tgt);
     return d;
+  }
+  /* Undying Will: intercept a lethal blow once. Returns true if the
+     fighter was pulled back from 0 hp, consuming the buff. */
+  saveUndying(f){
+    if(f.dead || f.hp>0 || !f.has('undying')) return false;
+    const frac = f.st.undying.v || 0.45;
+    f.hp = Math.max(1, Math.round(f.max * frac));
+    delete f.st.undying;
+    f.add('immune', 1, 0.6);   // a brief grace window so the same volley can't re-kill
+    this.emit('immuneOn',{f, sk:{col:'#ffce5a',name:'Undying Will'}, dur:0.6});
+    this.emit('heal',{f, amt:f.hp});
+    return true;
   }
   /* unmitigated chip damage (thorns, reflect, dots). src may be null for
      an orphaned DoT whose applier is already dead.
@@ -1781,7 +2095,7 @@ class Sim {
     tgt.hp = Math.max(0, tgt.hp-d);
     if(src){ src.dealt += d; this.credit(src, key, 'dmg', d); }
     this.emit('tick',{tgt, dmg:d});
-    if(tgt.hp<=0) this.kill(tgt);
+    if(tgt.hp<=0 && !this.saveUndying(tgt)) this.kill(tgt);
   }
   /* A death ends the battle only when it empties a team. In a duel that is
      the same thing as before (one member per team), but PvE stages have
@@ -1829,6 +2143,17 @@ class Sim {
            existing; measuring absorption instead would rank a defensive
            slot by how badly the fight went. */
         else if(sk.fx==='shield'){ f.shield += u*sm; f.credit(sk.id,'shield',u*sm); this.emit('buff',{f,sk}); }
+        /* Barrier Wall: a shield PLUS a repulsion field (read in step()).
+           The wall radius is stored on the status value so movement can
+           read it; the ward is credited like any other shield. */
+        else if(sk.fx==='wall'){
+          f.shield += u*sm; f.credit(sk.id,'shield',u*sm);
+          f.add('wall', 200, sk.fxDur);   // 200 = repulsion radius
+          this.emit('buff',{f,sk});
+        }
+        /* Undying: arm a one-shot lethal-blow save. Stored magnitude is
+           the fraction of max hp restored when it triggers (see hit/raw). */
+        else if(sk.fx==='undying'){ f.add('undying', u, sk.fxDur); this.emit('buff',{f,sk}); }
         else if(sk.fx==='pact'){ f.hp=Math.max(1,f.hp-f.max*0.08); f.add('pact',u,sk.fxDur); this.emit('buff',{f,sk}); }
         /* Invulnerability stores no magnitude — the value IS the window.
            Duration rides riderMul so an upgrade lengthens it, and sustainMul
@@ -1965,6 +2290,47 @@ class Sim {
         const want = sk.fxDur * riderMul(sk,lvl) * (1 + cb.ccPow);
         const got = tgt.applyCC(sk.fx, want);
         this.emit('cc', {src, tgt, kind:sk.fx, dur:got, want, sk});
+        /* a linked partner shares the lockout at the link's fraction */
+        if(tgt.link && tgt.link.t>0 && tgt.link.partner && !tgt.link.partner.dead){
+          const p = tgt.link.partner;
+          const shared = p.applyCC(sk.fx, want*tgt.link.frac);
+          if(shared>0) this.emit('cc', {src, tgt:p, kind:sk.fx, dur:shared, want:want*tgt.link.frac, sk});
+        }
+        break;
+      }
+      /* Knockback: shove the target directly away from the caster. The
+         nudge to vx keeps it sliding a moment after the teleport so the
+         shove reads as momentum, not a snap. */
+      case 'knock': {
+        const dir = tgt.x >= src.x ? 1 : -1;
+        tgt.x = clamp(tgt.x + dir*(sk.u||150), 120, ARENA_W-120);
+        tgt.vx += dir*300;
+        this.emit('burst',{x:tgt.x,y:tgt.y-8,col:sk.col,n:14,pow:1.4,el:elemOf(sk)});
+        break;
+      }
+      /* Swap: trade the caster's and target's positions outright. */
+      case 'swap': {
+        const tx = tgt.x, ty = tgt.y;
+        tgt.x = clamp(src.x, 120, ARENA_W-120); tgt.y = clamp(src.y, 130, ARENA_H-90);
+        src.x = clamp(tx, 120, ARENA_W-120);    src.y = clamp(ty, 130, ARENA_H-90);
+        this.emit('ghost',{x:tgt.x,y:tgt.y,col:sk.col,side:src.side,el:elemOf(sk)});
+        this.emit('ghost',{x:src.x,y:src.y,col:sk.col,side:tgt.side,el:elemOf(sk)});
+        break;
+      }
+      /* Link: bind the struck enemy to its nearest ally so harm on one
+         echoes onto the other (echo itself lives in hit() and the CC
+         case above). No-op with only one enemy, e.g. a duel. */
+      case 'link': {
+        const others = this.enemiesOf(src).filter(x => x !== tgt);
+        if(others.length){
+          let best = null, bd = Infinity;
+          for(const o of others){ const dd = dist(tgt,o); if(dd<bd){ bd=dd; best=o; } }
+          const dur = sk.fxDur * riderMul(sk,lvl);
+          const frac = sk.u || 0.75;
+          tgt.link  = {partner:best, t:dur, frac};
+          best.link = {partner:tgt,  t:dur, frac};
+          this.emit('cc', {src, tgt, kind:'link', dur, want:dur, sk});
+        }
         break;
       }
     }
@@ -2059,6 +2425,16 @@ class Sim {
       f.flash = Math.max(0, f.flash - dt*4.5);
       f.hitLag = Math.max(0, f.hitLag - dt);
       f.scaleP = Math.max(0, f.scaleP - dt*3);
+      /* Soul Bind lives on .link (not .st), so tick it down here. When it
+         lapses, clear both ends so a stale partner can't keep echoing. */
+      if(f.link){
+        f.link.t -= dt;
+        if(f.link.t <= 0){
+          if(f.link.partner && f.link.partner.link && f.link.partner.link.partner === f)
+            f.link.partner.link = null;
+          f.link = null;
+        }
+      }
 
       /* movement — drift toward ideal range, with orbiting sway.
          Rooted, stunned and frozen fighters do not move at all; the
@@ -2081,6 +2457,19 @@ class Sim {
       if(f.has('pull')){
         const pf = f.st.pull;
         f.vx += (pf.px - f.x)*0.9*dt*10; f.vy += (pf.py - f.y)*0.9*dt*10;
+      }
+      /* Barrier Wall repulsion: any enemy that carries a wall shoves THIS
+         fighter back if it strays inside the ward radius. Cheap O(n) scan —
+         packs are small, and it only does work while a wall is live. */
+      for(const w of this.f){
+        if(w===f || w.dead || w.team===f.team || !w.has('wall')) continue;
+        const rad = w.val('wall') || 200;
+        const dx = f.x - w.x, dy = f.y - w.y;
+        const dd = Math.hypot(dx, dy);
+        if(dd > 0 && dd < rad){
+          const force = (1 - dd/rad) * 520;
+          f.vx += (dx/dd)*force*dt; f.vy += (dy/dd)*force*dt;
+        }
       }
       f.x = clamp(f.x + f.vx*dt, 120, ARENA_W-120);
       f.y = clamp(f.y + f.vy*dt, 130, ARENA_H-90);
@@ -2146,7 +2535,7 @@ class Sim {
         a.trail.push(a.x,a.y); if(a.trail.length>26) a.trail.splice(0,2);
         if(Math.hypot(foe.x-a.x,(foe.y-8)-a.y) < 34){
           const dl = this.hit(f,foe,a.dmg,{col:sk.col,x:a.x,y:a.y,kind:'impact',
-            exec:sk.fx==='exec', noVamp:a.noVamp, key:sk.id});
+            exec:sk.fx==='exec', pierce:sk.pierce, noVamp:a.noVamp, key:sk.id});
           this.rider(sk,lvl,f,foe,dl);
           this.emit('burst',{x:a.x,y:a.y,col:sk.col,n:a.basic?9:22,pow:a.basic?1:1.7,el:elemOf(sk)});
           return false;
@@ -2870,13 +3259,15 @@ function drawMonster(f, t){
   }
 
   /* Draw pixel art cute monster body */
-  const pixelSize = f.boss ? 3.5 : 3;
+  const pixelSize = f.boss ? 2.6 : 2.8;
   const isBoss = f.boss;
 
   /* Color palette based on monster type */
   const palette = isBoss ?
-    {main:'#ffb056', dark:'#d97d2e', light:'#ffe8b3', accent:'#ff6b4a'} :
-    {main:'#ff7a8a', dark:'#d94a5e', light:'#ffb4c1', accent:'#fff59d'};
+    {main:'#ffb056', outline:'#7a3d10', light:'#ffe8b3', horn:'#ffe8b3',
+    gem:'#ff4a6b', eyewhite:'#ffffff', dark:'#7a3d10', blush:'#ff9a7a', white:'#ffffff'} :
+    {main:'#ff7a8a', outline:'#8a2f42', light:'#ffb4c1', eyewhite:'#ffffff',
+    dark:'#8a2f42', blush:'#fff59d', white:'#ffffff'};
 
   /* Helper to draw a pixel */
   const px = (ox, oy, col) => {
@@ -2886,58 +3277,71 @@ function drawMonster(f, t){
 
   /* Cute blob body pattern - different for boss vs normal */
   if(isBoss){
-    /* Boss: bigger, more detailed */
-    const w = 8, h = 9;
+    const w = 22, h = 22;
     const body = [
-      '  ####  ',
-      ' ###### ',
-      '########',
-      '##.##.##',
-      '########',
-      '########',
-      ' ###### ',
-      '  ####  ',
-      '   ##   '
+      '   #..  .......  ..#  ',
+      '  .##....OOOOO....##. ',
+      ' ..##O.OOOOLOOOO.O##..',
+      ' .OAAAOOOOOLOOOOOAAAO.',
+      ' .OAAAOOOOOOOOOOOAAAO.',
+      ' .OAAAOOOOOOOOOOOAAAO.',
+      ' ..OOOOOOOOOOOOOOOOO..',
+      '  ..OOOWWOOOOOWWOOO.. ',
+      '  .OOOWNNWOOOWNNWOOO. ',
+      '  ..OOOWNOOOOOWNOOO.. ',
+      '   .BBBOOOOOOOOOBBB.  ',
+      'OOO.BBBOOOOOOOOOBBB.OO',
+      ' OOO.OOOOOGOGOOOOO.OOO',
+      ' OOO.OOOOOOOOOOOOO.OOO',
+      ' OOO.OOOOAAAAAOOOO.OOO',
+      '   .OOOOOAAAAAOOOOO.  ',
+      '   ..OOOAAAAAAAOOO..  ',
+      '    .OOOOAAAAAOOOO.   ',
+      '    .OOOOAAAAAOOOO.   ',
+      '    ..OOOOOOOOOOO..   ',
+      '     ...OOOOOOO...    ',
+      '       ....O....      '
     ];
+    const charMap = {
+      '#': palette.horn, '.': palette.outline, 'O': palette.main,
+      'L': palette.gem, 'A': palette.light, 'W': palette.eyewhite,
+      'N': palette.dark, 'B': palette.blush, 'G': palette.white
+    };
     for(let r=0;r<body.length;r++){
       for(let c=0;c<body[r].length;c++){
-        const char = body[r][c];
-        if(char==='#') px(c-w/2, r-h/2, palette.main);
-        else if(char==='.') px(c-w/2, r-h/2, palette.dark);
+        const ch = body[r][c];
+        if(ch!==' ') px(c-w/2, r-h/2, charMap[ch]);
       }
     }
-    /* Boss eyes - glowing */
-    px(-2, -2, palette.accent);
-    px(2, -2, palette.accent);
-    /* Boss crown/horns */
-    px(-3, -5, palette.light);
-    px(0, -6, palette.light);
-    px(3, -5, palette.light);
   } else {
-    /* Normal monster: smaller, simpler, cuter */
-    const w = 6, h = 6;
+    const w = 16, h = 15;
     const body = [
-      '  ##  ',
-      ' #### ',
-      '######',
-      '######',
-      ' #### ',
-      '  ##  '
+      '                ',
+      '       ###      ',
+      '   ..###O###..  ',
+      '   ..OOOOOOO..  ',
+      '  ##.OOOOOOO.## ',
+      '  #.OOOOOOOOO.# ',
+      '  #..OOOOOOO..# ',
+      ' ##.LALOOOLLL.##',
+      ' #..LWW.O.LWL..#',
+      ' ##N.........N##',
+      '  #N.........N# ',
+      '  #...........# ',
+      '  ##.........## ',
+      '   ##.......##  ',
+      '     ..###..    '
     ];
+    const charMap = {
+      '#': palette.outline, '.': palette.main, 'O': palette.light,
+      'L': palette.eyewhite, 'A': palette.white, 'W': palette.dark,
+      'N': palette.blush
+    };
     for(let r=0;r<body.length;r++){
       for(let c=0;c<body[r].length;c++){
-        if(body[r][c]==='#'){
-          px(c-w/2, r-h/2, r<3 ? palette.light : palette.main);
-        }
+        const ch = body[r][c];
+        if(ch!==' ') px(c-w/2, r-h/2, charMap[ch]);
       }
-    }
-    /* Cute eyes */
-    px(-1, -1, palette.dark);
-    px(1, -1, palette.dark);
-    /* Tiny bounce indicators */
-    if(Math.floor(t*2)%2===0){
-      px(-2, -3, palette.accent);
-      px(2, -3, palette.accent);
     }
   }
 
@@ -3051,36 +3455,91 @@ function drawActs(sim, t){
               vx:rnd(30,-30), vy:rnd(30,-30), col, life:rnd(.3,.14), r:rnd(2.4,1)});
           }
         }
-        ctx.fillStyle=e.core; ctx.beginPath(); ctx.arc(a.x,a.y,(a.basic?2.6:4.4)*V,0,TAU); ctx.fill();
+        /* Heading comes from the last two trail samples, so the body
+           points where it is actually going — these projectiles home, so
+           that direction keeps changing in flight. Falls back to facing
+           before the trail has two samples to work with. */
+        let pang = a.f.facing>0 ? 0 : Math.PI;
+        const tn = a.trail.length;
+        if(tn>=4){
+          const tdx = a.trail[tn-2]-a.trail[tn-4], tdy = a.trail[tn-1]-a.trail[tn-3];
+          if(tdx||tdy) pang = Math.atan2(tdy,tdx);
+        }
+        /* Element-authored silhouette instead of a disc: fire flies as a
+           teardrop, frost as a faceted crystal, blight as a lumpy mass.
+           An element with no `shape` (and every basic attack) keeps the
+           original dot, so this stays safe to extend. */
+        const br = (a.basic?2.6:4.4)*V;
+        if(e.shape && !a.basic){
+          const pseed = a.id*1.37;
+          /* a broader body in the skill colour under the hot core gives the
+             shape a readable edge against the trail it is dragging */
+          ctx.globalAlpha=0.55; ctx.fillStyle=col;
+          e.shape(a.x, a.y, br*1.5, pang, t, pseed); ctx.fill();
+          ctx.globalAlpha=1;   ctx.fillStyle=e.core;
+          e.shape(a.x, a.y, br*0.85, pang, t, pseed); ctx.fill();
+        } else {
+          ctx.fillStyle=e.core; ctx.beginPath(); ctx.arc(a.x,a.y,br,0,TAU); ctx.fill();
+        }
         break;
       }
       case 'beam': {
         const e = efxOf(sk);
         const p = a.t/a.dur, w = (a.basic?4:13)*(0.55+Math.sin(t*40)*0.12)*(1-p*0.3)*V;
         const x1=a.f.x+a.f.facing*40, y1=a.f.y-8, x2=a.foe.x, y2=a.foe.y-8;
-        ctx.strokeStyle=col; ctx.lineCap='round';
-        ctx.globalAlpha=0.28; ctx.lineWidth=w*3.4; ctx.beginPath();
-        ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
-        ctx.globalAlpha=0.85; ctx.lineWidth=w; ctx.beginPath();
-        ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+        const len = Math.hypot(x2-x1, y2-y1) || 1;
+        ctx.lineCap='round'; ctx.lineJoin='round';
+        /* The bolt is REGENERATED on a ~22Hz clock rather than every
+           frame: reseeding at 60fps reads as television static, while
+           holding a silhouette for a few frames and then snapping to a
+           new one is how a real discharge behaves. */
+        const tick = Math.floor(t*22);
+        const rng  = _srand(a.id*7919 + tick*104729);
+        /* Displacement budget scales with the element's jitter, so a storm
+           beam thrashes and a holy lance only breathes — but both get the
+           self-similar structure from boltPath, where the kinks have
+           kinks. That is the part a straight line with noise never gets. */
+        const chaos = clamp(0.045 + e.jit*0.05, 0.05, 0.20);
+        const bolt  = boltPath(x1,y1,x2,y2, len*chaos, 5, rng,
+                               e.jit>=0.5 ? 0.16+e.jit*0.07 : 0);
+        /* outer haze -> body -> hot core, all tracing the SAME path, so the
+           bolt reads as one object with depth instead of stacked strokes */
+        ctx.strokeStyle=col;
+        ctx.globalAlpha=0.22; ctx.lineWidth=w*3.4;
+        tracePts(bolt.main); ctx.stroke();
+        ctx.globalAlpha=0.85; ctx.lineWidth=w;
+        tracePts(bolt.main); ctx.stroke();
         /* inner core takes the element's hot colour instead of flat white */
-        ctx.globalAlpha=1; ctx.strokeStyle=e.core; ctx.lineWidth=w*0.32;
-        ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
-        /* storm/wind beams crackle: a jagged secondary bolt that reforms
-           each frame reads as unstable charge rather than a clean ray */
-        if(e.jit>=1){
-          const seg=6; ctx.globalAlpha=(0.5+Math.sin(t*50)*0.2); ctx.strokeStyle=e.core;
-          ctx.lineWidth=Math.max(1,w*0.22); ctx.beginPath(); ctx.moveTo(x1,y1);
-          for(let s=1;s<seg;s++){ const q=s/seg;
-            ctx.lineTo(lerp(x1,x2,q)+rnd(9,-9)*e.jit, lerp(y1,y2,q)+rnd(9,-9)*e.jit); }
-          ctx.lineTo(x2,y2); ctx.stroke(); ctx.globalAlpha=1;
+        ctx.globalAlpha=1; ctx.strokeStyle=e.core; ctx.lineWidth=Math.max(1,w*0.32);
+        tracePts(bolt.main); ctx.stroke();
+        /* branches: dimmer and thinner, and they terminate in mid-air
+           rather than reaching the target — they carry no damage */
+        if(bolt.forks.length){
+          ctx.strokeStyle=col; ctx.globalAlpha=0.5; ctx.lineWidth=Math.max(1,w*0.34);
+          for(const fk of bolt.forks) if(fk.length>1){ tracePts(fk); ctx.stroke(); }
+          ctx.strokeStyle=e.core; ctx.globalAlpha=0.7; ctx.lineWidth=Math.max(0.8,w*0.13);
+          for(const fk of bolt.forks) if(fk.length>1){ tracePts(fk); ctx.stroke(); }
         }
+        /* storm/wind beams crackle: a second discharge on its own seed
+           gives the channel volume — a real bolt is a bundle of filaments,
+           not a single line */
+        if(e.jit>=1){
+          const rng2 = _srand(a.id*104729 + tick*7919 + 17);
+          const b2 = boltPath(x1,y1,x2,y2, len*chaos*0.7, 4, rng2, 0.10);
+          ctx.strokeStyle=e.core; ctx.globalAlpha=0.30+Math.sin(t*50)*0.14;
+          ctx.lineWidth=Math.max(1,w*0.22);
+          tracePts(b2.main); ctx.stroke();
+          for(const fk of b2.forks) if(fk.length>1){ tracePts(fk); ctx.stroke(); }
+        }
+        ctx.globalAlpha=1; ctx.lineJoin='miter';
         glow(x2,y2,(34+Math.sin(t*30)*6)*V*e.glow,col,0.8);
-        /* signature motes stream along the beam toward the target */
+        /* signature motes stream along the beam toward the target — seeded
+           from the bolt's ACTUAL vertices, so they follow its kinks
+           instead of drifting along the straight line underneath */
         const rate = lit ? 1 : 0.7;
         if(Math.random()<rate){
-          const q=Math.random();
-          efxSpark(sk, lerp(x1,x2,q), lerp(y1,y2,q),
+          const bp = bolt.main[clamp((Math.random()*bolt.main.length)|0, 0, bolt.main.length-1)];
+          efxSpark(sk, bp[0], bp[1],
             {vx:(x2-x1)*0.12+rnd(40,-40), vy:rnd(-30,-90), r:rnd(3.4,1.2)*V, life:rnd(.5,.2)});
         }
         break;
@@ -3088,26 +3547,46 @@ function drawActs(sim, t){
       case 'nova': {
         if(a.t<0) break;
         const p = clamp(a.t/0.45,0,1), r = a.r;
+        const e = efxOf(sk);
+        /* Every ring below is a many-point polygon whose radius is
+           modulated by several harmonics at once (blobPath), never an
+           arc. A blast front tearing outward is not a perfect circle.
+           Because the harmonics have integer frequencies the outline
+           closes with no seam, and rotating the sample angle by `spin`
+           makes the lumps travel around the ring — so the wave writhes
+           as it expands instead of merely scaling up. */
+        const seed = a.id*3.77;
+        const spin = t*0.9;
+        /* distortion eases off as the wave spends its energy */
+        const amp  = 0.16 + (1-p)*0.13;
+        ctx.lineJoin='round';
         /* leading shockwave ring */
         ctx.strokeStyle=col; ctx.globalAlpha=(1-p)*0.9; ctx.lineWidth=(16*(1-p)+2)*V;
-        ctx.beginPath(); ctx.arc(a.f.x,a.f.y,r,0,TAU); ctx.stroke();
-        /* trailing inner ring reads as depth, not a flat circle */
+        blobPath(a.f.x, a.f.y, r, amp, seed, 1, spin); ctx.stroke();
+        /* trailing inner ring reads as depth, not a flat circle — its own
+           seed and drift rate stop it being a scaled copy of the front */
         ctx.globalAlpha=(1-p)*0.35; ctx.lineWidth=3*V;
-        ctx.beginPath(); ctx.arc(a.f.x,a.f.y,r*0.72,0,TAU); ctx.stroke();
+        blobPath(a.f.x, a.f.y, r*0.72, amp*0.8, seed+11.3, 1, spin*1.35); ctx.stroke();
         /* a hot edge right at the wavefront sells the force; it wears the
            element's core colour so a void nova rimmed pale-violet reads
-           differently from a fire nova rimmed warm gold */
-        ctx.globalAlpha=(1-p)*0.75; ctx.strokeStyle=efxOf(sk).core; ctx.lineWidth=2*V;
-        ctx.beginPath(); ctx.arc(a.f.x,a.f.y,r*1.01,0,TAU); ctx.stroke();
-        /* ground scorch under an expanding nova */
+           differently from a fire nova rimmed warm gold. Same seed and
+           spin as the front, so it hugs the leading ring exactly. */
+        ctx.globalAlpha=(1-p)*0.75; ctx.strokeStyle=e.core; ctx.lineWidth=2*V;
+        blobPath(a.f.x, a.f.y, r*1.01, amp, seed, 1, spin); ctx.stroke();
+        /* ground scorch under an expanding nova — same treatment, squashed
+           onto the floor plane */
         ctx.globalAlpha=(1-p)*0.20; ctx.strokeStyle=col; ctx.lineWidth=5*V;
-        ctx.beginPath(); ctx.ellipse(a.f.x, ARENA_H+16, r*0.9, r*0.24, 0,0,TAU); ctx.stroke();
-        ctx.globalAlpha=1;
+        blobPath(a.f.x, ARENA_H+16, r*0.9, amp*0.7, seed+5.1, 0.27, spin*0.6); ctx.stroke();
+        ctx.globalAlpha=1; ctx.lineJoin='miter';
         if(Math.random()<0.9*V){
           const aa=rnd(TAU);
+          /* debris leaves from the DISTORTED wavefront — sampling the same
+             noise the outline uses means motes launch off the lumps
+             instead of off a phantom circle underneath them */
+          const rr = r*(1 + _loopNoise(aa + spin, seed, 6)*amp);
           /* debris thrown along the wavefront carries the element's shape
              and motion — earth flings tumbling shards, fire licks upward */
-          efxSpark(sk, a.f.x+Math.cos(aa)*r, a.f.y+Math.sin(aa)*r*0.85,
+          efxSpark(sk, a.f.x+Math.cos(aa)*rr, a.f.y+Math.sin(aa)*rr*0.85,
             {vx:Math.cos(aa)*rnd(220,80), vy:Math.sin(aa)*rnd(200,60), r:rnd(4,1.4)*V, life:rnd(.5,.2)});
         }
         break;
@@ -3165,14 +3644,44 @@ function drawActs(sim, t){
             ctx.beginPath(); ctx.moveTo(a.tx+s*98, a.ty); ctx.lineTo(a.tx+s*66, a.ty); ctx.stroke();
           }
           ctx.globalAlpha=1;
-          /* falling body — inner core wears the element's hot colour */
+          /* falling body — a tumbling chunk of rock, not a line segment */
           const e = efxOf(sk);
-          ctx.strokeStyle=col; ctx.lineWidth=9*V; ctx.globalAlpha=0.6; ctx.lineCap='round';
-          ctx.beginPath(); ctx.moveTo(a.tx,sy-120*V); ctx.lineTo(a.tx,sy); ctx.stroke();
-          ctx.globalAlpha=0.9; ctx.strokeStyle=e.core; ctx.lineWidth=2.6*V;
-          ctx.beginPath(); ctx.moveTo(a.tx,sy-70*V); ctx.lineTo(a.tx,sy); ctx.stroke();
+          const seed = a.id*2.399;
+          /* spin is driven by height, so the rock ROLLS as it descends;
+             the per-id offset stops a barrage tumbling in lockstep */
+          const spin = sy*0.018 + a.id*1.7;
+          const mr   = 15*V;
+          /* motion-blurred wake: three tapered, noise-bent plumes instead
+             of one ruler-straight line, so the rock reads as tearing
+             through the air rather than being drawn on top of it */
+          ctx.strokeStyle=col; ctx.lineCap='round';
+          for(let i=0;i<3;i++){
+            const seg=5, L=(120+i*30)*V;
+            ctx.globalAlpha=0.45-i*0.12; ctx.lineWidth=Math.max(1,(8-i*2.4)*V);
+            ctx.beginPath(); ctx.moveTo(a.tx, sy);
+            for(let s=1;s<=seg;s++){
+              const q=s/seg;
+              /* widening lateral wander (×q) makes the plume fan out behind */
+              ctx.lineTo(a.tx + _vnoise(q*3 + seed + i*7 + t*5)*11*V*q, sy - L*q);
+            }
+            ctx.stroke();
+          }
           ctx.globalAlpha=1;
           glow(a.tx,sy,28*V*e.glow,col,1);
+          /* the meteor itself: an irregular polygon sampled at a FIXED
+             noise time, so its outline is rigid and merely rotates —
+             a solid tumbling, rather than a blob boiling in place */
+          ctx.globalAlpha=0.85; ctx.fillStyle=col;
+          shpRough(a.tx, sy, mr, spin, 0, seed); ctx.fill();
+          /* a facet plate catching the light, counter-rotating slightly so
+             the rock reads as three-dimensional */
+          ctx.globalAlpha=1; ctx.fillStyle=e.core;
+          shpRough(a.tx, sy, mr*0.46, -spin*0.6, 0, seed+3.1); ctx.fill();
+          /* hard rim keeps the silhouette legible over its own glow */
+          ctx.lineJoin='round';
+          ctx.globalAlpha=0.7; ctx.strokeStyle=e.core; ctx.lineWidth=1.5*V;
+          shpRough(a.tx, sy, mr, spin, 0, seed); ctx.stroke();
+          ctx.lineJoin='miter'; ctx.globalAlpha=1;
           if(Math.random()<0.8)
             efxSpark(sk, a.tx+rnd(10,-10), sy, {vx:rnd(50,-50), vy:rnd(-40,-160), r:rnd(5,2)*V, life:rnd(.6,.25)});
         }
@@ -4257,19 +4766,25 @@ function makePack(stage){
   const hp1  = MOB.hpBase  * Math.pow(MOB.hpGrow,  stage-1);
   const dmg1 = MOB.dmgBase * Math.pow(MOB.dmgGrow, stage-1);
   const out = [];
+  const cx = ARENA_W/2, cy = ARENA_H/2;
   for(let i=0;i<n;i++){
     const isBoss = boss && i===0;
-    /* Spawn on an arc on the right so a big pack doesn't overlap into
-       one unreadable blob at the start of the fight. */
-    const a = (i/Math.max(1,n-1) - 0.5) * (n>1 ? 1.5 : 0);
+    /* Spawn on a ring encircling the centered player so the pack surrounds
+       from every side instead of lining up on one flank. An ellipse, not a
+       circle: the arena is far wider than it is tall, so a true circle would
+       clip top and bottom. The boss anchors directly ahead; trash fills the
+       remaining arc evenly. */
+    const ang = isBoss ? 0 : TAU * (i / Math.max(1, n)) + (boss ? 0.6 : 0);
+    const rx = isBoss ? 300 : 300 + (i%2)*40;
+    const ry = isBoss ? 0 : 150;
     const f = new Fighter(1, mobBuild(stage, tiers, isBoss ? mobSkillCount(stage)+2 : mobSkillCount(stage)),
       isBoss ? BOSS_NAMES[Math.min(BOSS_NAMES.length-1, stage/PVE_BOSS_EVERY - 1)]
              : MOB_NAMES[Math.floor(Math.random()*MOB_NAMES.length)], {
       team: 1,
       hp: Math.round(hp1 * (isBoss ? MOB.bossHp : 1)),
       dmgMul: dmg1 * (isBoss ? MOB.bossDmg : 1),
-      x: ARENA_W - (isBoss ? 210 : 190 + Math.abs(a)*70),
-      y: clamp(ARENA_H/2 + a*150, 130, ARENA_H-90),
+      x: clamp(cx + Math.cos(ang)*rx, 120, ARENA_W-120),
+      y: clamp(cy + Math.sin(ang)*ry, 130, ARENA_H-90),
       R: isBoss ? 52 : 30,
       boss: isBoss,
       title: '',
@@ -4306,7 +4821,7 @@ const Run = {
     show('battle');
     resetBattleFx();
     const nm = Save.data.names[0] || 'AZURE WARDEN';
-    const player = new Fighter(0, this.build, nm, {team:0, hp: playerMaxHp(this.stage)});
+    const player = new Fighter(0, this.build, nm, {team:0, hp: playerMaxHp(this.stage), x: ARENA_W/2, y: ARENA_H/2});
     player.hp = Math.max(1, Math.round(player.max * this.hpFrac));
     const pack = makePack(this.stage);
     sim = new Sim({fighters:[player, ...pack]}, null, World);
@@ -4342,7 +4857,11 @@ const Run = {
       }
       if(this.stage >= PVE_MAX_STAGE){ this.finish(true); return; }
       this.stage++;
-      this.offer(`Stage ${this.stage-1} cleared.`);
+      if(this.stage % 2 === 1 || (this.stage % PVE_BOSS_EVERY === 0)){
+        this.offer(`Stage ${this.stage-1} cleared.`);
+      } else {
+        this.begin();
+      }
     } else {
       this.finish(false);
     }
@@ -4370,10 +4889,22 @@ const Run = {
      10-skill cap the offer becomes upgrades only, so a full loadout is
      still a progression and not a dead end. */
   offer(headline){
+    /* Each fresh offer grants exactly one refresh. */
+    this.rerollLeft = 1;
+    this._offerHead = headline;
+    this.rollOffer();
+  },
+
+  /* Regenerates the three cards for the current offer. Called by offer()
+     and again by the refresh button (which spends a reroll). */
+  rollOffer(){
     const owned = new Map(this.build.map(b => [b.id, b]));
     const full = this.build.length >= PVE_MAX_SKILLS;
-    const tiers = mobTiers(this.stage);
-    const band = [...new Set([...tiers, Math.min(5, Math.max(...tiers)+1)])];
+    /* Skill offers are drawn from the FULL catalogue regardless of depth —
+       an early stage can roll a high-tier skill just as a late one can.
+       (Monster difficulty still scales with mobTiers(); only the reward
+       pool is unrestricted here.) */
+    const band = [1,2,3,4,5];
     /* The FIRST pick must be able to kill something. Opening a run with a
        pure buff leaves you with only a basic attack against a pack, which
        does not lose so much as refuse to end — the stage grinds to the
@@ -4393,7 +4924,15 @@ const Run = {
       const s = bag.splice(Math.floor(Math.random()*bag.length),1)[0];
       picks.push({kind:'new', id:s.id, lvl:1});
     }
-    renderOffer(headline, picks);
+    renderOffer(this._offerHead, picks);
+  },
+
+  /* The refresh button. One reroll per offer; regenerates all three cards. */
+  reroll(){
+    if(this.rerollLeft <= 0) return;
+    this.rerollLeft--;
+    sfx.click();
+    this.rollOffer();
   },
 
   take(pick){
@@ -4455,6 +4994,16 @@ function renderOffer(headline, picks){
           p.kind==='up' ? 'UPGRADE' : 'NEW'}</span></div>`;
     el.onclick = ()=>{ Preview.reset(); Run.take(p); };
     host.append(el);
+  }
+
+  /* Refresh button — one use per offer. */
+  const rb = $('#offReroll');
+  if(rb){
+    const left = Run.rerollLeft || 0;
+    rb.textContent = `↻ Refresh (${left} left)`;
+    rb.disabled = left <= 0;
+    rb.style.opacity = left <= 0 ? '0.4' : '1';
+    rb.onclick = ()=>{ if(!rb.disabled) Run.reroll(); };
   }
 
   const kit = Run.build.length
