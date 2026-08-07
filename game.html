@@ -2951,39 +2951,480 @@ function drawActs(sim, t){
         }
         break;
       }
+      /* ── FIELDS ────────────────────────────────────────────────────
+         Every field used to be the same radial-gradient disc with a
+         pulsing ring, recoloured per skill — six skills, one silhouette.
+         Each now gets a bespoke ARCHETYPE instead, and they share only
+         the things that should be shared: a ground-plane footprint, a
+         grow-in, and a flash synced to the damage tick.
+
+         Two constraints shape all of this:
+         1. drawActs runs under globalCompositeOperation='lighter', so
+            black paints NOTHING. A void core cannot be drawn dark — it
+            has to be an unpainted hole ringed by light, and every halo
+            around one must be an ANNULUS gradient (transparent at the
+            centre) or it fills the hole back in.
+         2. The arena is a ground plane. Anything circular is squashed
+            onto it by SQ and anything structural rises from that
+            footprint, so a field sits in the floor instead of floating
+            in front of the camera like a screen-space decal.          */
       case 'field': {
-        const p = a.t/a.dur, pulse = 0.5+Math.sin(t*5)*0.16;
-        ctx.globalAlpha = (1-p*0.55)*0.28;
-        const g3 = ctx.createRadialGradient(a.x,a.y,4,a.x,a.y,sk.area);
-        g3.addColorStop(0,col); g3.addColorStop(0.55,col+'55'); g3.addColorStop(1,col+'00');
-        ctx.fillStyle=g3; ctx.beginPath(); ctx.arc(a.x,a.y,sk.area,0,TAU); ctx.fill();
-        ctx.globalAlpha=(1-p)*0.7; ctx.strokeStyle=col; ctx.lineWidth=2*V;
-        ctx.beginPath(); ctx.arc(a.x,a.y,sk.area*pulse,0,TAU); ctx.stroke();
-        /* a flattened boundary ellipse grounds the field on the floor
-           instead of letting it float as a screen-space disc */
-        ctx.globalAlpha=(1-p)*0.5; ctx.lineWidth=2.5*V;
-        ctx.beginPath(); ctx.ellipse(a.x, a.y+18, sk.area*0.98, sk.area*0.30, 0,0,TAU);
-        ctx.stroke();
-        /* rotating rune marks around the rim — makes a field feel authored */
-        const marks = 8;
-        ctx.globalAlpha=(1-p)*0.55;
-        for(let i=0;i<marks;i++){
-          const aa = t*0.7 + i*TAU/marks;
-          const mx = a.x+Math.cos(aa)*sk.area*0.9;
-          const my = a.y+18+Math.sin(aa)*sk.area*0.27;
-          ctx.beginPath(); ctx.moveTo(mx, my-5*V); ctx.lineTo(mx, my+5*V);
-          ctx.lineWidth=2*V; ctx.stroke();
+        const e = efxOf(sk);
+        const seed = a.id*2.71;
+        const gy = a.y + 18;          // floor line the field sits on
+        const SQ = 0.34;              // ground-plane squash
+        /* grow-in (ease-out cubic) and fade-out envelopes. A field used
+           to pop in fully formed and vanish mid-pulse; now it opens and
+           closes, which is most of why it reads as an event. */
+        const gi = 1 - Math.pow(1 - clamp(a.t/0.42, 0, 1), 3);
+        const fo = clamp((a.dur - a.t)/0.6, 0, 1);
+        const A  = gi * fo;                       // master alpha
+        /* Radius grows in but is NEVER scaled by V: sk.area is the real
+           damage radius, and inflating it for a combo would lie about
+           where the field actually hits. V drives widths and glow only. */
+        const R  = sk.area * (0.42 + 0.58*gi);
+        /* Flash synced to the ACTUAL damage tick — a.next counts down
+           from a.per, so this spikes to 1 the instant the field bites
+           and decays over 0.22s. The field pulses because it is hurting
+           someone, not on a decorative sine. */
+        const tick = a.per ? clamp(1 - (a.per - a.next)/0.22, 0, 1) : 0;
+        const flash = tick*tick;
+
+        if(sk.id==='gravitywell' || sk.id==='singularity'){
+          /* ── ACCRETION VORTEX ──────────────────────────────────────
+             Spiral arms wound onto the floor plane, and a genuine hole
+             at the middle: the horizon rim is stroked bright and the
+             halo around it is an ANNULUS, so the centre stays unpainted
+             and reads black against the lit floor. Singularity is the
+             same grammar wound tighter and faster, plus a polar jet —
+             an escalation of the tier-3 well, not a recolour of it. */
+          const big   = sk.id==='singularity';
+          const arms  = big ? 7 : 5;
+          const twist = big ? 1.9 : 1.3;
+          const rot   = -t*(big ? 2.1 : 1.45);
+          ctx.lineCap='round';
+          for(let k=0;k<arms;k++){
+            const a0 = rot + k*TAU/arms;
+            ctx.beginPath();
+            for(let i=0;i<=24;i++){
+              const q  = i/24;                     // 1 = rim, 0 = core
+              const rr = R*(1 - q*0.94);
+              const aa = a0 + q*twist*TAU;
+              const x  = a.x + Math.cos(aa)*rr, y = gy + Math.sin(aa)*rr*SQ;
+              i ? ctx.lineTo(x,y) : ctx.moveTo(x,y);
+            }
+            /* one path, three passes: haze, body, hot filament — the arm
+               gains depth without tripling the geometry cost */
+            ctx.strokeStyle=col;
+            ctx.globalAlpha=A*0.16*(1+flash*0.7); ctx.lineWidth=9*V; ctx.stroke();
+            ctx.globalAlpha=A*0.55;               ctx.lineWidth=2.4*V; ctx.stroke();
+            ctx.strokeStyle=e.core;
+            ctx.globalAlpha=A*(0.30+flash*0.45);  ctx.lineWidth=1*V; ctx.stroke();
+          }
+          /* infalling debris: short tails riding the same spiral the arms
+             use, so matter visibly travels the arms into the core */
+          ctx.strokeStyle=e.core;
+          for(let s=0;s<(big?14:9);s++){
+            const h  = _hash1(seed + s*3.1), h2 = _hash1(seed + s*3.1 + 9);
+            const ph = (t*(0.5 + h2*0.55) + h) % 1;   // 0 rim → 1 core
+            ctx.globalAlpha = A*(1-ph)*0.75;
+            ctx.lineWidth = (1.6 + h2)*V;
+            ctx.beginPath();
+            for(let i=0;i<=4;i++){
+              const q  = clamp(ph + i*0.035, 0, 1);
+              const rr = R*(1-q)*0.98;
+              const aa = h*TAU + q*twist*TAU + rot;
+              const x  = a.x + Math.cos(aa)*rr, y = gy + Math.sin(aa)*rr*SQ;
+              i ? ctx.lineTo(x,y) : ctx.moveTo(x,y);
+            }
+            ctx.stroke();
+          }
+          ctx.lineCap='butt';
+          /* event horizon: bright rim, hollow middle */
+          const hr = R*(big?0.20:0.16)*(1 + Math.sin(t*6)*0.05 + flash*0.12);
+          const hg = ctx.createRadialGradient(a.x,gy,hr*0.72, a.x,gy,hr*3.1);
+          hg.addColorStop(0,   col+'00');    // centre stays UNPAINTED
+          hg.addColorStop(0.30,col+'dd');
+          hg.addColorStop(1,   col+'00');
+          ctx.globalAlpha=A*(0.75+flash*0.25); ctx.fillStyle=hg;
+          ctx.beginPath(); ctx.arc(a.x, gy, hr*3.1, 0, TAU); ctx.fill();
+          ctx.globalAlpha=A*0.95; ctx.strokeStyle=e.core; ctx.lineWidth=2.2*V;
+          ctx.beginPath(); ctx.ellipse(a.x, gy, hr, hr*0.62, 0,0,TAU); ctx.stroke();
+          if(big){
+            /* polar jet — the tier-5 tell. Two tapering columns of light
+               thrown off the poles of the horizon. */
+            /* Only the UP jet is drawn: the arena is a floor, so a downward
+               jet would have to punch through it, and a symmetric pair on
+               a ground plane just reads as a smear across the middle.
+               Height is well past the disc radius — a jet that does not
+               clearly escape the accretion disc reads as a bulge. */
+            const jh = R*1.35*(0.88 + Math.sin(t*3.1)*0.12);
+            const jw = hr*0.5;
+            /* haze, then body, then a hot filament up the axis: same three
+               passes the spiral arms use, so the jet belongs to the same
+               object rather than looking pasted on */
+            for(const pass of [[jw*2.6, 0.20, col], [jw, 0.5, col], [jw*0.28, 0.8, e.core]]){
+              const jg = ctx.createLinearGradient(a.x, gy, a.x, gy - jh);
+              jg.addColorStop(0,    pass[2]+'00');   // hidden inside the horizon
+              jg.addColorStop(0.16, pass[2]+'ee');
+              jg.addColorStop(1,    pass[2]+'00');   // dissipates at the top
+              ctx.globalAlpha=A*pass[1]*(0.8+flash*0.4); ctx.fillStyle=jg;
+              ctx.beginPath();
+              ctx.moveTo(a.x - pass[0], gy);
+              ctx.lineTo(a.x + pass[0], gy);
+              ctx.lineTo(a.x + pass[0]*0.22, gy - jh);
+              ctx.lineTo(a.x - pass[0]*0.22, gy - jh);
+              ctx.closePath(); ctx.fill();
+            }
+          }
+        } else if(sk.id==='plaguewell'){
+          /* ── BUBBLING MIRE ─────────────────────────────────────────
+             Deliberately the only field with NO rotational symmetry: a
+             lopsided pool whose outline crawls, with bubbles that rise,
+             thin and burst. Rotation is what made every old field feel
+             machined; a swamp should look grown. */
+          /* 4 harmonics, not 7: fewer and bigger lobes, so the pool has a
+             couple of distinct bays instead of a faint all-over ripple
+             that just re-traces the footprint ellipse. */
+          const ph = _phases(seed, 4);
+          /* Base high and amplitude modest: the pool must still cover the
+             footprint it damages. At amp 0.34 one bay collapsed inward far
+             enough to leave a third of the hit radius visibly empty, which
+             reads as "the sludge is over there" — wrong, and unfair. */
+          const pool = aa => R*(0.90 + _loopNoiseP(aa + t*0.30, ph, 4)*0.15);
+          ctx.beginPath();
+          for(let i=0;i<=48;i++){
+            const aa = i/48*TAU, rr = pool(aa);
+            const x  = a.x + Math.cos(aa)*rr, y = gy + Math.sin(aa)*rr*SQ;
+            i ? ctx.lineTo(x,y) : ctx.moveTo(x,y);
+          }
+          ctx.closePath();
+          /* the sludge itself has to have BODY — at the old alphas the pool
+             was a rim with nothing in it. Filled hot in the middle and
+             carried most of the way out before it falls off. */
+          const pg = ctx.createRadialGradient(a.x,gy,R*0.04, a.x,gy,R);
+          pg.addColorStop(0,   col+'ff');
+          pg.addColorStop(0.45,col+'9c');
+          pg.addColorStop(0.82,col+'46');
+          pg.addColorStop(1,   col+'00');
+          ctx.globalAlpha=A*(0.62+flash*0.30); ctx.fillStyle=pg; ctx.fill();
+          ctx.globalAlpha=A*0.72; ctx.strokeStyle=col; ctx.lineWidth=2.4*V; ctx.stroke();
+          /* tide marks: the pool has drained and refilled, and the rings it
+             left behind give the surface depth the flat gradient cannot */
+          ctx.globalAlpha=A*0.30; ctx.lineWidth=1.2*V;
+          for(const q of [0.74, 0.52, 0.33]){
+            ctx.beginPath();
+            for(let i=0;i<=32;i++){
+              const aa = i/32*TAU, rr = pool(aa)*q;
+              const x = a.x + Math.cos(aa)*rr, y = gy + Math.sin(aa)*rr*SQ;
+              i ? ctx.lineTo(x,y) : ctx.moveTo(x,y);
+            }
+            ctx.closePath(); ctx.stroke();
+          }
+          /* sludge veins creeping outward from the middle */
+          ctx.strokeStyle=col; ctx.lineCap='round';
+          for(let v=0;v<11;v++){
+            const va = _hash1(seed+v*1.7)*TAU;
+            /* bounded by the pool outline AT THIS ANGLE, not by R: the pool
+               is lopsided, so a vein measured against R punched out through
+               the shallow bays and read as a spike, not as sludge */
+            const vl = pool(va)*(0.55 + _hash1(seed+v*1.7+5)*0.38);
+            ctx.globalAlpha=A*0.34; ctx.lineWidth=(1.2 + _hash1(seed+v+70)*1.8)*V;
+            /* Veins start PART WAY out, not at the centre. Eleven strokes
+               leaving one pixel is a starburst — a decoration with an
+               obvious middle — whereas veins that begin at scattered
+               depths read as sludge seeping through itself. */
+            const q0 = 0.16 + _hash1(seed+v*1.7+91)*0.22;
+            const p0 = q0*vl;
+            ctx.beginPath();
+            ctx.moveTo(a.x + Math.cos(va)*p0, gy + Math.sin(va)*p0*SQ);
+            for(let s=1;s<=7;s++){
+              const q = q0 + (1-q0)*(s/7);
+              const bend = _vnoise(v*4.3 + q*3.2 + t*0.8)*R*0.16*q;
+              const aa = va + bend/Math.max(R*q, 1);
+              ctx.lineTo(a.x + Math.cos(aa)*vl*q, gy + Math.sin(aa)*vl*q*SQ);
+            }
+            ctx.stroke();
+          }
+          ctx.lineCap='butt';
+          /* bubbles: rise, swell, thin out, pop. Drawn as rings (the film)
+             with a highlight, never as filled dots — a filled dot is a
+             particle, a ring is a bubble. */
+          for(let b=0;b<24;b++){
+            const h1 = _hash1(seed+b*2.3), h2 = _hash1(seed+b*2.3+31);
+            const bp = (t*(0.45 + h2*0.5) + h1) % 1;
+            const ba = h1*TAU, brr = pool(ba)*(0.12 + h2*0.80);
+            const bx = a.x + Math.cos(ba)*brr;
+            const by = gy + Math.sin(ba)*brr*SQ - bp*26*V;
+            /* swell as it rises, and the biggest are big enough to read as
+               bubbles rather than as sparks that forgot to move */
+            const br = (4.5 + h2*9)*V*(0.55 + bp*0.8);
+            const fade = (1-bp)*(1-bp);
+            /* the film: a bright arc across the TOP of the ring and a dim
+               one under it — an evenly-lit ring reads as a hoop, a ring
+               that catches light on one side reads as a sphere */
+            ctx.strokeStyle = col;
+            ctx.globalAlpha = A*fade*0.5;  ctx.lineWidth = 1.2*V;
+            ctx.beginPath(); ctx.arc(bx, by, br, 0.5, Math.PI-0.1); ctx.stroke();
+            ctx.globalAlpha = A*fade*0.95; ctx.lineWidth = 1.8*V;
+            ctx.beginPath(); ctx.arc(bx, by, br, Math.PI+0.15, TAU+0.3); ctx.stroke();
+            ctx.globalAlpha = A*fade*0.7; ctx.fillStyle = e.core;
+            ctx.beginPath(); ctx.arc(bx - br*0.34, by - br*0.36, br*0.26, 0, TAU); ctx.fill();
+          }
+        } else if(sk.id==='frostcathedral'){
+          /* ── GOTHIC CATHEDRAL ──────────────────────────────────────
+             The name promises architecture, so it builds some: a ring of
+             ice pillars joined by POINTED arches, with a spire at the
+             centre. Pillars are depth-sorted and the far ones are dimmed
+             and shortened, which is what turns a flat ring of sticks
+             into a room the fighters are standing inside. */
+          const N = 14, H = R*0.34;
+          const idx = [];
+          for(let i=0;i<N;i++) idx.push(i);
+          const angOf = i => i*TAU/N + t*0.32;
+          /* back to front: sin<0 is the far side of the ellipse */
+          idx.sort((u,w) => Math.sin(angOf(u)) - Math.sin(angOf(w)));
+          const px = i => a.x + Math.cos(angOf(i))*R*0.9;
+          const py = i => gy  + Math.sin(angOf(i))*R*0.9*SQ;
+          /* depth 0 (far) → 1 (near), used for both alpha and height */
+          const dp = i => (Math.sin(angOf(i)) + 1)*0.5;
+          for(const i of idx){
+            const d = dp(i), x0 = px(i), y0 = py(i);
+            const h = H*(0.62 + d*0.38)*(0.9 + _hash1(seed+i)*0.2);
+            const al = A*(0.3 + d*0.55);
+            /* shaft, tapering — two edges rather than one line, so it
+               has width and reads as a column not a wire */
+            const w0 = 3.4*V*(0.7+d*0.5), w1 = w0*0.45;
+            ctx.globalAlpha=al*0.8; ctx.fillStyle=col;
+            ctx.beginPath();
+            ctx.moveTo(x0-w0, y0); ctx.lineTo(x0+w0, y0);
+            ctx.lineTo(x0+w1, y0-h); ctx.lineTo(x0-w1, y0-h);
+            ctx.closePath(); ctx.fill();
+            /* lit edge down one side of every shaft */
+            ctx.globalAlpha=al; ctx.strokeStyle=e.core; ctx.lineWidth=1*V;
+            ctx.beginPath(); ctx.moveTo(x0-w0*0.5, y0); ctx.lineTo(x0-w1*0.5, y0-h); ctx.stroke();
+            /* crystal finial */
+            ctx.globalAlpha=al*(0.85+flash*0.15); ctx.fillStyle=e.core;
+            ctx.beginPath();
+            ctx.moveTo(x0, y0-h-7*V); ctx.lineTo(x0+2.6*V, y0-h);
+            ctx.lineTo(x0, y0-h+2*V); ctx.lineTo(x0-2.6*V, y0-h);
+            ctx.closePath(); ctx.fill();
+            /* pointed arch to the NEXT pillar: two quadratics meeting at
+               a raised apex, sampled by hand so the curve flattens the
+               same way everywhere */
+            const j = (i+1)%N, x1 = px(j), y1 = py(j);
+            const apx = (x0+x1)*0.5, apy = (y0+y1)*0.5 - h - R*0.10;
+            const spring = 0.55;                       // where the arch starts
+            const sx0 = x0, sy0 = y0 - h*spring, sx1 = x1, sy1 = y1 - h*spring;
+            ctx.globalAlpha=al*0.5; ctx.strokeStyle=col; ctx.lineWidth=1.6*V;
+            ctx.beginPath();
+            for(let s=0;s<=8;s++){
+              const q=s/8, iq=1-q;
+              const cx0 = x0, cy0 = y0-h;              // control: top of shaft
+              const bx = iq*iq*sx0 + 2*iq*q*cx0 + q*q*apx;
+              const by = iq*iq*sy0 + 2*iq*q*cy0 + q*q*apy;
+              s ? ctx.lineTo(bx,by) : ctx.moveTo(bx,by);
+            }
+            for(let s=0;s<=8;s++){
+              const q=s/8, iq=1-q;
+              const cx1 = x1, cy1 = y1-h;
+              const bx = iq*iq*apx + 2*iq*q*cx1 + q*q*sx1;
+              const by = iq*iq*apy + 2*iq*q*cy1 + q*q*sy1;
+              ctx.lineTo(bx,by);
+            }
+            ctx.stroke();
+          }
+          /* central spire, taller than the colonnade so the silhouette
+             has a peak instead of reading as a flat crown of spikes */
+          const sh = H*1.5*(0.94 + Math.sin(t*2.2)*0.06);
+          ctx.globalAlpha=A*0.34; ctx.fillStyle=col;
+          ctx.beginPath();
+          ctx.moveTo(a.x-6.5*V, gy); ctx.lineTo(a.x+6.5*V, gy); ctx.lineTo(a.x, gy-sh);
+          ctx.closePath(); ctx.fill();
+          ctx.globalAlpha=A*(0.55+flash*0.4); ctx.strokeStyle=e.core; ctx.lineWidth=1.4*V;
+          ctx.beginPath(); ctx.moveTo(a.x, gy); ctx.lineTo(a.x, gy-sh); ctx.stroke();
+          ctx.globalAlpha=A*0.5; ctx.fillStyle=e.core;
+          shpCrystal(a.x, gy-sh, 7*V, t*1.1, 0, seed); ctx.fill();
+          /* frost creeping across the floor inside the colonnade */
+          ctx.globalAlpha=A*0.3; ctx.strokeStyle=col; ctx.lineWidth=1.2*V;
+          ctx.beginPath(); ctx.ellipse(a.x, gy, R*0.62, R*0.62*SQ, 0,0,TAU); ctx.stroke();
+        } else if(sk.id==='grasproots'){
+          /* ── ERUPTING ROOTS ────────────────────────────────────────
+             Roots claw UP out of the floor and hook back over, growing
+             with `gi` so the cast is visibly the ground breaking open.
+             Everything else here is a ring; this one is a thicket, and
+             the cracks under it are what sell the eruption.            */
+          /* soil cracks first — they belong under the roots */
+          ctx.strokeStyle=col; ctx.globalAlpha=A*0.3; ctx.lineWidth=1.3*V;
+          for(let c=0;c<10;c++){
+            const ca = _hash1(seed+c*5.9)*TAU, cl = R*(0.3+_hash1(seed+c*5.9+4)*0.62);
+            ctx.beginPath(); ctx.moveTo(a.x, gy);
+            for(let s=1;s<=4;s++){
+              const q=s/4, jag = (_hash1(seed+c*5.9+s)-0.5)*0.32;
+              const aa = ca + jag*q;
+              ctx.lineTo(a.x + Math.cos(aa)*cl*q, gy + Math.sin(aa)*cl*q*SQ);
+            }
+            ctx.stroke();
+          }
+          ctx.lineCap='round'; ctx.lineJoin='round';
+          const NR = 10;
+          for(let r=0;r<NR;r++){
+            const h1 = _hash1(seed+r*3.7), h2 = _hash1(seed+r*3.7+13);
+            const ra = r*TAU/NR + (h1-0.5)*0.5;
+            const reach = R*(0.55 + h2*0.45);
+            const arc   = R*(0.30 + h1*0.26);          // how high it lifts
+            const sway  = Math.sin(t*1.5 + r)*0.06;
+            /* grow from the base outward, so early frames show stubs */
+            const grow  = clamp(gi*1.25 - r*0.02, 0.05, 1);
+            const pts = [];
+            for(let s=0;s<=10;s++){
+              const q = (s/10)*grow;
+              const rr = reach*q;
+              const aa = ra + sway*q;
+              /* lift follows sin(q*pi*0.85): out of the ground, over the
+                 top, and starting back down — a claw, not a rainbow */
+              const lift = Math.sin(q*Math.PI*0.85)*arc;
+              const wob  = _vnoise(r*7.1 + q*3.4)*R*0.05;
+              pts.push([a.x + Math.cos(aa)*rr + wob,
+                        gy  + Math.sin(aa)*rr*SQ - lift]);
+            }
+            /* taper: stroke the whole root thick, then the inner portion
+               thicker still, so it is fat at the base and fine at the tip */
+            ctx.globalAlpha=A*0.55; ctx.strokeStyle=col;
+            ctx.lineWidth=2*V; tracePts(pts); ctx.stroke();
+            ctx.globalAlpha=A*0.5; ctx.lineWidth=4.6*V;
+            tracePts(pts.slice(0, 6)); ctx.stroke();
+            ctx.globalAlpha=A*0.45; ctx.lineWidth=7*V;
+            tracePts(pts.slice(0, 3)); ctx.stroke();
+            /* one offshoot per root, from a stable mid vertex */
+            if(h2 > 0.35 && grow > 0.6){
+              const bi = 4 + ((h1*3)|0);
+              const bp = pts[Math.min(bi, pts.length-1)];
+              const bang = ra + (h1-0.5)*1.5 - Math.PI*0.25;
+              const bl = R*0.2*grow;
+              ctx.globalAlpha=A*0.4; ctx.lineWidth=1.6*V;
+              ctx.beginPath(); ctx.moveTo(bp[0], bp[1]);
+              ctx.lineTo(bp[0] + Math.cos(bang)*bl, bp[1] + Math.sin(bang)*bl*0.7);
+              ctx.stroke();
+            }
+            /* claw tip catches the light */
+            const tip = pts[pts.length-1];
+            ctx.globalAlpha=A*(0.6+flash*0.4); ctx.fillStyle=e.core;
+            ctx.beginPath(); ctx.arc(tip[0], tip[1], 2.2*V, 0, TAU); ctx.fill();
+          }
+          ctx.lineCap='butt'; ctx.lineJoin='miter';
+        } else if(sk.id==='oblivionchain'){
+          /* ── ORBITING CHAINS ───────────────────────────────────────
+             Real chain, not beads: consecutive links alternate 90° of
+             twist (one seen face-on, the next edge-on), which is the
+             single detail that makes a row of ovals read as a chain.
+             Links are scaled and dimmed by depth and the ring is drawn
+             in two halves around the sigil, so the chain passes BEHIND
+             the middle of the field and in front again.                */
+          /* Link count and length are tied to the ring's circumference, not
+             picked by eye: at 16 links of fixed size they sat far apart and
+             read as beads on a wire. A link is sized to just OVERLAP its
+             neighbour, which is what interlocks them. */
+          const NL = 22, chR = R*0.82;
+          const step = TAU*chR/NL;          // spacing along the major axis
+          const linkL = step*0.62;          // half-length, generous enough to touch
+          const rot = t*0.75;
+          const angOf = i => rot + i*TAU/NL;
+          const depth = i => (Math.sin(angOf(i)) + 1)*0.5;      // 0 far → 1 near
+          const drawLink = i => {
+            const la = angOf(i), d = depth(i);
+            const lx = a.x + Math.cos(la)*chR;
+            const ly = gy  + Math.sin(la)*chR*SQ;
+            const sc = (0.72 + d*0.5)*V;
+            /* tangent of the ellipse, plus the 90° alternation */
+            const tang = Math.atan2(Math.cos(la)*SQ, -Math.sin(la));
+            const face = i%2 === 0;
+            /* face-on links are wide ovals; edge-on links are thin slits */
+            const rx = (face ? linkL : linkL*0.38)*sc;
+            const ry = linkL*0.56*sc;
+            ctx.save(); ctx.translate(lx, ly); ctx.rotate(tang);
+            /* iron body, then the hole through it, then a highlight on the
+               near edge — three strokes is what separates a forged link
+               from a drawn oval */
+            ctx.globalAlpha = A*(0.34 + d*0.52)*(0.85 + flash*0.15);
+            ctx.strokeStyle = col; ctx.lineWidth = (2.2 + d*1.8)*V;
+            ctx.beginPath(); ctx.ellipse(0, 0, rx, ry, 0, 0, TAU); ctx.stroke();
+            ctx.globalAlpha = A*(0.22 + d*0.34);
+            ctx.strokeStyle = e.core; ctx.lineWidth = 0.9*V;
+            ctx.beginPath(); ctx.ellipse(0, 0, rx*0.58, ry*0.5, 0, 0, TAU); ctx.stroke();
+            /* highlight only on the front-facing links */
+            if(d > 0.55){
+              ctx.globalAlpha = A*(d-0.55)*1.5;
+              ctx.strokeStyle = e.core; ctx.lineWidth = 1.1*V;
+              ctx.beginPath(); ctx.ellipse(0, 0, rx, ry, 0, Math.PI*1.15, TAU-0.2); ctx.stroke();
+            }
+            ctx.restore();
+          };
+          const back = [], front = [];
+          for(let i=0;i<NL;i++) (depth(i) < 0.5 ? back : front).push(i);
+          for(const i of back) drawLink(i);
+          /* binding sigil on the floor: two counter-rotating triangles
+             inside a ring — geometric and deliberate, the opposite of
+             the plague pool's crawl */
+          const sr = R*0.34;
+          ctx.strokeStyle=col; ctx.globalAlpha=A*0.45; ctx.lineWidth=1.6*V;
+          ctx.beginPath(); ctx.ellipse(a.x, gy, sr, sr*SQ, 0,0,TAU); ctx.stroke();
+          ctx.beginPath(); ctx.ellipse(a.x, gy, sr*0.72, sr*0.72*SQ, 0,0,TAU); ctx.stroke();
+          for(const dir of [1,-1]){
+            ctx.globalAlpha=A*(0.4+flash*0.35); ctx.lineWidth=1.4*V;
+            ctx.beginPath();
+            for(let s=0;s<=3;s++){
+              const aa = dir*t*0.5 + s*TAU/3 + (dir<0 ? Math.PI/3 : 0);
+              const x = a.x + Math.cos(aa)*sr*0.86, y = gy + Math.sin(aa)*sr*0.86*SQ;
+              s ? ctx.lineTo(x,y) : ctx.moveTo(x,y);
+            }
+            ctx.stroke();
+          }
+          /* taut tethers from the sigil out to a few links — the chains
+             are anchored to the ground mark, not merely near it */
+          ctx.strokeStyle=col; ctx.globalAlpha=A*(0.16+flash*0.4); ctx.lineWidth=1.2*V;
+          for(let i=0;i<NL;i+=6){
+            const la = angOf(i);
+            ctx.beginPath();
+            ctx.moveTo(a.x + Math.cos(la)*sr*0.8, gy + Math.sin(la)*sr*0.8*SQ);
+            ctx.lineTo(a.x + Math.cos(la)*chR,    gy + Math.sin(la)*chR*SQ);
+            ctx.stroke();
+          }
+          /* the hollow eye of the field: annulus only, centre unpainted */
+          const eg = ctx.createRadialGradient(a.x,gy,R*0.05, a.x,gy,R*0.26);
+          eg.addColorStop(0, col+'00'); eg.addColorStop(0.45, col+'aa'); eg.addColorStop(1, col+'00');
+          ctx.globalAlpha=A*(0.5+flash*0.5); ctx.fillStyle=eg;
+          ctx.beginPath(); ctx.arc(a.x, gy, R*0.26, 0, TAU); ctx.fill();
+          for(const i of front) drawLink(i);
+        } else {
+          /* fallback for any field skill added later — the original disc */
+          const pulse = 0.5+Math.sin(t*5)*0.16;
+          ctx.globalAlpha = A*0.28;
+          const g3 = ctx.createRadialGradient(a.x,a.y,4,a.x,a.y,R);
+          g3.addColorStop(0,col); g3.addColorStop(0.55,col+'55'); g3.addColorStop(1,col+'00');
+          ctx.fillStyle=g3; ctx.beginPath(); ctx.arc(a.x,a.y,R,0,TAU); ctx.fill();
+          ctx.globalAlpha=A*0.7; ctx.strokeStyle=col; ctx.lineWidth=2*V;
+          ctx.beginPath(); ctx.arc(a.x,a.y,R*pulse,0,TAU); ctx.stroke();
         }
+
+        /* shared footprint, drawn LAST so it reads as the field's edge on
+           the floor rather than a line the structure sits on top of.
+           Geometric archetypes get a clean ellipse, grown ones get a
+           noisy outline — the boundary itself carries the character. */
+        const organic = sk.id==='plaguewell' || sk.id==='grasproots';
+        ctx.globalAlpha=A*(0.42+flash*0.3); ctx.strokeStyle=col; ctx.lineWidth=2.2*V;
+        if(organic){ blobPath(a.x, gy, R*0.99, 0.07, seed+3, SQ, t*0.25); ctx.stroke(); }
+        else { ctx.beginPath(); ctx.ellipse(a.x, gy, R*0.99, R*0.99*SQ, 0,0,TAU); ctx.stroke(); }
         ctx.globalAlpha=1;
-        /* field motes take the element's character. Most elements settle
-           inward toward the field centre; a void field drags them in hard,
-           while fire/holy fields let them rise out of the disc instead. */
+
+        /* field motes — unchanged behaviour, but launched from the ground
+           ellipse instead of a screen-space circle so they rise out of
+           the footprint rather than drifting in from off the floor */
         if(Math.random()<0.9){
-          const e = efxOf(sk);
-          const aa=rnd(TAU);
-          const ex=a.x+Math.cos(aa)*sk.area, ey=a.y+Math.sin(aa)*sk.area;
+          const aa = rnd(TAU);
+          const ex = a.x + Math.cos(aa)*R, ey = gy + Math.sin(aa)*R*SQ;
           const pull = e.pull ? rnd(420,220) : rnd(280,120);
-          efxSpark(sk, ex, ey, {vx:-Math.cos(aa)*pull, vy:-Math.sin(aa)*pull,
+          efxSpark(sk, ex, ey, {vx:-Math.cos(aa)*pull, vy:-Math.sin(aa)*pull*SQ,
             r:rnd(4,1.6)*V, life:rnd(.7,.35), drag:0.95, rise: e.rise<-80?1:0.3});
         }
         break;
