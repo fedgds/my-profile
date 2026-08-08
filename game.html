@@ -1278,6 +1278,12 @@ class Fighter {
 }
 Fighter._n = 0;
 
+/* Sudden death bills every survivor a flat share of their OWN max hp on a
+   fixed heartbeat: SD_FRAC of max, every SD_PERIOD seconds. Ten tithes
+   empty a full pool, so the clock is identical for a 300 hp trash mob and
+   a 4000 hp boss — which is the whole point of a stalemate breaker. */
+const SD_PERIOD = 5, SD_FRAC = 0.10;
+
 class Sim {
   /* Duel:  new Sim(buildA, buildB, world)
      PvE:   new Sim({fighters:[...Fighter], pve:true}, null, world)
@@ -1295,8 +1301,9 @@ class Sim {
       this.pve = false;
     }
     this.t = 0; this.over = null; this.world = world || null;  // world = renderer hooks
-    this.sdPhase = 0;         // 0 none, 1 ramping, 2 hard cap
+    this.sdPhase = 0;         // 0 none, 1 sudden death open
     this.sudden = 0;          // sudden-death intensity 0..1
+    this.sdTicks = 0;         // tithes already charged (see suddenDeath)
     this.acts = [];        // in-flight abilities (projectiles, beams, fields…)
     this.uid = 0;
     this.spawnQ = [];      // summons waiting to enter (see addFighter)
@@ -1425,6 +1432,14 @@ class Sim {
      fighter was pulled back from 0 hp, consuming the buff. */
   saveUndying(f){
     if(f.dead || f.hp>0 || !f.has('undying')) return false;
+    /* No PvE monster gets a second life. mobBuild already keeps the skill
+       out of their pool, but the rule belongs on the death path too: any
+       future aura, inherited kit or copied loadout that hands an enemy the
+       buff must not quietly reintroduce it. Team 0 is the player's, so this
+       covers bosses, trash and their familiars alike. The status is dropped
+       rather than left armed, so the HUD never shows a save that cannot
+       fire. */
+    if(this.pve && f.team !== 0){ delete f.st.undying; return false; }
     const frac = f.st.undying.v || 0.45;
     f.hp = Math.max(1, Math.round(f.max * frac));
     delete f.st.undying;
@@ -1520,7 +1535,7 @@ class Sim {
         /* Invulnerability stores no magnitude — the value IS the window.
            Duration rides riderMul so an upgrade lengthens it, and sustainMul
            shortens it in sudden death for the same reason healing falters:
-           otherwise two immunity builds stall the arena burn forever. */
+           otherwise two immunity builds stall the arena's tithe forever. */
         else if(sk.fx==='immune'){
           const dur = Math.min(IMMUNE_MAX,
             u * riderMul(sk,lvl) * (1 + (f.combo.immunePow||0)) * this.sustainMul);
@@ -1698,63 +1713,68 @@ class Sim {
     }
   }
 
-  /* ---- one fixed tick ---- */
   /* ---- sudden death ----------------------------------------------------
      Death was the ONLY exit condition, so two sustain builds could heal
      past each other forever: measured 40/40 battles still running after
-     10 simulated minutes. A damage ramp alone isn't enough (healing scales
-     with it), so sustain decays too. Past HARD_CAP the higher-hp fighter
-     wins outright; exactly equal hp is a genuine draw. */
+     10 simulated minutes. The arena now bills everyone a tithe — once
+     sudden death opens, every SD_PERIOD seconds each survivor loses
+     SD_FRAC of their own max hp. Ten tithes empty a full pool, so a duel
+     that reaches 30s is settled by roughly 75s and a stage by roughly
+     100s even if nobody lands another blow.
+
+     A tithe, not a verdict: the previous rule simply killed whoever held
+     the smaller health bar at a hard cap, which ended fights the player
+     was mid-comeback in and made the last ten seconds unwatchable. The
+     drain is a percentage of each fighter's OWN max, so a boss with a 10x
+     pool is on exactly the same clock as the player and neither side can
+     wait the other out. Sustain decays alongside it (see sustainMul), or
+     a heal build would just top the tithe back off. */
   suddenDeath(dt){
     /* PvE stages legitimately run longer than a duel — six monsters is
        simply more health to chew through — so the fuse is longer there.
        It still exists: a stalled stage must not hang the run forever. */
     const SD_START = this.pve ? 55 : 30,
-          SD_FULL  = this.pve ? 85 : 55,
-          HARD_CAP = this.pve ? 110 : 75;
-    if(this.t < SD_START){ this.sudden = 0; this.sdPhase = 0; return; }
+          SD_FULL  = this.pve ? 85 : 55;
+    if(this.t < SD_START){ this.sudden = 0; this.sdPhase = 0; this.sdTicks = 0; return; }
     this.sudden = Math.min(1, (this.t - SD_START) / (SD_FULL - SD_START));
-    if(this.sdPhase === 0){ this.sdPhase = 1; this.emit('sudden',{}); }
+    if(this.sdPhase === 0){ this.sdPhase = 1; this.sdTicks = 0; this.emit('sudden',{}); }
 
-    /* arena burn: scales with the ramp, ignores mitigation and shields.
-       Keyed to HP_BASE rather than a fighter's own max, so a boss with a
-       10x health pool doesn't take 10x the arena damage.
+    /* One tithe the moment sudden death opens, then one every SD_PERIOD.
+       Derived from elapsed time rather than an accumulator, so a coarse
+       headless dt or a skip-to-end can never drop or double a tick. */
+    const due = Math.floor((this.t - SD_START) / SD_PERIOD) + 1;
+    while(this.sdTicks < due && this.over === null) this.tithe();
+  }
+  /* Charge every living fighter one sudden-death tithe.
 
-       Deliberately NOT gated on `immune`, unlike every other damage path.
-       This is the anti-stall mechanism; if invulnerability could hold it
-       off, a build with enough uptime would turn "the arena is closing"
-       into "the arena is closing for my opponent". Writes hp directly for
-       the same reason — routing it through raw() would pick up the gate. */
-    const burn = HP_BASE * 0.010 * this.sudden * dt;
-    for(const f of this.f){
-      if(f.dead) continue;
-      f.hp = Math.max(0, f.hp - burn);
-      if(f.hp <= 0) this.kill(f);
-    }
-    if(this.over !== null) return;
-    if(this.t >= HARD_CAP){
-      /* team-aggregate health fraction decides it, not a pairwise compare:
-         with unequal team sizes raw totals would just favour the crowd. */
-      this.sdPhase = 2;
-      const frac = t => {
-        const m = this.living(t);
-        if(!m.length) return -1;
-        return m.reduce((a,x)=>a+x.hp/x.max,0) / m.length;
-      };
-      const teams = [...new Set(this.f.map(x=>x.team))];
-      let bestT = null, bestV = -Infinity, tie = false;
-      for(const t of teams){
-        const v = frac(t);
-        if(v > bestV){ bestV = v; bestT = t; tie = false; }
-        else if(v === bestV) tie = true;
-      }
-      if(tie){ this.over = -1; this.emit('draw',{}); }   // true stalemate
-      else for(const f of this.f) if(f.team !== bestT) this.kill(f);
-    }
+     Deliberately NOT gated on `immune`, unlike every other damage path,
+     and it ignores shields. This is the anti-stall mechanism; if either
+     could hold it off, a build with enough uptime would turn "the arena is
+     closing" into "the arena is closing for my opponent". Writes hp
+     directly for the same reason — routing it through raw() would pick up
+     the immunity gate. */
+  tithe(){
+    this.sdTicks++;
+    const hurt = this.f.filter(f => !f.dead);
+    /* emitted before the damage lands, so the renderer can read each
+       fighter's pre-tithe hp and show what it actually took off */
+    this.emit('suddenTick', {n:this.sdTicks, frac:SD_FRAC, fighters:hurt});
+    for(const f of hurt) f.hp = Math.max(0, f.hp - f.max * SD_FRAC);
+    const doomed = hurt.filter(f => f.hp <= 0);
+    if(!doomed.length) return;
+    /* A tithe can empty both teams on the same tick — everyone drains at
+       the same relative rate, so it is a real outcome rather than a
+       curiosity. kill() would award the win to whichever team happened to
+       be emptied second, which is array order deciding a coin flip, so a
+       mutual wipe is called a draw instead. */
+    const wipe = !this.f.some(x => !x.dead && !x.minion && !doomed.includes(x));
+    for(const f of doomed) this.kill(f);
+    if(wipe && this.over !== -1){ this.over = -1; this.emit('draw',{}); }
   }
   /* sustain loses potency as sudden death ramps, or healing just cancels it */
   get sustainMul(){ return 1 - 0.85*this.sudden; }
 
+  /* ---- one fixed tick ---- */
   step(dt){
     if(this.over!==null) return;
     this.t += dt;
@@ -2282,12 +2302,30 @@ const World = {
         shake = 30; flashScr = 1; flashCol='#fff';
         break;
       }
-      /* sudden death: the arena itself starts burning both fighters down */
+      /* sudden death: the arena itself starts billing everyone still up */
       case 'sudden':
         sfx.sudden();
         sdBanner = 2.6;
-        log(`<b style="color:#ffb37a">SUDDEN DEATH</b> — the arena turns on both champions`);
+        log(`<b style="color:#ffb37a">SUDDEN DEATH</b> — the arena claims
+             ${Math.round(SD_FRAC*100)}% max hp from every survivor, every ${SD_PERIOD}s`);
         break;
+      /* one tithe landing. Without a beat of feedback the bars would just
+         lurch down on their own every five seconds with nothing on screen
+         to blame it on. */
+      case 'suddenTick': {
+        sfx.sudden();
+        shake = Math.min(26, shake + 8);
+        flashScr = 0.5; flashCol = '#ff7a4a';
+        for(const f of d.fighters){
+          if(f.dead) continue;
+          const amt = Math.min(f.hp, f.max * d.frac);
+          floats.push({x:f.x+rnd(14,-14), y:f.y-40, vy:-46, life:0.9, max:0.9,
+            txt:'-'+Math.round(amt), crit:false, col:'#ff8a5a'});
+          burst(f.x, f.y-8, '#ff6a3a', 10, 1.1);
+        }
+        log(`The arena takes its due — <b style="color:#ffb37a">${Math.round(d.frac*100)}%</b> max hp`);
+        break;
+      }
       case 'draw':
         log(`<b style="color:#cbb6ff">DRAW</b> — neither champion yields`);
         break;
@@ -3747,7 +3785,7 @@ function frame(now){
     ctx.globalAlpha = fade*0.7;
     ctx.fillStyle='#ffd9c9';
     ctx.font=`600 ${Math.round(VIEW.h*0.021)}px ui-sans-serif,system-ui,sans-serif`;
-    ctx.fillText('the arena burns both champions · healing falters', VIEW.w/2, cy+30);
+    ctx.fillText(`the arena claims ${Math.round(SD_FRAC*100)}% max hp every ${SD_PERIOD}s · healing falters`, VIEW.w/2, cy+30);
     ctx.restore();
   }
 }
@@ -4452,7 +4490,14 @@ const BOSS_NAMES = ['THE FIRST GATE','MARROW KING','THE LONG SILENCE',
                     'CHOIR OF ASH','WHAT WAITS BELOW'];
 
 function mobBuild(stage, tiers, nSkills){
-  const pool = SKILLS.filter(s => tiers.includes(s.tier));
+  /* Undying Will is off the table for every monster, bosses included. A
+     pack already gets its staying power from stacked health pools and
+     numbers; a second life on top of that reads to the player as a kill
+     that did not count, and on a boss it silently doubles the only health
+     bar that matters. Filtered out of the pool rather than blocked at cast
+     time, so a mob spends its one or two slots on something it can
+     actually use — the guard in Sim.saveUndying is the belt to this brace. */
+  const pool = SKILLS.filter(s => tiers.includes(s.tier) && s.fx !== 'undying');
   const out = [], used = new Set();
   for(let i=0;i<nSkills && pool.length;i++){
     let sk, guard = 0;
@@ -4613,7 +4658,7 @@ const Run = {
     /* The FIRST pick must be able to kill something. Opening a run with a
        pure buff leaves you with only a basic attack against a pack, which
        does not lose so much as refuse to end — the stage grinds to the
-       arena's hard cap. Every later offer is unrestricted. */
+       arena's tithe. Every later offer is unrestricted. */
     const opening = this.build.length === 0;
     const fresh = SKILLS.filter(s => !owned.has(s.id) && band.includes(s.tier)
                                   && (!opening || s.role > 0));
@@ -5077,14 +5122,18 @@ function showResult(){
   panelIdx = 0;
   renderSkillPanel(sim.f.filter(x=>!x.minion).map(f =>
     ({label:f.name, stats:f.stats, build:f.build})));
-  if(w === -1){                          // both fighters at identical hp on the cap
-    const [a,b] = sim.f;
+  if(w === -1){                          // the last tithe emptied every side at once
+    /* A draw is now always a mutual wipe, so both bars read 0. Naming the
+       fighters beats "both champions" — in a PvE stage there were never
+       two of them. */
+    const names = sim.f.filter(x=>!x.minion).map(f=>f.name).join(' · ');
     $('#winTxt').textContent = 'DRAW';
     $('#winTxt').style.color = '#cbb6ff';
     $('#winSub').innerHTML =
-      `Both champions stand at <b>${Math.ceil(a.hp)}</b> hp after ${clock}.<br>
-       Damage dealt — ${a.name}: <b>${Math.round(a.dealt)}</b> ·
-       ${b.name}: <b>${Math.round(b.dealt)}</b>`;
+      `The arena took its due from everyone still standing after ${clock}.<br>
+       <span style="color:#cbb6ff">${names}</span> — all fell on the same tithe.<br>
+       Damage dealt — ${sim.f.filter(x=>!x.minion)
+         .map(f=>`${f.name}: <b>${Math.round(f.dealt)}</b>`).join(' · ')}`;
     recordMatch(-1);
     show('result');
     return;
@@ -5121,7 +5170,9 @@ function randomBuild(){
   }
   return out;
 }
-function runHeadless(b1,b2,cap=90){
+/* cap sits past the ~75s a duel now needs to tithe a full pool to zero;
+   at 90 it was cutting off fights the new rule was still resolving. */
+function runHeadless(b1,b2,cap=130){
   const s = new Sim(b1,b2,null);
   const dt = 1/30;                        // coarser tick is fine headless
   let t = 0;
