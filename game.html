@@ -450,6 +450,79 @@ h1 span{
 .speedbar #bSkip{font-family:var(--sans); letter-spacing:.06em}
 .speedbar #bSkip:hover{color:var(--gold); border-color:#ffce5a55}
 
+/* ---------- champion select ----------
+   Three cards, each a live canvas portrait over its own text. The portrait
+   runs the SAME body renderer the arena uses, so what you pick here is
+   literally what walks into the fight — a static icon would be a promise
+   the arena then has to keep by hand. */
+#select{align-items:center; justify-content:center}
+.selwrap{width:min(1080px,100%); display:flex; flex-direction:column; gap:14px}
+.selhead{display:flex; align-items:baseline; gap:12px}
+.selhead h2{font:700 26px/1 var(--disp); letter-spacing:-.6px; margin:0}
+#champCards{display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
+.champ{
+  position:relative; border:1px solid var(--line); border-radius:16px; cursor:pointer;
+  background:linear-gradient(180deg,#111730,#080b1a); overflow:hidden;
+  display:flex; flex-direction:column; box-shadow:var(--pane-hi);
+  transition:transform .13s, box-shadow .22s, border-color .18s;
+}
+.champ:hover{transform:translateY(-4px); border-color:#3a4a7d}
+.champ:focus-visible{outline:none; box-shadow:var(--focus)}
+.champ.on{border-color:var(--ck); box-shadow:var(--pane-hi), 0 0 0 2px color-mix(in srgb,var(--ck) 34%,transparent),
+  0 22px 44px -26px #000, 0 0 40px -18px var(--ck)}
+/* the portrait sits in its own lit well so the body reads as a figure
+   standing in the arena rather than a sticker on a card */
+.champ .pv{
+  position:relative; height:158px; display:block; width:100%;
+  background:radial-gradient(120% 100% at 50% 62%, color-mix(in srgb,var(--ck) 17%,transparent), transparent 68%), #05070f;
+  border-bottom:1px solid #ffffff0d;
+}
+.champ .body{padding:13px 15px 15px; display:flex; flex-direction:column; gap:7px; flex:1}
+.champ .kick{font:700 9.5px/1 var(--sans); letter-spacing:.15em; text-transform:uppercase; color:var(--ck)}
+.champ .nm{font:750 19px/1.05 var(--disp); letter-spacing:-.4px}
+.champ .tag{font:600 10px/1 var(--sans); letter-spacing:.11em; text-transform:uppercase; color:var(--dim)}
+.champ .desc{font-size:12px; color:#a3adcd; line-height:1.45; flex:1}
+.champ .note{font-size:11px; color:#7f8ab0; line-height:1.4; border-top:1px solid var(--line-soft); padding-top:8px}
+.champ .note b{color:var(--ck); font-weight:700}
+.champ .key{
+  position:absolute; top:10px; right:10px; z-index:2; width:22px; height:22px; border-radius:7px;
+  border:1px solid #33406e; background:#0b1020cc; color:#93a0c8;
+  font:700 11px/20px var(--num); text-align:center; backdrop-filter:blur(4px);
+}
+.champ.on .key{color:#04060d; background:var(--ck); border-color:var(--ck)}
+.selfoot{display:flex; align-items:center; gap:12px}
+
+/* ---------- ultimate button (battle) ----------
+   Mirrors the speed bar on the opposite corner. This is the ONLY control
+   the player touches once the gate opens, so it gets real estate. */
+.ultbar{position:absolute; left:12px; bottom:12px; z-index:4; display:flex; gap:8px; align-items:flex-end}
+.ultbtn{
+  position:relative; min-width:132px; padding:7px 11px 8px; border-radius:13px; overflow:hidden;
+  border:1px solid color-mix(in srgb,var(--ck) 44%,#2a3560); cursor:pointer; text-align:left;
+  background:linear-gradient(180deg,#0b1020e8,#070a12ee); backdrop-filter:blur(8px);
+  box-shadow:var(--pane-hi), 0 8px 24px -12px #000, 0 0 26px -16px var(--ck);
+  color:var(--ink); font:inherit;
+  transition:transform .08s, box-shadow .2s, border-color .18s, opacity .2s;
+}
+.ultbtn .uk{font:700 9px/1 var(--sans); letter-spacing:.15em; text-transform:uppercase; color:var(--dim)}
+.ultbtn .un{font:750 12.5px/1.2 var(--sans); letter-spacing:.02em; color:color-mix(in srgb,var(--ck) 55%,#ffffff)}
+.ultbtn .us{font:700 9.5px/1 var(--num); letter-spacing:.08em; color:var(--mute); margin-top:3px}
+/* window timer: a bar that drains left-to-right while the ult is open */
+.ultbtn .uw{position:absolute; left:0; right:0; bottom:0; height:3px; background:var(--ck);
+  transform-origin:left; transform:scaleX(0); opacity:0}
+.ultbtn.ready{animation:ultpulse 1.9s ease-in-out infinite}
+.ultbtn.ready:hover{transform:translateY(-2px); border-color:var(--ck)}
+.ultbtn.live{border-color:var(--ck); animation:none;
+  box-shadow:var(--pane-hi), 0 0 0 2px color-mix(in srgb,var(--ck) 30%,transparent), 0 0 34px -12px var(--ck)}
+.ultbtn.live .uw{opacity:1}
+.ultbtn.spent{opacity:.34; cursor:default; animation:none; filter:grayscale(.7)}
+.ultbtn.ai{cursor:default; animation:none; min-width:0; padding:6px 10px}
+.ultbtn.ai .un{font-size:11.5px}
+@keyframes ultpulse{
+  0%,100%{box-shadow:var(--pane-hi), 0 8px 24px -12px #000, 0 0 22px -16px var(--ck)}
+  50%    {box-shadow:var(--pane-hi), 0 8px 24px -12px #000, 0 0 30px -8px var(--ck)}
+}
+
 /* ---------- result ---------- */
 #result{align-items:center; justify-content:center; text-align:center}
 #result .card{
@@ -591,6 +664,8 @@ th{color:var(--mute); font:600 9.5px/1 var(--sans); letter-spacing:.12em; text-t
   .timer{font-size:17px}
   #log{height:66px}
   #offCards{grid-template-columns:1fr}
+  #champCards{grid-template-columns:1fr}
+  .champ .pv{height:104px}
   /* narrow: the rails would crush the arena, so they go under it as two
      scrolling strips and the log gives up its height instead. Padding
      slots are pointless here — a horizontal strip has no ragged edge. */
@@ -645,6 +720,26 @@ th{color:var(--mute); font:600 9.5px/1 var(--sans); letter-spacing:.12em; text-t
       <div id="record"></div>
       <p class="sub" id="modeHint" style="font-size:11.5px;margin-top:14px;color:#5b6488">
         You draft, the AI drafts against you, then the bosses fight on their own.</p>
+    </div>
+  </section>
+
+  <!-- ============ CHAMPION SELECT ============ -->
+  <section class="screen" id="select">
+    <div class="selwrap">
+      <div class="selhead">
+        <span class="turnpill p1" id="selWho">PLAYER 1</span>
+        <h2>Choose your champion</h2>
+        <span class="grow"></span>
+        <span class="stats" id="selHint" style="color:#7d88ad"></span>
+        <button class="btn" id="selBack">Back</button>
+      </div>
+      <div id="champCards"></div>
+      <div class="selfoot">
+        <p class="sub" id="selNote" style="margin:0; max-width:none; font-size:11.5px; color:#5b6488">
+          One charge per battle, fired by hand. Your drafted skills still cast themselves.</p>
+        <span class="grow"></span>
+        <button class="btn pri" id="selGo" disabled>Confirm</button>
+      </div>
     </div>
   </section>
 
@@ -703,6 +798,7 @@ th{color:var(--mute); font:600 9.5px/1 var(--sans); letter-spacing:.12em; text-t
       <div id="stage">
         <canvas id="cv"></canvas>
         <div class="slowtag" id="slowtag">Critical</div>
+        <div class="ultbar" id="ultbar"></div>
         <div class="speedbar" id="speedbar">
           <button class="btn seg on" data-spd="1">1×</button>
           <button class="btn seg" data-spd="2">2×</button>
@@ -1153,6 +1249,53 @@ function identity(build){
   };
 }
 
+/* ═════════════════════════════════════════════════════════════
+   CHAMPIONS — the body you wear and the one button you press.
+
+   A champion is deliberately NOT a skill. Drafted skills fire themselves
+   on cooldown, which is the premise of the game: you build the machine,
+   then you watch it run. The ultimate is the single place that premise is
+   suspended, so it is kept structurally separate from `build` — no tier,
+   no gold cost, it never enters the pool, it cannot be fused.
+
+   One charge per match, and that is load-bearing. A cooldown would turn
+   every ultimate into "hold it for the next window"; a single charge makes
+   the press itself the decision, which is what all three are about.
+
+   `art` is read by drawFighter, `col` tints the body, the rest is combat
+   data. Shapes follow the reference sheet: hex / star / rings. */
+const CHAMPIONS = [
+  { id:'reversal', name:'REVERSAL', art:'hex', col:'#2e2a6e', acc:'#ffce5a',
+    tag:'Defensive counter',
+    kicker:'Reads danger.',
+    desc:'Opens a 1.8s window. Damage taken is stored instead of spent. When it '
+       + 'closes, half returns to you as healing and half detonates outward as a nova.',
+    note:'Worth exactly as much as the blow it eats — a shield absorbs a fixed '
+       + 'number, this grows with the hit. Mistime it and it is wasted.',
+    dur:1.8 },
+  { id:'totalforce', name:'TOTAL FORCE', art:'star', col:'#ffce5a', acc:'#ff9f6a',
+    tag:'Burst tempo',
+    kicker:'Reads opportunity.',
+    desc:'Every drafted skill comes off cooldown at once, and for 2.5s you cast '
+       + 'at triple speed.',
+    note:'Your build is the ammunition; this is only the trigger. Refresh four '
+       + 'skills now, or wait three seconds for six?',
+    dur:2.5, castMul:3 },
+  { id:'suppress', name:'SUPPRESSION', art:'rings', col:'#4ec3f5', acc:'#9fe6ff',
+    tag:'Control · theft',
+    kicker:'Reads the opponent.',
+    desc:'A 1.2s parry. Any attack that arrives is taken — ownership, team and '
+       + 'heading all flip, and it flies back at whoever threw it.',
+    note:'Not a reflect: the attack becomes yours, and so does the damage on '
+       + 'the end-of-match chart.',
+    dur:1.2 },
+];
+const CHAMP_BY_ID = {};
+for(const c of CHAMPIONS) CHAMP_BY_ID[c.id] = c;
+/* Unknown or missing id must still produce a playable fighter — a save
+   written before champions existed, and every monster, has none. */
+function champOf(id){ return CHAMP_BY_ID[id] || null; }
+
 class Fighter {
   constructor(side, build, name, opt={}){
     this.side = side; this.name = name;
@@ -1208,7 +1351,35 @@ class Fighter {
     this.stats = {};
     this.flash = 0; this.hitLag = 0; this.scaleP = 0;
     this.dead = false;
+    /* ---- champion ----
+       `champ` is the catalogue entry, or null: monsters and familiars have
+       none. `ultLeft` is charges, not a cooldown (see CHAMPIONS). `ultT`
+       counts the open window down; `ultStore` is Reversal's bank, held in
+       already-mitigated damage. */
+    this.champ = opt.champ ? champOf(opt.champ) : null;
+    this.ultLeft = this.champ ? 1 : 0;
+    this.ultT = 0;
+    this.ultStore = 0;
+    this.ultHits = 0;      // hits the window has eaten, for the VFX and the log
+    this.ultFlash = 0;     // renderer pulse, decays in step()
+    /* Who actually fed the bank. The nova is a counterattack, so it has to
+       reach them wherever they were standing when they threw it. */
+    this.ultSrc = new Set();
   }
+  /* Is this champion's window open? Checked by name rather than a shared
+     flag so two different windows can never be mistaken for each other. */
+  /* One assignment path for every caller (duel, hotseat, PvE, the AI).
+     Resets the whole ult block, so a rematch cannot inherit a spent charge
+     or a half-open window from the fight before it. */
+  setChamp(id){
+    this.champ = champOf(id);
+    this.ultLeft = this.champ ? 1 : 0;
+    this.ultT = 0; this.ultStore = 0; this.ultHits = 0; this.ultFlash = 0;
+    this.ultSrc.clear();
+    return this.champ;
+  }
+  ultActive(id){ return !!this.champ && this.champ.id === id && this.ultT > 0; }
+  get ultReady(){ return !!this.champ && this.ultLeft > 0 && !this.dead; }
   has(k){ return this.st[k] && this.st[k].t > 0; }
   val(k){ return this.has(k) ? this.st[k].v : 0; }
   /* Credit one skill with one contribution. `key` is a skill id, or a
@@ -1273,7 +1444,13 @@ class Fighter {
      Combo CDR is a straight multiplier on top, applied last. */
   get cdScale(){
     const base = Math.max(0.25, 1 + this.val('haste') - this.val('chill'));
-    return base * (1 + (this.combo ? this.combo.cdr : 0));
+    /* Total Force multiplies the finished figure rather than adding a haste
+       term, so it is worth exactly 3x whatever chill and haste are doing at
+       the time. Applied outside the 0.25 floor deliberately: that floor
+       exists to stop chill stacking into a lock, not to cap a burst the
+       player spent their one charge on. */
+    const ult = this.ultActive('totalforce') ? (this.champ.castMul || 3) : 1;
+    return base * (1 + (this.combo ? this.combo.cdr : 0)) * ult;
   }
 }
 Fighter._n = 0;
@@ -1384,6 +1561,25 @@ class Sim {
     d *= 1 - Math.min(0.55, tgt.val('dr') + tgt.val('reflect')*0.4 + tb.drFlat);
     d = Math.max(1, Math.round(d));
 
+    /* ---- Reversal: bank the hit instead of paying it ----
+       Sits AFTER mitigation and the crit roll but BEFORE shields, so what
+       is stored is the damage that would really have reached hp. That is
+       the identity of the skill: a shield absorbs a fixed number, this is
+       worth exactly as much as the blow it ate, so a crit Meteor Fall into
+       an open window is the best thing that can happen to you. Shields
+       underneath are left untouched and are still there afterwards.
+
+       Returns 0 early: no shield spend, no thorns return, no lifesteal for
+       the attacker, no hp change. Nothing landed, so nothing is credited. */
+    if(tgt.ultActive('reversal')){
+      tgt.ultStore += d;
+      tgt.ultHits++;
+      if(src && src !== tgt) tgt.ultSrc.add(src);
+      tgt.flash = 1;
+      this.emit('ultAbsorb', {f:tgt, src, amt:d, x:opt.x??tgt.x, y:opt.y??tgt.y, col:opt.col});
+      return 0;
+    }
+
     /* shields soak first (bleed pierces) */
     if(tgt.shield > 0 && !opt.pierce){
       const soak = Math.min(tgt.shield, d);
@@ -1448,6 +1644,183 @@ class Sim {
     this.emit('heal',{f, amt:f.hp});
     return true;
   }
+  /* ---- champion ultimate: the one manual input in the whole game ----
+     Returns true only if it actually fired, so the UI can refuse a click
+     (and skip the sound) rather than silently eating it. Every gate lives
+     here rather than in the button handler, because the AI calls this too
+     and both paths must obey the same rules.
+
+     Silence stops it. Stun and freeze do not: the two defensive ultimates
+     exist precisely to answer a burst window, and a burst window that opens
+     with a stun would make them unusable exactly when they matter. Silence
+     is the one CC whose stated identity is "no abilities", so it keeps it. */
+  fireUlt(f){
+    if(!f || f.dead || !f.champ || f.ultLeft <= 0) return false;
+    if(this.over !== null) return false;
+    if(f.has('silence')) return false;
+    if(f.ultT > 0) return false;                 // already running
+    f.ultLeft--;
+    f.scaleP = 1;
+    f.ultFlash = 1;
+    const c = f.champ;
+    this.emit('ultCast', {f, champ:c});
+
+    switch(c.id){
+      /* Reversal and Suppression are both windows: arm the timer and let
+         hit() and stepAct() do the work while it is open. */
+      case 'reversal':
+        f.ultT = c.dur; f.ultStore = 0; f.ultHits = 0;
+        f.ultSrc.clear();
+        break;
+      case 'suppress':
+        f.ultT = c.dur; f.ultHits = 0;
+        break;
+      /* Total Force resolves instantly; only the cast-speed buff has a
+         duration, and cdScale reads that straight off ultT. */
+      case 'totalforce': {
+        f.ultT = c.dur;
+        let n = 0;
+        for(let i=0;i<f.cds.length;i++){ if(f.cds[i] > 0) n++; f.cds[i] = 0; }
+        /* the basic attack rides the same clock; leaving it out made the
+           opening of the burst feel oddly gappy */
+        f.basicCd = 0;
+        this.emit('ultForce', {f, refreshed:n});
+        break;
+      }
+    }
+    return true;
+  }
+
+  /* ── AI ultimate ──
+     Only fighters flagged `autoUlt` are driven from here, so a human's
+     charge is never spent for them. One charge and no cooldown means the
+     interesting failure mode is hoarding: an AI that waits for a perfect
+     read never presses at all, so each heuristic has a floor that makes it
+     fire on a merely GOOD read, and a deadline that makes it fire on any
+     read at all once the fight is nearly over.
+
+     Deliberately unaware of the enemy's champion. Reading the opponent's
+     pick and countering it would be strictly stronger than anything a
+     player can do — they cannot see the AI's intent either. */
+  ultAI(f, dt){
+    if(!f.autoUlt || !f.ultReady || f.ultT > 0) return;
+    if(f.has('silence')) return;
+    f.ultWait = (f.ultWait || 0) + dt;
+    /* never in the first breath: an ult fired at t=0.2s reads as a scripted
+       opener rather than as a decision */
+    if(this.t < 2) return;
+    const foes = this.enemiesOf(f);
+    if(!foes.length) return;
+    const c = f.champ.id;
+
+    /* the deadline. Sudden death means the fight is ending one way or
+       another, and an unspent charge is worth nothing at all. */
+    const desperate = this.sdPhase > 0 || f.hp < f.max*0.22;
+
+    if(c === 'reversal'){
+      /* Bank what is already in the air. Only acts that will ARRIVE inside
+         the window count — a rain volley two seconds out is not this
+         window's problem. */
+      let inbound = 0;
+      for(const a of this.acts){
+        if(a.foe !== f || a.f.team === f.team) continue;
+        if(a.k === 'proj'){
+          const eta = Math.hypot(f.x-a.x, f.y-a.y) / Math.max(1, a.spd);
+          if(eta < f.champ.dur*0.8) inbound += a.dmg;
+        } else if(a.k === 'nova' || a.k === 'rain' || a.k === 'beam' || a.k === 'cone'){
+          inbound += a.dmg * (a.left || 1);
+        }
+      }
+      /* DoTs already burning are guaranteed income for the window */
+      for(const k of ['burn','bleed']){
+        const s = f.st[k];
+        if(s && s.t > 0) inbound += s.v * Math.min(s.t, f.champ.dur);
+      }
+      if(inbound > f.max*0.09 || (desperate && this.t > 8)) this.fireUlt(f);
+      return;
+    }
+
+    if(c === 'suppress'){
+      /* the window is short, so it only opens for something actually
+         arriving — and only for something worth taking */
+      for(const a of this.acts){
+        if(a.k !== 'proj' || a.basic || a.stolen) continue;
+        if(a.foe !== f || a.f.team === f.team) continue;
+        const eta = Math.hypot(f.x-a.x, f.y-a.y) / Math.max(1, a.spd);
+        if(eta < f.champ.dur*0.7 && a.dmg > f.max*0.025){ this.fireUlt(f); return; }
+      }
+      if(desperate && this.t > 12) this.fireUlt(f);
+      return;
+    }
+
+    if(c === 'totalforce'){
+      /* value is measured in cooldown actually erased, not in slots: three
+         skills a half-second from ready is a worse press than two that just
+         fired, and counting slots cannot tell those apart */
+      let owed = 0, worst = 0;
+      for(let i=0;i<f.build.length;i++){
+        const cd = f.cds[i];
+        if(cd > 0){ owed += cd; worst = Math.max(worst, cd); }
+      }
+      const total = f.build.reduce((s,b)=>s + BY_ID[b.id].cd, 0) || 1;
+      if((owed > total*0.55 && worst > 2.5) || (desperate && owed > total*0.3)) this.fireUlt(f);
+      return;
+    }
+  }
+
+  /* Called when a champion window closes. Reversal is the only one with a
+     payload; the others simply stop being open. */
+  endUlt(f){
+    const c = f.champ;
+    f.ultT = 0;
+    if(!c) return;
+    if(c.id === 'reversal'){
+      const stored = f.ultStore;
+      const fed = [...f.ultSrc];
+      f.ultStore = 0;
+      f.ultSrc.clear();
+      if(stored <= 0){ this.emit('ultFizzle', {f, champ:c}); return; }
+      /* Half back as healing, half outward as a nova. The split is what
+         stops it being strictly better than a shield in every matchup: a
+         whiffed window heals nothing AND detonates nothing.
+
+         The heal obeys sustainMul like every other heal, so sudden death
+         degrades it. The nova deliberately does not decay — the damage half
+         is a counterattack, not sustain, and letting the arena defuse it
+         would remove the comeback the skill exists for. */
+      const heal = Math.min(stored * 0.5 * this.sustainMul, f.max - f.hp);
+      if(heal > 0.5){
+        f.hp += heal; f.healed += heal;
+        f.credit('_ult', 'heal', heal);
+        this.emit('heal', {f, amt:heal});
+      }
+      const blast = stored * 0.5;
+      const hurt = [];
+      if(blast >= 1){
+        /* Routed through raw(), not hit(): the payload was already mitigated
+           on the way in, so running it through the pipeline again would tax
+           the same damage twice. It also must not crit — it is a return,
+           not a strike. */
+        /* Anyone who fed the bank is hit wherever they stand. A ranged
+           attacker walking away untouched from the damage it dealt you is
+           the one outcome this skill must never produce, and duellists open
+           at 500 apart, so a pure radius check whiffed every time.
+
+           The radius only adds bystanders on top of that. It stays finite
+           because each enemy in range takes the FULL blast rather than a
+           share of it, so removing the bound would quietly make a packed
+           PvE stage the ultimate's best matchup. */
+        const NOVA_R = 420;
+        for(const tg of this.enemiesOf(f)){
+          if(!fed.includes(tg) && dist(f, tg) > NOVA_R) continue;
+          this.raw(f, tg, blast, '_ult');
+          hurt.push(tg);
+        }
+      }
+      this.emit('ultNova', {f, stored, heal, blast, hit:hurt.length, fed:fed.length, champ:c});
+    }
+  }
+
   /* unmitigated chip damage (thorns, reflect, dots). src may be null for
      an orphaned DoT whose applier is already dead.
 
@@ -1469,6 +1842,16 @@ class Sim {
       return;
     }
     const d = Math.max(1, Math.round(amt));
+    /* Reversal eats chip damage too. A burn ticking into an open window is
+       small, but excluding it would mean a DoT-heavy opponent quietly
+       ignored the ultimate, which reads as a bug rather than a rule.
+       tithe() does not arrive here — see the comment there. */
+    if(tgt.ultActive('reversal')){
+      tgt.ultStore += d;
+      if(src && src !== tgt) tgt.ultSrc.add(src);
+      this.emit('ultAbsorb', {f:tgt, src, amt:d, x:tgt.x, y:tgt.y, col:null});
+      return;
+    }
     tgt.hp = Math.max(0, tgt.hp-d);
     if(src){ src.dealt += d; this.credit(src, key, 'dmg', d); }
     this.emit('tick',{tgt, dmg:d});
@@ -1766,6 +2149,12 @@ class Sim {
     /* emitted before the damage lands, so the renderer can read each
        fighter's pre-tithe hp and show what it actually took off */
     this.emit('suddenTick', {n:this.sdTicks, frac:SD_FRAC, fighters:hurt});
+    /* Written straight to hp, which is what keeps it out of Reversal's
+       absorption as well as out of immunity and shields. Not an oversight to
+       tidy up later: if the tithe could be banked, the correct play would be
+       to hold the window for the heartbeat every five seconds and convert
+       the anti-stalemate mechanic into a heal plus a free nova. The arena
+       closing is not an attack, so there is nothing there to reverse. */
     for(const f of hurt) f.hp = Math.max(0, f.hp - f.max * SD_FRAC);
     const doomed = hurt.filter(f => f.hp <= 0);
     if(!doomed.length) return;
@@ -1814,6 +2203,15 @@ class Sim {
       f.flash = Math.max(0, f.flash - dt*4.5);
       f.hitLag = Math.max(0, f.hitLag - dt);
       f.scaleP = Math.max(0, f.scaleP - dt*3);
+      f.ultFlash = Math.max(0, f.ultFlash - dt*2);
+      /* champion window. endUlt runs exactly once, on the tick the timer
+         crosses zero — Reversal's payout must not be able to fire twice, so
+         ultT is zeroed inside endUlt rather than here. */
+      if(f.ultT > 0){
+        f.ultT -= dt;
+        if(f.ultT <= 0) this.endUlt(f);
+      }
+      if(f.autoUlt) this.ultAI(f, dt);
       /* Soul Bind lives on .link (not .st), so tick it down here. When it
          lapses, clear both ends so a stale partner can't keep echoing. */
       if(f.link){
@@ -1893,6 +2291,52 @@ class Sim {
     this.updateActs(dt);
   }
 
+  /* ---- Suppression: take the attack off them ----
+     Called from stepAct the moment a hostile act reaches a fighter whose
+     parry window is open. Everything deciding "whose attack is this" lives
+     on the act, so the theft rewrites those fields rather than spawning a
+     replacement — a replacement would lose the projectile's element, level
+     and rider, which is most of what makes stealing a Meteor Fall feel like
+     anything.
+
+     Four things flip:
+       a.f        ownership. credit() reads this, so the stolen damage lands
+                  in the parrier's ledger and the end-of-match chart does not
+                  hand it to the thrower.
+       a.foe      the new target: whoever threw it.
+       heading    trail and velocity reverse, so it visibly turns around.
+       a.stolen   marks it, so two Suppression champions cannot volley the
+                  same projectile between them forever.
+
+     `a.dmg` is deliberately unchanged. The attack is worth what its owner
+     paid for it; scaling it here would be a second balance number to
+     maintain for no gain. */
+  stealAct(a, by){
+    const from = a.f;
+    a.f = by;
+    a.foe = from;
+    a.stolen = true;
+    a.noVamp = true;              // their lifesteal rider must not heal you
+    /* the ledger key follows ownership: the damage is now the parrier's,
+       booked to the champion rather than to a skill they never drafted */
+    a.stolenKey = '_ult';
+    /* Reverse the flight so it reads as a rebound rather than a teleport.
+       drawActs derives a projectile's heading from the last two trail
+       samples, so mirroring the whole ribbon about the impact point turns
+       the drawn body around as well as the motion. */
+    if(a.trail && a.trail.length >= 2){
+      const hx = a.x, hy = a.y;
+      for(let i=0;i<a.trail.length;i+=2){
+        a.trail[i]   = hx*2 - a.trail[i];
+        a.trail[i+1] = hy*2 - a.trail[i+1];
+      }
+    }
+    if(a.life !== undefined) a.life = Math.max(a.life, 2.2);   // room to fly back
+    by.ultHits++;
+    this.emit('ultSteal', {f:by, from, a, x:a.x, y:a.y});
+    return true;
+  }
+
   updateActs(dt){
     for(let i=this.acts.length-1;i>=0;i--){
       const a = this.acts[i];
@@ -1923,8 +2367,16 @@ class Sim {
         a.x += (dx/L)*a.spd*dt; a.y += (dy/L)*a.spd*dt + wob;
         a.trail.push(a.x,a.y); if(a.trail.length>26) a.trail.splice(0,2);
         if(Math.hypot(foe.x-a.x,(foe.y-8)-a.y) < 34){
+          /* The parry runs before the hit resolves, so a stolen projectile
+             never damages the parrier at all. Basics are excluded: letting a
+             1.2s window steal a stray punch would waste the charge on noise. */
+          if(foe.ultActive('suppress') && !a.stolen && !a.basic){
+            this.stealAct(a, foe);
+            return true;
+          }
           const dl = this.hit(f,foe,a.dmg,{col:sk.col,x:a.x,y:a.y,kind:'impact',
-            exec:sk.fx==='exec', pierce:sk.pierce, noVamp:a.noVamp, key:sk.id});
+            exec:sk.fx==='exec', pierce:sk.pierce, noVamp:a.noVamp,
+            key:a.stolen ? a.stolenKey : sk.id});
           this.rider(sk,lvl,f,foe,dl);
           this.emit('burst',{x:a.x,y:a.y,col:sk.col,n:a.basic?9:22,pow:a.basic?1:1.7,el:elemOf(sk)});
           return false;
@@ -2391,6 +2843,108 @@ const World = {
       case 'draw':
         log(`<b style="color:#cbb6ff">DRAW</b> — neither champion yields`);
         break;
+
+      /* ══ CHAMPION ULTIMATES ══
+         These are the only hand-fired events in the game, so they are
+         allowed to be louder than anything a skill does. The player pressed
+         a button; the screen has to answer. */
+      case 'ultCast': {
+        const f = d.f, c = d.champ;
+        sfx.ult(c.id);
+        shake = Math.min(26, shake + 7);
+        flashScr = 0.5; flashCol = c.acc;
+        rings.push({x:f.x, y:f.y, r:16, vr:520, life:.45, max:.45, col:'#fff', w:4});
+        rings.push({x:f.x, y:f.y, r:8,  vr:250, life:.7,  max:.7,  col:c.acc, w:9});
+        for(let i=0;i<26;i++){ const a = i*TAU/26;
+          spawn({x:f.x, y:f.y, vx:Math.cos(a)*rnd(400,220), vy:Math.sin(a)*rnd(400,220),
+            col:c.acc, life:.4, r:2.6, drag:.85, sh:'streak', add:true}); }
+        log(`${f.name} — <b style="color:${c.acc}">${c.name}</b>`);
+        break;
+      }
+      /* Reversal ate a hit. This has to look like a REFUSAL, not like a
+         hit that missed: the number still appears, but gold and rising,
+         and it is the ward that flashes rather than the body. */
+      case 'ultAbsorb': {
+        const f = d.f;
+        sfx.absorb();
+        floats.push({x:f.x+rnd(16,-16), y:f.y-34, vy:-44, life:.85, max:.85,
+          txt:'+'+Math.round(d.amt), col:'#ffce5a'});
+        rings.push({x:f.x, y:f.y, r:56, vr:-150, life:.34, max:.34, col:'#ffce5a', w:3});
+        for(let i=0;i<10;i++){ const a = rnd(TAU);
+          spawn({x:f.x+Math.cos(a)*62, y:f.y+Math.sin(a)*62,
+            vx:-Math.cos(a)*230, vy:-Math.sin(a)*230, col:'#ffce5a',
+            life:.32, r:rnd(3.2,1.4), drag:.88, add:true}); }
+        shake = Math.min(26, shake + 1.6);
+        break;
+      }
+      /* the payout: everything banked leaves at once */
+      case 'ultNova': {
+        const f = d.f;
+        sfx.nova();
+        Time.slowmo(f.x, f.y);
+        shake = Math.min(26, shake + 16);
+        flashScr = 0.95; flashCol = '#ffce5a';
+        rings.push({x:f.x, y:f.y, r:20, vr:1250, life:.55, max:.55, col:'#fff', w:6});
+        rings.push({x:f.x, y:f.y, r:12, vr:820,  life:.8,  max:.8,  col:'#ffce5a', w:16});
+        burst(f.x, f.y, '#ffffff', 34, 2.8); burst(f.x, f.y, '#ffce5a', 46, 2.5);
+        smoke(f.x, f.y, '#3a2a12', 10);
+        for(let s=0;s<14;s++){ const a = s*TAU/14;
+          spawn({x:f.x, y:f.y, vx:Math.cos(a)*rnd(760,520), vy:Math.sin(a)*rnd(760,520),
+            col:'#fff', life:.34, r:3, drag:.82, sh:'streak', add:true}); }
+        log(`<b style="color:#ffce5a">REVERSAL</b> — ${Math.round(d.stored)} stored ·
+             ${Math.round(d.heal)} healed · ${Math.round(d.blast)} returned to ${d.hit}`);
+        break;
+      }
+      /* a window that ate nothing. It must be visibly, audibly WASTED —
+         a silent no-op would read as a bug rather than as a misplay. */
+      case 'ultFizzle': {
+        const f = d.f;
+        sfx.fizzle();
+        floats.push({x:f.x, y:f.y-46, vy:-30, life:1, max:1, txt:'WASTED', col:'#6b7398'});
+        rings.push({x:f.x, y:f.y, r:58, vr:-90, life:.4, max:.4, col:'#6b7398', w:2});
+        log(`<b style="color:#8b93b8">REVERSAL</b> — nothing arrived. The window closes empty.`);
+        break;
+      }
+      /* the theft. Two bursts: white at the catch, cyan trailing after the
+         projectile as it turns — the eye needs to be told to follow it back. */
+      case 'ultSteal': {
+        sfx.steal();
+        Time.slowmo(d.x, d.y);
+        shake = Math.min(26, shake + 9);
+        flashScr = 0.7; flashCol = '#9fe6ff';
+        rings.push({x:d.x, y:d.y, r:10, vr:640, life:.42, max:.42, col:'#fff', w:5});
+        rings.push({x:d.x, y:d.y, r:34, vr:-220, life:.4, max:.4, col:'#4ec3f5', w:4});
+        burst(d.x, d.y, '#dff4ff', 22, 2.2);
+        for(let s=0;s<12;s++){ const a = s*TAU/12;
+          spawn({x:d.x, y:d.y, vx:Math.cos(a)*rnd(520,300), vy:Math.sin(a)*rnd(520,300),
+            col:'#9fe6ff', life:.3, r:2.4, drag:.84, sh:'streak', add:true}); }
+        floats.push({x:d.x, y:d.y-40, vy:-38, life:.95, max:.95, txt:'TAKEN', col:'#9fe6ff'});
+        log(`<b style="color:#4ec3f5">SUPPRESSION</b> — ${d.f.name} takes
+             ${d.a.sk && d.a.sk.name ? d.a.sk.name : 'the attack'} off ${d.from.name}`);
+        break;
+      }
+      /* every cooldown emptied at once — the feedback is the RAIL, because
+         that is where the player will look to see what they just bought */
+      case 'ultForce': {
+        const f = d.f;
+        sfx.force();
+        shake = Math.min(26, shake + 10);
+        flashScr = 0.8; flashCol = '#ffce5a';
+        rings.push({x:f.x, y:f.y, r:14, vr:900, life:.5, max:.5, col:'#ffce5a', w:5});
+        rings.push({x:f.x, y:f.y, r:70, vr:-260, life:.42, max:.42, col:'#fff', w:3});
+        burst(f.x, f.y, '#ffce5a', 30, 2.3);
+        for(let i=0;i<Math.max(4, f.build.length);i++){
+          const a = i*TAU/Math.max(4, f.build.length);
+          spawn({x:f.x+Math.cos(a)*90, y:f.y+Math.sin(a)*90,
+            vx:-Math.cos(a)*300, vy:-Math.sin(a)*300, col:'#ff9f6a',
+            life:.38, r:3.2, drag:.86, sh:'streak', add:true});
+        }
+        floats.push({x:f.x, y:f.y-48, vy:-40, life:1, max:1,
+          txt:d.refreshed ? `${d.refreshed} READY` : 'HASTE', col:'#ffce5a'});
+        log(`<b style="color:#ffce5a">TOTAL FORCE</b> — ${d.refreshed} skill${d.refreshed===1?'':'s'}
+             refreshed · triple cast speed`);
+        break;
+      }
     }
   }
 };
@@ -2418,21 +2972,187 @@ function log(html){
   while(el.children.length>7) el.lastChild.remove();
 }
 /* ---------- drawing ---------- */
-function glow(x,y,r,col,a=1){
-  const g = ctx.createRadialGradient(x,y,0,x,y,r);
+function glowOn(c,x,y,r,col,a=1){
+  const g = c.createRadialGradient(x,y,0,x,y,r);
   g.addColorStop(0, col); g.addColorStop(0.35, col+'88'); g.addColorStop(1, col+'00');
-  ctx.globalAlpha = a; ctx.fillStyle = g;
-  ctx.beginPath(); ctx.arc(x,y,r,0,TAU); ctx.fill(); ctx.globalAlpha = 1;
+  c.globalAlpha = a; c.fillStyle = g;
+  c.beginPath(); c.arc(x,y,r,0,TAU); c.fill(); c.globalAlpha = 1;
 }
+function glow(x,y,r,col,a=1){ glowOn(ctx,x,y,r,col,a); }
+
+/* ═══════════════════════════════════════════════════════════════
+   CHAMPION BODIES
+
+   Three silhouettes, one per ultimate, and the silhouette is the tell:
+   you should be able to name the ultimate you are facing from across
+   the arena before it ever fires. Each entry also owns its bob, because
+   weight is motion — the hexagon cannot read as heavy if it bobs at the
+   same rate as the star.
+
+   Every function takes an explicit context `c` and draws in local space
+   (already translated to the fighter and scaled). That is what lets the
+   select screen animate the same bodies on its own little canvases:
+   the portrait you pick from is the renderer you get, not a drawing of it.
+
+   `base` stays the side colour and always survives as a rim, so P1 and P2
+   never blur together in a mirror match.
+   ═══════════════════════════════════════════════════════════════ */
+const CHAMP_ART = {
+
+  /* REVERSAL — a hexagonal keep. Everything here is weight: the core
+     turns slowly, the bob is long, and six armour plates ride the
+     OPPOSITE direction, so the silhouette is permanently turning
+     against itself. A body that looks like it is bracing. */
+  hex: {
+    bobF: 0.55, bobA: 6.5,
+    pal: { core:'#3a3590', deep:'#211d5c', edge:'#ffce5a' },
+    draw(c, t, R, P){
+      const A = this.pal, hurt = P.hurt;
+      /* plates first: the core then sits on top and reads as the thing
+         being guarded rather than as decoration between them */
+      const pr = R*1.44, half = 0.29;
+      for(let i=0;i<6;i++){
+        const a = -t*0.44 + i*TAU/6;
+        c.beginPath();
+        c.arc(0,0, pr+6.5, a-half, a+half);
+        c.arc(0,0, pr-6.5, a+half, a-half, true);
+        c.closePath();
+        c.globalAlpha = 0.80; c.fillStyle = A.edge; c.fill();
+        c.globalAlpha = 1; c.lineWidth = 1.2; c.strokeStyle = '#05070f'; c.stroke();
+        c.beginPath(); c.arc(Math.cos(a)*pr, Math.sin(a)*pr, 1.8, 0, TAU);
+        c.globalAlpha = 0.8; c.fillStyle = '#fff8e0'; c.fill(); c.globalAlpha = 1;
+      }
+      /* three stacked hexagons — the stack is what gives it thickness */
+      for(let L=0;L<3;L++){
+        const rr = R*(1 - L*0.21), rot = t*0.20 + L*0.09;
+        c.beginPath();
+        for(let i=0;i<6;i++){
+          const a = rot + i*TAU/6, px = Math.cos(a)*rr, py = Math.sin(a)*rr;
+          i ? c.lineTo(px,py) : c.moveTo(px,py);
+        }
+        c.closePath();
+        c.globalAlpha = 0.62 + L*0.19;
+        c.fillStyle = L===2 ? A.edge : (L ? A.core : A.deep);
+        c.fill(); c.globalAlpha = 1;
+        c.lineWidth = 2.1 - L*0.55;
+        c.strokeStyle = hurt>0 ? '#ffffff' : (L===0 ? A.edge : A.core);
+        c.stroke();
+      }
+      c.beginPath();
+      for(let i=0;i<6;i++){
+        const a = t*0.20 + i*TAU/6, px = Math.cos(a)*R*1.10, py = Math.sin(a)*R*1.10;
+        i ? c.lineTo(px,py) : c.moveTo(px,py);
+      }
+      c.closePath();
+      c.globalAlpha = 0.9; c.lineWidth = 1.5; c.strokeStyle = P.base; c.stroke();
+      c.globalAlpha = 1;
+    }
+  },
+
+  /* TOTAL FORCE — a spiked star mid-spin with its shards held CLOSE.
+     Fast rotation and a tight orbit: this is a body that already looks
+     like it is casting, which is exactly what the ultimate turns it into. */
+  star: {
+    bobF: 1.9, bobA: 3.2, orbits: false,
+    pal: { core:'#ffce5a', deep:'#c8791f', edge:'#fff3cf' },
+    draw(c, t, R, P){
+      const A = this.pal, hurt = P.hurt;
+      /* seven shards, radius ~1.1R — close enough to read as one object */
+      for(let i=0;i<7;i++){
+        const a = -t*3.3 + i*TAU/7;
+        const rr = R*1.13 + Math.sin(t*7.5 + i*1.7)*4;
+        const px = Math.cos(a)*rr, py = Math.sin(a)*rr;
+        c.save(); c.translate(px,py); c.rotate(a + Math.PI/2);
+        c.beginPath(); c.moveTo(0,-6.5); c.lineTo(3.4,3.5); c.lineTo(-3.4,3.5);
+        c.closePath();
+        c.globalAlpha = 0.92; c.fillStyle = P.acc; c.fill();
+        c.globalAlpha = 1; c.lineWidth = 0.9; c.strokeStyle = '#05070f'; c.stroke();
+        c.restore();
+        /* motion streak behind each shard — the speed IS the character */
+        c.beginPath();
+        c.arc(0,0, rr, a+0.10, a+0.40);
+        c.globalAlpha = 0.30; c.lineWidth = 2.2; c.strokeStyle = A.edge; c.stroke();
+        c.globalAlpha = 1;
+      }
+      const spin = t*2.5, pts = 8, puls = 1 + Math.sin(t*9)*0.035;
+      for(let L=0;L<2;L++){
+        c.beginPath();
+        for(let i=0;i<pts*2;i++){
+          const a = spin*(L?-0.5:1) + i*Math.PI/pts;
+          const rr = (i%2 ? R*0.46 : R*1.02*(L?0.66:1)) * puls;
+          const px = Math.cos(a)*rr, py = Math.sin(a)*rr;
+          i ? c.lineTo(px,py) : c.moveTo(px,py);
+        }
+        c.closePath();
+        c.globalAlpha = L ? 0.95 : 0.85;
+        c.fillStyle = L ? A.edge : A.core; c.fill();
+        c.globalAlpha = 1; c.lineWidth = L ? 1 : 1.9;
+        c.strokeStyle = hurt>0 ? '#ffffff' : (L ? A.core : A.deep); c.stroke();
+      }
+      c.beginPath(); c.arc(0,0, R*0.20, 0, TAU);
+      c.fillStyle = '#fff'; c.globalAlpha = 0.75 + Math.sin(t*11)*0.2; c.fill();
+      c.globalAlpha = 1;
+      c.beginPath(); c.arc(0,0, R*1.06, 0, TAU);
+      c.globalAlpha = 0.55; c.lineWidth = 1.4; c.strokeStyle = P.base; c.stroke();
+      c.globalAlpha = 1;
+    }
+  },
+
+  /* SUPPRESSION — concentric rings, many layers, all of them slow. It is
+     the only one of the three that does not look like it is doing
+     anything, which is the point: it is waiting for you to commit. */
+  rings: {
+    bobF: 0.75, bobA: 4.2,
+    pal: { core:'#4ec3f5', deep:'#12496e', edge:'#dff4ff' },
+    draw(c, t, R, P){
+      const A = this.pal, hurt = P.hurt;
+      const SPEC = [[1.20, -0.19, 0.62], [0.98, 0.26, 0.78],
+                    [0.74, -0.34, 0.92], [0.52, 0.44, 1.18]];
+      for(let i=0;i<SPEC.length;i++){
+        const [rf, sp, gap] = SPEC[i];
+        const rr = R*rf*(1 + Math.sin(t*0.9 + i)*0.022);
+        const a0 = t*sp + i*0.7;
+        c.beginPath(); c.arc(0,0, rr, a0, a0 + TAU - gap);
+        c.globalAlpha = 0.34 + i*0.15;
+        c.lineWidth = 4.2 - i*0.55;
+        c.strokeStyle = hurt>0 ? '#ffffff' : (i%2 ? P.acc : A.core);
+        c.lineCap = 'round'; c.stroke(); c.lineCap = 'butt';
+        c.globalAlpha = 1;
+        /* one node per ring marks where the gap closes, so the slow
+           rotation is legible instead of looking like a static circle */
+        const nx = Math.cos(a0)*rr, ny = Math.sin(a0)*rr;
+        c.beginPath(); c.arc(nx, ny, 2.6 - i*0.3, 0, TAU);
+        c.fillStyle = A.edge; c.globalAlpha = 0.85; c.fill(); c.globalAlpha = 1;
+      }
+      c.beginPath(); c.arc(0,0, R*0.30, 0, TAU);
+      c.fillStyle = A.deep; c.globalAlpha = 0.95; c.fill();
+      c.globalAlpha = 1; c.lineWidth = 1.6;
+      c.strokeStyle = hurt>0 ? '#fff' : A.core; c.stroke();
+      c.beginPath(); c.arc(0,0, R*0.13, 0, TAU);
+      c.fillStyle = A.edge; c.globalAlpha = 0.7 + Math.sin(t*2.2)*0.2; c.fill();
+      c.globalAlpha = 1;
+      c.beginPath(); c.arc(0,0, R*1.34, 0, TAU);
+      c.globalAlpha = 0.5; c.lineWidth = 1.3; c.strokeStyle = P.base; c.stroke();
+      c.globalAlpha = 1;
+    }
+  },
+};
+function champArt(f){ return (f && f.champ && CHAMP_ART[f.champ.art]) || null; }
 
 
 function drawFighter(f, t){
-  const R = 34, bob = Math.sin(t*1.6 + f.side*3)*5;
+  /* A champion owns its own bob: the hexagon has to feel heavy and the
+     star has to feel fast, and rate is most of what carries that. */
+  const CA = champArt(f);
+  const R = 34;
+  const bob = Math.sin(t*(CA ? CA.bobF : 1.6) + f.side*3) * (CA ? CA.bobA : 5);
   const x = f.x, y = f.y + bob;
   /* side colour stays the primary read (you must never confuse the two
      fighters); the build's accent shows in the shards and the sigil */
   const base = f.side ? '#ff5d7a' : '#5fd0ff';
-  const acc = f.accent || base;
+  /* a champion's accent is its own — that colour is the promise the
+     select screen made, and the arena has to keep it */
+  const acc = (f.champ && f.champ.acc) || f.accent || base;
   const hurt = f.flash;
   const sc = 1 + f.scaleP*0.16 - hurt*0.06;
 
@@ -2451,8 +3171,9 @@ function drawFighter(f, t){
   ctx.save();
   ctx.translate(x,y); ctx.scale(sc,sc);
 
-  /* orbiting shards — carry the build accent so the kit is readable */
-  const orbs = 3;
+  /* orbiting shards — carry the build accent so the kit is readable.
+     Total Force draws its own tight orbit and would otherwise wear two. */
+  const orbs = (CA && CA.orbits === false) ? 0 : 3;
   for(let i=0;i<orbs;i++){
     const a = t*1.25*(f.side?-1:1) + i*TAU/orbs;
     const rr = R*1.85 + Math.sin(t*2+i)*5;
@@ -2475,7 +3196,11 @@ function drawFighter(f, t){
   ctx.stroke();
   ctx.restore();
 
-  /* core body — layered rotating polygons */
+  /* core body. A champion replaces the generic polygon stack outright —
+     the silhouette is the whole point of picking one. */
+  if(CA){
+    CA.draw(ctx, t, R, {base, acc, hurt});
+  } else
   for(let L=0;L<3;L++){
     const rr = R*(1-L*0.22), sides = 6, rot = t*(0.4+L*0.35)*(L%2?-1:1);
     ctx.beginPath();
@@ -2497,6 +3222,62 @@ function drawFighter(f, t){
   if(hurt>0){
     ctx.globalAlpha = hurt*0.7; ctx.fillStyle='#fff';
     ctx.beginPath(); ctx.arc(0,0,R,0,TAU); ctx.fill(); ctx.globalAlpha=1;
+  }
+  /* ── open ultimate window ──
+     Whether a window is OPEN is the single most decision-relevant fact on
+     the board for both players, so it gets a full-body treatment and not a
+     corner icon. Each shape says what it does: Reversal fills as it banks
+     damage, Suppression sweeps like a radar looking for something to catch. */
+  if(f.ultT > 0 && f.champ){
+    const c = f.champ, k = clamp(f.ultT / (c.dur||1), 0, 1);
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    if(c.id === 'reversal'){
+      /* the ward brightens with what it has eaten — a full one is a threat */
+      const load = clamp(f.ultStore / (f.max*0.25), 0, 1);
+      ctx.strokeStyle = '#ffce5a'; ctx.lineWidth = 2.4 + load*3;
+      ctx.globalAlpha = 0.55 + load*0.4;
+      ctx.beginPath();
+      for(let i=0;i<=6;i++){
+        const a = t*0.5 + i*TAU/6, rr = R*1.72;
+        const px = Math.cos(a)*rr, py = Math.sin(a)*rr;
+        i ? ctx.lineTo(px,py) : ctx.moveTo(px,py);
+      }
+      ctx.closePath(); ctx.stroke();
+      ctx.globalAlpha = 0.10 + load*0.30; ctx.fillStyle = '#ffce5a'; ctx.fill();
+      glow(0, 0, R*(2.0 + load*0.9), '#ffce5a', 0.20 + load*0.35);
+    } else if(c.id === 'suppress'){
+      /* a sweeping radar arc: it is hunting for something to take */
+      const sw = t*5.5;
+      ctx.strokeStyle = '#9fe6ff'; ctx.lineWidth = 2.2; ctx.globalAlpha = 0.85;
+      ctx.beginPath(); ctx.arc(0,0, R*1.68, sw, sw + TAU*0.30); ctx.stroke();
+      ctx.beginPath(); ctx.arc(0,0, R*1.68, sw + Math.PI, sw + Math.PI + TAU*0.30); ctx.stroke();
+      ctx.globalAlpha = 0.42; ctx.lineWidth = 1.3;
+      ctx.beginPath(); ctx.arc(0,0, R*1.96, 0, TAU); ctx.stroke();
+      glow(0, 0, R*2.1, '#4ec3f5', 0.26);
+    } else if(c.id === 'totalforce'){
+      /* haste lines: short radial ticks spinning fast, one per skill slot */
+      const n = Math.max(4, f.build.length);
+      ctx.strokeStyle = '#ffce5a'; ctx.lineWidth = 2; ctx.globalAlpha = 0.5 + k*0.35;
+      for(let i=0;i<n;i++){
+        const a = t*6.5 + i*TAU/n;
+        ctx.beginPath();
+        ctx.moveTo(Math.cos(a)*R*1.5, Math.sin(a)*R*1.5);
+        ctx.lineTo(Math.cos(a)*R*1.92, Math.sin(a)*R*1.92);
+        ctx.stroke();
+      }
+      glow(0, 0, R*2.2, '#ffce5a', 0.16 + k*0.2);
+    }
+    ctx.restore();
+  }
+  /* the cast flare, kept separate from the window so a Total Force —
+     which has no window to speak of — still punches on the frame it fires */
+  if(f.ultFlash > 0){
+    const uf = f.ultFlash;
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    ctx.globalAlpha = uf*0.8;
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = 2 + uf*3;
+    ctx.beginPath(); ctx.arc(0, 0, R*(1.3 + (1-uf)*1.9), 0, TAU); ctx.stroke();
+    ctx.restore();
   }
   /* shield bubble */
   if(f.shield>0){
@@ -4140,6 +4921,82 @@ function syncHud(){
   /* right rail: one opponent's skills in a duel, the monster roster in PvE */
   if(sim.pve) syncRoster(slots);
   else if(foes[0]) syncRail(1, foes[0], slots);
+  syncUltBar();
+}
+
+/* ── ultimate bar ──
+   The one control the player still holds once the gate opens, so it is a
+   real button rather than a status readout: pressable, keyboard-bound, and
+   loud about whether it is ready.
+
+   Rebuilt only when the SET of buttons changes; every frame after that it
+   just updates classes and the window bar. Rebuilding each frame would
+   restart the ready-pulse animation continuously and it would never pulse. */
+const ultState = { sig:null, btns:[] };
+function syncUltBar(){
+  const host = $('#ultbar');
+  if(!host) return;
+  /* who gets a button: every champion the local machine is allowed to fire,
+     plus a read-only chip for an AI rival so its charge is not a secret */
+  const rows = [];
+  for(const f of sim.f){
+    if(!f.champ || f.minion) continue;
+    rows.push({f, mine: !f.autoUlt});
+  }
+  const sig = rows.map(r => r.f.uidTag + ':' + r.f.champ.id + ':' + r.mine).join('|');
+  if(sig !== ultState.sig){
+    ultState.sig = sig;
+    host.innerHTML = '';
+    ultState.btns = [];
+    rows.forEach(r=>{
+      const c = r.f.champ;
+      const el = document.createElement(r.mine ? 'button' : 'div');
+      el.className = 'ultbtn' + (r.mine ? '' : ' ai');
+      el.style.setProperty('--ck', c.acc);
+      const key = r.f.team === 0 ? 'Q' : 'P';
+      el.innerHTML = r.mine
+        ? `<div class="uk">Ultimate · ${key}</div><div class="un">${c.name}</div>
+           <div class="us"></div><div class="uw"></div>`
+        : `<div class="uk">Rival</div><div class="un">${c.name}</div><div class="uw"></div>`;
+      if(r.mine) el.onclick = ()=>tryUlt(r.f);
+      host.appendChild(el);
+      ultState.btns.push({el, f:r.f, mine:r.mine,
+        us:el.querySelector('.us'), uw:el.querySelector('.uw')});
+    });
+  }
+  for(const b of ultState.btns){
+    const f = b.f, live = f.ultT > 0;
+    b.el.classList.toggle('live', live);
+    b.el.classList.toggle('ready', !live && f.ultReady && b.mine);
+    b.el.classList.toggle('spent', !live && !f.ultReady);
+    b.uw.style.transform = live ? `scaleX(${clamp(f.ultT/(f.champ.dur||1),0,1)})` : 'scaleX(0)';
+    if(b.us){
+      /* while Reversal is open the useful number is not the clock, it is
+         how much is in the bank — that is what decides whether the payout
+         was worth the press */
+      b.us.textContent = live
+        ? (f.champ.id === 'reversal' ? `STORED ${Math.round(f.ultStore)}` : 'ACTIVE')
+        : (f.ultReady ? 'READY' : 'SPENT');
+    }
+  }
+}
+
+/* One gate for both input paths (button and key), so a click and a
+   keypress can never disagree about whether a press was legal. */
+function tryUlt(f){
+  if(!sim || sim.over !== null || !f || !f.champ) return;
+  if(!$('#battle').classList.contains('on')) return;
+  sfx.init();
+  if(!f.ultReady || f.ultT > 0){ sfx.resist(); return; }
+  /* silence is the one CC that blocks it, and a silenced press must SAY so
+     — otherwise a dead button reads as a broken button */
+  if(f.has('silence')){
+    sfx.resist();
+    flashMsg(`${f.name} is silenced`);
+    return;
+  }
+  sim.fireUlt(f);
+  syncUltBar();
 }
 
 /* One shared slot count: whichever side has more to show sets the height
@@ -4302,6 +5159,11 @@ const G = {
   shop:[], builds:[null,null],
   pool:[],           // shared finite card pool
   vsAI:true,         // player 2 is drafted by the AI
+  /* champion ids, one per side. Kept OUT of `builds` on purpose: a champion
+     has no tier, no gold cost, never enters the pool and cannot be fused, so
+     folding it into the build array would mean special-casing it in every
+     loop that walks a loadout. */
+  champs:[null,null],
 };
 
 function rollTier(round){
@@ -4712,6 +5574,10 @@ function resetBattleFx(){
      already padded to the right height */
   for(const h of [$('#sk1'), $('#sk2')]){ h._slots = null; h._real = null; }
   $('#cc1').textContent=''; $('#cc2').textContent='';
+  /* the bar caches by fighter identity too, and a rematch makes new
+     Fighters — without this the buttons would still point at the corpses
+     of the last fight */
+  ultState.sig = null; ultState.btns = []; $('#ultbar').innerHTML = '';
   $('#rail1').classList.remove('gag'); $('#rail2').classList.remove('gag');
   World.headless = false;
 }
@@ -4722,6 +5588,14 @@ function beginBattle(){
   const [n1,n2] = Save.data.names;
   $('#n1').textContent = n1; $('#n2').textContent = n2;
   sim = new Sim(G.builds[0], G.builds[1], World);
+  /* assigned after construction rather than through the constructor: the
+     balance harness builds Sims with no champions at all and must keep
+     producing the same numbers it always did */
+  sim.f[0].setChamp(G.champs[0]);
+  sim.f[1].setChamp(G.champs[1]);
+  /* in hotseat BOTH sides are human, so nothing is auto-fired; in 1P the
+     rival needs a hand on its own button */
+  sim.f[1].autoUlt = G.vsAI;
   /* epithet is derived from the drafted kit, so it changes run to run */
   $('#n1').innerHTML = `${sim.f[0].name} <i style="opacity:.7;font-weight:500">${sim.f[0].title}</i>`;
   $('#n2').innerHTML = `<i style="opacity:.7;font-weight:500">${sim.f[1].title}</i> ${sim.f[1].name}`;
@@ -4887,6 +5761,7 @@ const Run = {
     resetBattleFx();
     const nm = Save.data.names[0] || 'AZURE WARDEN';
     const player = new Fighter(0, this.build, nm, {team:0, hp: playerMaxHp(this.stage), x: ARENA_W/2, y: ARENA_H/2});
+    player.setChamp(G.champs[0]);
     player.hp = Math.max(1, Math.round(player.max * this.hpFrac));
     const pack = makePack(this.stage);
     sim = new Sim({fighters:[player, ...pack]}, null, World);
@@ -5190,6 +6065,46 @@ const sfx = {
   },
   sudden(){ [330,247].forEach((f,i)=>this.tone(f, 0.5, 'square', 0.20, f*0.6, i*0.3)); },
   win(){ [523,659,784,1047,1319].forEach((f,i)=>this.tone(f, 0.42, 'triangle', 0.22, null, i*0.1)); },
+
+  /* ── champion ultimates ──
+     One grammar, three readings. Every ult opens on the same rising
+     two-tone stab so "an ultimate just fired" is one recognisable sound,
+     then each id bends it: Reversal settles and holds (a door closing),
+     Total Force climbs (something winding up), Suppression inverts —
+     it falls, because the whole skill is a reversal of direction. */
+  ult(id){
+    this.tone(180, 0.10, 'square', 0.16, 300);
+    if(id === 'reversal'){
+      this.tone(330, 0.55, 'triangle', 0.20, 262, 0.05);
+      this.noise(0.30, 0.16, 380, 0.7, 0.04);
+    } else if(id === 'totalforce'){
+      [392,523,659,880].forEach((f,i)=>this.tone(f, 0.22, 'sawtooth', 0.15, null, 0.04+i*0.045));
+    } else {
+      this.tone(880, 0.42, 'sine', 0.18, 330, 0.05);
+      this.noise(0.18, 0.14, 2200, 1.8, 0.04);
+    }
+  },
+  /* small, dry and metallic — a blow landing on something that refuses it */
+  absorb(){ this.tone(520, 0.09, 'square', 0.10, 720); this.noise(0.05, 0.10, 1800, 1.4); },
+  /* the payout borrows the crit recipe deliberately: it IS the big moment */
+  nova(){
+    this.noise(0.22, 0.5, 220, 0.55);
+    this.tone(110, 0.7, 'sawtooth', 0.26, 44);
+    [523,784,1047].forEach((f,i)=>this.tone(f, 0.6, 'triangle', 0.17, null, 0.05+i*0.05));
+  },
+  /* a wasted window: a short descent that lands on nothing */
+  fizzle(){ this.tone(300, 0.26, 'sine', 0.11, 120); this.noise(0.10, 0.08, 400, 0.9, 0.03); },
+  /* the catch: an upward whip, then the throw back down */
+  steal(){
+    this.noise(0.10, 0.26, 2600, 2.2);
+    this.tone(300, 0.16, 'triangle', 0.18, 1200);
+    this.tone(1200, 0.34, 'sine', 0.15, 420, 0.09);
+  },
+  force(){
+    this.noise(0.14, 0.30, 900, 1.1);
+    [262,392,523,784].forEach((f,i)=>this.tone(f, 0.30, 'square', 0.14, null, i*0.04));
+    this.tone(1319, 0.5, 'sine', 0.12, 1760, 0.12);
+  },
 };
 
 /* ═══════════════════════════════════════════════════════════════
@@ -5200,7 +6115,7 @@ const sfx = {
 const SAVE_KEY = 'arcane-clash-v1';
 const Save = {
   data: { names:['AZURE WARDEN','CRIMSON TYRANT'], wins:[0,0], draws:0, history:[], muted:false,
-          pveBest:0, speed:1 },
+          pveBest:0, speed:1, champs:[null,null] },
   load(){
     try{
       const raw = localStorage.getItem(SAVE_KEY);
@@ -5215,6 +6130,11 @@ const Save = {
         /* a player who set 4x last session almost certainly wants it again
            on stage 1 of the next run */
         if([1,2,4].includes(+d.speed)) this.data.speed = +d.speed;
+        /* validated against the live catalogue, not trusted: a save from a
+           build where a champion was named differently must not produce a
+           fighter holding an ultimate that no longer exists */
+        if(Array.isArray(d.champs) && d.champs.length===2)
+          this.data.champs = d.champs.map(id => champOf(id) ? id : null);
       }
     }catch(e){ /* private mode / file:// restrictions — run with defaults */ }
     return this.data;
@@ -5289,6 +6209,11 @@ const HEAL_COL = '#8dffa8', SHIELD_COL = '#9fc4ff';
 const SYNTH = {
   _basic:  {name:'Basic Strike',    col:'#8b96b8'},
   _thorns: {name:'Thorns · Reflect', col:'#ff9f6a'},
+  /* The ultimate has no draft slot, so it needs a synthetic row exactly as
+     the basic attack does. Reversal's nova and heal, and every point of
+     damage Suppression steals, are booked here — otherwise a stolen Meteor
+     Fall would credit the enemy's skill on the player's own chart. */
+  _ult:    {name:'Champion Ultimate', col:'#ffce5a'},
 };
 
 /* An "enabler" is a self-buff whose entire contribution is expressed
@@ -5518,6 +6443,173 @@ function runLab(N=3000){
 }
 
 /* ═══════════════════════════════════════════════════════════════
+   CHAMPION SELECT
+
+   Runs before the draft, and in hotseat it runs twice — P1 picks, then P2,
+   from the SAME three. Champions are not a contested resource the way cards
+   are: a mirror is a legitimate matchup, and denying your rival the tank by
+   picking it first would be a draft decision made before the draft.
+
+   `Sel.after` is the continuation, so one screen serves the duel, the
+   hotseat and the delve without any of them knowing about the others.
+   ═══════════════════════════════════════════════════════════════ */
+const Sel = {
+  side: 0,          // which player is choosing
+  both: false,      // hotseat: run again for player 2 on confirm
+  pick: null,       // current highlighted id
+  after: null,      // called once every required pick is in
+  cards: [],        // {el, canvas, champ} — animated portraits
+
+  open(opt){
+    this.both  = !!opt.both;
+    this.after = opt.after;
+    this.side  = 0;
+    this.begin();
+  },
+  begin(){
+    /* re-offer whatever this player chose last time as the default: over a
+       session most players have a main, and re-picking it every match is
+       friction with no decision in it */
+    const last = Save.data.champs && Save.data.champs[this.side];
+    this.pick = champOf(last) ? last : null;
+    show('select');
+    this.render();
+  },
+  render(){
+    const two = this.both;
+    $('#selWho').textContent = two ? `${Save.data.names[this.side]}` : 'YOUR CHAMPION';
+    $('#selWho').className = 'turnpill ' + (this.side ? 'p2' : 'p1');
+    $('#selHint').textContent = two
+      ? `Pick ${this.side+1} of 2`
+      : (G.vsAI ? 'Your rival will bring one too' : '');
+    $('#selNote').innerHTML = 'One charge per battle, fired by hand — '
+      + `<b class="mono">${this.side ? 'P' : 'Q'}</b> or the button in the arena. `
+      + 'Your drafted skills still cast themselves.';
+
+    const host = $('#champCards');
+    host.innerHTML = '';
+    this.cards = [];
+    CHAMPIONS.forEach((c, i)=>{
+      const el = document.createElement('div');
+      el.className = 'champ' + (this.pick===c.id ? ' on' : '');
+      el.style.setProperty('--ck', c.acc);
+      el.tabIndex = 0;
+      el.innerHTML = `
+        <span class="key">${i+1}</span>
+        <canvas class="pv"></canvas>
+        <div class="body">
+          <div class="kick">${c.kicker}</div>
+          <div class="nm">${c.name}</div>
+          <div class="tag">${c.tag}</div>
+          <div class="desc">${c.desc}</div>
+          <div class="note">${c.note}</div>
+        </div>`;
+      const choose = ()=>{ this.choose(c.id); };
+      el.onclick = choose;
+      el.ondblclick = ()=>{ this.choose(c.id); this.confirm(); };
+      el.onkeydown = e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); choose(); } };
+      host.appendChild(el);
+      this.cards.push({el, cv:el.querySelector('.pv'), champ:c});
+    });
+    this.sync();
+    this.fitPortraits();
+  },
+  choose(id){
+    if(this.pick === id) return;
+    this.pick = id;
+    sfx.click();
+    this.sync();
+  },
+  sync(){
+    for(const c of this.cards) c.el.classList.toggle('on', c.champ.id === this.pick);
+    const go = $('#selGo');
+    const c = champOf(this.pick);
+    go.disabled = !c;
+    go.textContent = c
+      ? (this.both && this.side === 0 ? `${c.name} — next player` : `${c.name} — confirm`)
+      : 'Confirm';
+    go.style.setProperty('--pri', c ? c.acc : '#4a7cf0');
+  },
+  confirm(){
+    if(!champOf(this.pick)) return;
+    sfx.buy();
+    G.champs[this.side] = this.pick;
+    Save.data.champs = Save.data.champs || [null,null];
+    Save.data.champs[this.side] = this.pick;
+    Save.flush();
+    if(this.both && this.side === 0){ this.side = 1; this.begin(); return; }
+    /* 1P: the AI brings one too, chosen at random from the other two so the
+       matchup is not the same every session — and a mirror stays possible,
+       because a mirror is a real matchup, just an unlikely one */
+    if(!this.both){
+      const others = CHAMPIONS.filter(c => c.id !== this.pick);
+      G.champs[1] = Math.random() < 0.15
+        ? this.pick
+        : others[(Math.random()*others.length)|0].id;
+    }
+    this.stop();
+    const go = this.after; this.after = null;
+    if(go) go();
+  },
+  /* Portraits are live canvases running the arena's own body renderer, so
+     what you pick is literally what you get. They stop the moment the screen
+     closes — 3 idling canvases behind a battle is the same mistake the codex
+     preview already had to fix. */
+  raf: 0,
+  fitPortraits(){
+    const dpr = Math.min(2, devicePixelRatio || 1);
+    for(const c of this.cards){
+      const r = c.cv.getBoundingClientRect();
+      if(!r.width) continue;
+      c.cv.width = Math.round(r.width*dpr); c.cv.height = Math.round(r.height*dpr);
+      c.ctx = c.cv.getContext('2d');
+      c.ctx.setTransform(dpr,0,0,dpr,0,0);
+      c.w = r.width; c.h = r.height;
+    }
+    if(!this.raf) this.raf = requestAnimationFrame(ts => this.tick(ts));
+  },
+  tick(ts){
+    this.raf = 0;
+    if(!$('#select').classList.contains('on')) return;
+    const t = ts/1000;
+    for(const c of this.cards){
+      if(!c.ctx || !c.w) continue;
+      const art = CHAMP_ART[c.champ.art];
+      const g = c.ctx;
+      g.clearRect(0,0,c.w,c.h);
+      const R = Math.min(30, c.h*0.20);
+      const bob = Math.sin(t*art.bobF) * art.bobA * 0.7;
+      const cx = c.w/2, cy = c.h*0.54 + bob;
+      /* ground shadow, so the body stands in the well rather than floating */
+      g.save(); g.globalAlpha = 0.4; g.fillStyle = '#000';
+      g.beginPath(); g.ellipse(cx, c.h*0.90, R*1.2, R*0.26, 0, 0, TAU); g.fill();
+      g.restore();
+      g.save(); g.globalCompositeOperation = 'lighter';
+      glowOn(g, cx, cy, R*3.2, c.champ.acc, 0.26);
+      g.restore();
+      g.save(); g.translate(cx, cy);
+      art.draw(g, t, R, {base:c.champ.acc, acc:c.champ.acc, hurt:0});
+      g.restore();
+    }
+    this.raf = requestAnimationFrame(ts2 => this.tick(ts2));
+  },
+  stop(){
+    if(this.raf){ cancelAnimationFrame(this.raf); this.raf = 0; }
+    this.cards = [];
+  },
+};
+$('#selGo').onclick   = ()=>Sel.confirm();
+$('#selBack').onclick = ()=>{ sfx.click(); Sel.stop(); Sel.after = null; show('title'); };
+addEventListener('keydown', e=>{
+  if(!$('#select').classList.contains('on')) return;
+  if(e.key>='1' && e.key<='3'){
+    const c = CHAMPIONS[+e.key-1]; if(c) Sel.choose(c.id);
+  } else if(e.key==='Enter'){ Sel.confirm(); }
+  else if(e.key==='Escape'){ Sel.stop(); Sel.after=null; show('title'); }
+});
+addEventListener('resize', ()=>{ if($('#select').classList.contains('on')) Sel.fitPortraits(); });
+
+/* ═══════════════════════════════════════════════════════════════
    NAV + BOOT
    ═══════════════════════════════════════════════════════════════ */
 function show(id){
@@ -5571,8 +6663,18 @@ function setMode(vsAI){
 $('#bVs1').onclick = ()=>setMode(true);
 $('#bVs2').onclick = ()=>setMode(false);
 
-$('#bStart').onclick = ()=>{ commitNames(); sfx.click(); startDraft(); };
-$('#bDelve').onclick = ()=>{ commitNames(); sfx.click(); Run.start(); };
+/* Both modes pick a champion first. The choice belongs BEFORE the draft:
+   the ultimate is the one thing you cannot buy, and knowing which one you
+   are holding is what makes "draft six long cooldowns" a plan rather than
+   an accident. */
+$('#bStart').onclick = ()=>{
+  commitNames(); sfx.click();
+  Sel.open({both: !G.vsAI, after: startDraft});
+};
+$('#bDelve').onclick = ()=>{
+  commitNames(); sfx.click();
+  Sel.open({both:false, after: ()=>Run.start()});
+};
 $('#bLab').onclick   = ()=>{ sfx.click(); show('lab'); renderCodex(); };
 /* leaving the codex must stop the preview loop — otherwise 46 canvases
    keep animating behind the battle for the rest of the session */
@@ -5592,7 +6694,20 @@ addEventListener('keydown', e=>{
   /* 1/2/3 select a speed, S skips — the same keys the buttons expose, so
      a player who never looks at the bar can still drive it */
   if(e.key==='1'||e.key==='2'||e.key==='3'){ setSpeed(SPEEDS[+e.key-1]); return; }
-  if(e.key==='s'||e.key==='S'){ skipBattle(); }
+  if(e.key==='s'||e.key==='S'){ skipBattle(); return; }
+  /* Q fires player 1's ultimate, P fires player 2's. Two keys far apart on
+     the board, because in hotseat two people are reaching for them at once.
+     An AI-held champion ignores the key: its charge is not yours to spend. */
+  if(e.key==='q'||e.key==='Q'){
+    const f = sim && sim.f[0];
+    if(f && f.champ && !f.autoUlt){ e.preventDefault(); tryUlt(f); }
+    return;
+  }
+  if(e.key==='p'||e.key==='P'){
+    const f = sim && !sim.pve && sim.f[1];
+    if(f && f.champ && !f.autoUlt){ e.preventDefault(); tryUlt(f); }
+    return;
+  }
 });
 /* boot */
 sfx.muted = !!Save.data.muted;
